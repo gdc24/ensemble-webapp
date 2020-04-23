@@ -5,6 +5,7 @@ using NodaTime;
 using System.Linq;
 using System.Web;
 using ensemble_webapp.Models;
+using System.Globalization;
 
 namespace ensemble_webapp.Database
 {
@@ -627,7 +628,9 @@ namespace ensemble_webapp.Database
             List<RehearsalPart> retval = new List<RehearsalPart>();
 
             // define a query
-            string query = "SELECT * FROM \"rehearsalParts\" WHERE \"intEventID\" = " + paramEvent.IntEventID;
+            string query = "SELECT * FROM \"rehearsalParts\" rp, \"rehearsals\" r" +
+                " WHERE r.\"intEventID\" = " + paramEvent.IntEventID +
+                " AND r.\"intRehearsalID\" = rp.\"intRehearsalID\"";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -648,9 +651,10 @@ namespace ensemble_webapp.Database
             List<RehearsalPart> retval = new List<RehearsalPart>();
 
             // define a query
-            string query = "SELECT * FROM \"rehearsalParts\"" +
-                " WHERE \"intEventID\" = " + paramEvent.IntEventID +
-                " AND \"intTypeID\" = " + type.IntTypeID;
+            string query = "SELECT * FROM \"rehearsalParts\"rp, \"rehearsals\" r" +
+                " WHERE r.\"intEventID\" = " + paramEvent.IntEventID +
+                " AND rp.\"intTypeID\" = " + type.IntTypeID +
+                " AND r.\"intRehearsalID\" = rp.\"intRehearsalID\"";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -733,15 +737,47 @@ namespace ensemble_webapp.Database
         // get a list of the attendance for a planned rehearsal part
         public List<AttendanceActual> GetAttendanceActualByPlanned(AttendancePlanned attendancePlanned)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<AttendanceActual> retval = new List<AttendanceActual>();
+
+            // define a query
+            string query = "SELECT * FROM \"attendanceActual\" WHERE \"intAttendancePlannedID\" = " + attendancePlanned.IntAttendancePlannedID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                AttendanceActual tmpAttendanceActual = GetAttendanceActualFromDR(dr);
+                retval.Add(tmpAttendanceActual);
+            }
+
+            return retval;
         }
 
         // get a list of the attendance for a given member
         public List<AttendanceActual> GetAttendanceActualByMember(Member member)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<AttendanceActual> retval = new List<AttendanceActual>();
+
+            // define a query
+            string query = "SELECT * FROM \"attendanceActual\" aa, \"attendancePlanned\" ap" +
+                " WHERE ap.\"intMemberID\" = " + member.IntMemberID +
+                " AND ap.\"intAttendancePlannedID\" = aa.\"intAttendancePlannedID\"";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                AttendanceActual tmpAttendanceActual = GetAttendanceActualFromDR(dr);
+                retval.Add(tmpAttendanceActual);
+            }
+
+            return retval;
         }
 
         // get a list of attendance for a rehearsal part (kinda same as GetAttendanceActualByPlanned but further abstracted up)
@@ -760,63 +796,216 @@ namespace ensemble_webapp.Database
 
         public List<Conflict> GetConflictsByMember(Member member)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Conflict> retval = new List<Conflict>();
+
+            // define a query
+            string query = "SELECT * FROM \"conflicts\" WHERE \"intMemberID\" = " + member.IntMemberID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Conflict conflict = GetConflictFromDR(dr);
+                retval.Add(conflict);
+            }
+
+            return retval;
         }
 
         public List<Conflict> GetConflictsByMemberAndDay(Member member, LocalDate date)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Conflict> retval = new List<Conflict>();
+            string strDateOnly = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            // define a query
+            string query = "SELECT * FROM \"conflicts\" WHERE \"intAssignedToMemberID\" = " + member.IntMemberID +
+                " AND DATE(\"dtmStartDateTime\") = " + strDateOnly;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Conflict conflict = GetConflictFromDR(dr);
+                retval.Add(conflict);
+            }
+
+            return retval;
         }
 
         public List<Conflict> GetConflictsByDay(LocalDate date)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Conflict> retval = new List<Conflict>();
+            string strDateOnly = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            // define a query
+            string query = "SELECT * FROM \"conflicts\" WHERE DATE(\"dtmStartDateTime\") = " + strDateOnly;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Conflict conflict = GetConflictFromDR(dr);
+                retval.Add(conflict);
+            }
+
+            return retval;
         }
 
         public List<Task> GetTasksByAssignedToMember(Member member)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Task> retval = new List<Task>();
+
+            // define a query
+            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToMemberID\" = " + member.IntMemberID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Task tasks = GetTaskFromDR(dr);
+                retval.Add(tasks);
+            }
+
+            return retval;
         }
 
         public List<Task> GetTasksByAssignedByMember(Member member)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Task> retval = new List<Task>();
+
+            // define a query
+            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedByMemberID\" = " + member.IntMemberID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Task tasks = GetTaskFromDR(dr);
+                retval.Add(tasks);
+            }
+
+            return retval;
         }
 
         public List<Task> GetTasksByEvent(Event paramEvent)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Task> retval = new List<Task>();
+
+            // define a query
+            string query = "SELECT * FROM \"tasks\" WHERE \"intEventID\" = " + paramEvent.IntEventID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Task tasks = GetTaskFromDR(dr);
+                retval.Add(tasks);
+            }
+
+            return retval;
         }
 
         // get a list of tasks assigned to a user after a certain time
         public List<Task> GetTasksDueAfter(Member member, DateTime dateTime)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Task> retval = new List<Task>();
+
+            // define a query
+            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToMemberID\" = " + member.IntMemberID + " AND \"dtmDue\" < '" + dateTime + "'"; // YYYY-MM-DD HH:MM:SS.MMM
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Task tasks = GetTaskFromDR(dr);
+                retval.Add(tasks);
+            }
+
+            return retval;
         }
 
         public List<Task> GetTasksByEventAndMember(Member member, Event paramEvent)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Task> retval = new List<Task>();
+
+            // define a query
+            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToMemberID\" = " + member.IntMemberID + " AND \"intEventID\" = " + paramEvent.IntEventID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Task tasks = GetTaskFromDR(dr);
+                retval.Add(tasks);
+            }
+
+            return retval;
         }
 
         public List<Part> GetPartsByMember(Member member)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Part> retval = new List<Part>();
+
+            // define a query
+            string query = "SELECT * FROM \"parts\" WHERE \"intMemberID\" = " + member.IntMemberID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Part parts = GetPartFromDR(dr);
+                retval.Add(parts);
+            }
+
+            return retval;
         }
 
         public List<Part> GetPartsByEvent(Event paramEvent)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<Part> retval = new List<Part>();
+
+            // define a query
+            string query = "SELECT * FROM \"parts\" WHERE \"intEventID\" = " + paramEvent.IntEventID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Part parts = GetPartFromDR(dr);
+                retval.Add(parts);
+            }
+
+            return retval;
         }
 
         #endregion
