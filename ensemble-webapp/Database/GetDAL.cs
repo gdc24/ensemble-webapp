@@ -783,15 +783,50 @@ namespace ensemble_webapp.Database
         // get a list of attendance for a rehearsal part (kinda same as GetAttendanceActualByPlanned but further abstracted up)
         public List<AttendanceActual> GetAttendanceActualByRehearsalPart(RehearsalPart rehearsalPart)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<AttendanceActual> retval = new List<AttendanceActual>();
+
+            // define a query
+            string query = "SELECT * FROM \"attendanceActual\" aa, \"attendancePlanned\" ap" +
+                " WHERE ap.\"intRehearsalPartID\" = " + rehearsalPart.IntRehearsalPartID +
+                " AND ap.\"intAttendancePlannedID\" = aa.\"intAttendancePlannedID\"";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                AttendanceActual tmpAttendanceActual = GetAttendanceActualFromDR(dr);
+                retval.Add(tmpAttendanceActual);
+            }
+
+            return retval;
         }
 
         // get a list of attendance for a whole rehearsal
         public List<AttendanceActual> GetAttendanceActualByRehearsal(Rehearsal rehearsal)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            List<AttendanceActual> retval = new List<AttendanceActual>();
+
+            // define a query
+            string query = "SELECT * FROM \"attendanceActual\" aa, \"attendancePlanned\" ap, \"rehearsalParts\" rp" +
+                " WHERE rp.\"intRehearsalID\" = " + rehearsal.IntRehearsalID +
+                " AND rp.\"intRehearsalPartID\" = ap.\"intRehearsalPartID\"" +
+                " AND ap.\"intAttendancePlannedID\" = aa.\"intAttendancePlannedID\"";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                AttendanceActual tmpAttendanceActual = GetAttendanceActualFromDR(dr);
+                retval.Add(tmpAttendanceActual);
+            }
+
+            return retval;
         }
 
         public List<Conflict> GetConflictsByMember(Member member)
