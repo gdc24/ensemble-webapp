@@ -1,6 +1,9 @@
-// below for ComputerSHA256Hash function
+using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
+using System.Dynamic;
+using System.Linq;
 
 namespace ensemble_webapp.Database
 {
@@ -8,8 +11,28 @@ namespace ensemble_webapp.Database
     public class Login
     {
 
+        public static bool VerifyUser(string enteredUser, string enteredPassword, byte[] salt, byte[] key)
+        {
+            // GetDAL.GetDAL(); 
+            // find enteredUser in database
+            // if cannot find entered User, return false;
+            // if can find enteredUser then
+            String userPass = "";
+            byte[] userSalt;
+            byte[] userKey;
+            String actual = ComputeSHA256Hash(userPass, userSalt);
+            String toCheck = ComputeSHA256Hash(enteredPassword, salt);
+
+            if (userKey.SequenceEqual(key) && actual.Equals(toCheck))
+            {
+                return true;
+            }
+
+            // GetDAL.CloseConnection();
+        }
+        
         // Compute hash of a string using SHA 256
-        public static ComputeSHA256Hash(string toHash, byte[] salt)
+        public static string ComputeSHA256Hash(string toHash, byte[] salt)
         {
             using (SHA256 hash = SHA256.Create())
             {
@@ -22,13 +45,13 @@ namespace ensemble_webapp.Database
                 Array.Copy(salt, full, b.Length, salt.Length);
 
                 // Convert byte array hash back to string
-                StringBuilder builder2 = new StringBuilder();
+                StringBuilder builder = new StringBuilder();
                 for (int i = 0; i < full.Length; i++)
                 {
-                    builder2.Append(full[i].ToString("x2"));
+                    builder.Append(full[i].ToString("x2"));
                 }
 
-                return builder2.ToString();
+                return builder.ToString();
             }
         }
     }
