@@ -8,7 +8,7 @@ namespace ensemble_webapp.Database
 {
 
     public class Login
-    {
+    { 
         // returns true for successful login
         public static bool VerifyUser(string enteredUser, string enteredPassword)
         {
@@ -52,7 +52,7 @@ namespace ensemble_webapp.Database
                 // prompt for name, email, phone, eventID
 
                 // somehow get an event
-                Event e = getDAL.GetEvent(eventID); 
+                Event e = getDAL.GetEventByID(eventID); 
                 if (e == null)
                 {
                     return false;
