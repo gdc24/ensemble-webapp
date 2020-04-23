@@ -12,7 +12,7 @@ namespace ensemble_webapp.Database
     public class Login
     {
         // returns true for successful login
-        public static bool VerifyUser(string enteredUser, string enteredPassword, byte[] salt, byte[] key)
+        public static bool VerifyUser(String enteredUser, String enteredPassword, string key)
         {
             // GetDAL.GetDAL(); <- is this needed here?
             GetDAL getDAL = new GetDAL();
@@ -26,18 +26,51 @@ namespace ensemble_webapp.Database
             byte[] userKey = usr.BytKey;
             String actual = ComputeSHA256Hash(userPass, userSalt);
             String toCheck = ComputeSHA256Hash(enteredPassword, salt);
-
-            if (userKey.SequenceEqual(key) && actual.Equals(toCheck))
+            // if found enteredUser then
             {
-                return true;
+                String userPass = "";
+                byte[] userSalt;
+                string userKey = "";
+
+                if (userKey.SequenceEqual(key))
+                {
+                    return true;
+                }
             }
 
             // GetDAL.CloseConnection(); <- only needed if above is needed?
-            getDAL.CloseConnection();
+
+            return false;
         }
-        
+
+        public static bool CreateUser(String username, String password)
+        {
+            // GetDAL.GetDAL(); <- is this needed here?
+
+            // check if user already exists in database
+            // if username not already in database
+                {
+                    InsertDAL.InsertDAL();
+
+                    // generate random number and convert it to a byte array for salt
+                    byte[] salt = BitConverter.GetBytes(new Random().Next(Int32));
+
+                    string key = ComputeSHA256Hash(password, salt);
+                    InsertDAL.InsertUser(username, password, salt);
+
+                    InsertDAL.CloseConnection();
+
+                    return true;
+                }
+
+            // GetDAL.CloseConnection(); <- only needed if above is needed?
+            getDAL.CloseConnection();
+
+            return false;
+        }
+
         // Compute hash of a string using SHA 256
-        public static string ComputeSHA256Hash(string toHash, byte[] salt)
+        public static string ComputeSHA256Hash(String toHash, byte[] salt)
         {
             using (SHA256 hash = SHA256.Create())
             {
