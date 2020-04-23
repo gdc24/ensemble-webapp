@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Collections;
+using ensemble_webapp.Models;
 
 namespace ensemble_webapp.Database
 {
