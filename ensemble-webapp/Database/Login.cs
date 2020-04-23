@@ -12,65 +12,64 @@ namespace ensemble_webapp.Database
     public class Login
     {
         // returns true for successful login
-        public static bool VerifyUser(String enteredUser, String enteredPassword, string key)
+        public static bool VerifyUser(String enteredUser, String enteredPassword)
         {
-            // GetDAL.GetDAL(); <- is this needed here?
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
+
             // find enteredUser in database
             Member usr = getDAL.GetMemberByUsername(enteredUser);
-            // if cannot find entered User, return false;
-            // if can find enteredUser then
-            String userPass = "";
-            byte[] userSalt = usr.BytSalt;
-            byte[] userKey = usr.BytKey;
-            String actual = ComputeSHA256Hash(userPass, userSalt);
-            String toCheck = ComputeSHA256Hash(enteredPassword, salt);
-            // if found enteredUser then
-            {
-                String userPass = "";
-                byte[] userSalt;
-                string userKey = "";
 
-                if (userKey.SequenceEqual(key))
+            // if username is found
+            if (usr != null)
+            {
+                byte[] userSalt = usr.BytSalt;
+                byte[] userKey = usr.BytKey;
+                string actual = ComputeSHA256Hash(enteredPassword, userSalt);
+
+                if (userKey.SequenceEqual(actual))
                 {
                     return true;
                 }
             }
 
-            // GetDAL.CloseConnection(); <- only needed if above is needed?
+            getDAL.CloseConnection();
 
+            // did not find username
             return false;
         }
 
+        // returns true if new user is created successfully
         public static bool CreateUser(String username, String password)
         {
-            // GetDAL.GetDAL(); <- is this needed here?
+            GetDAL getDAL = new GetDAL();
+            getDAL.OpenConnection();
 
-            // check if user already exists in database
-            // if username not already in database
-                {
-                    InsertDAL.InsertDAL();
+            Member usr = getDAL.GetMemberByUsername(username);
 
-                    // generate random number and convert it to a byte array for salt
-                    byte[] salt = BitConverter.GetBytes(new Random().Next(Int32));
+            // if no user found by username
+            if (usr == null) {
+                InsertDAL insertDAL = new InsertDAL();
+                insertDAL.OpenConnection();
+                
+                // generate random number and convert it to a byte array for salt
+                byte[] salt = BitConverter.GetBytes(new Random().Next(Int32));
 
-                    string key = ComputeSHA256Hash(password, salt);
-                    InsertDAL.InsertUser(username, password, salt);
+                byte[] key = ComputeSHA256Hash(password, salt);
+                insertDAL.InsertUser(username, password, salt, key);
 
-                    InsertDAL.CloseConnection();
+                insertDAL.CloseConnection();
 
-                    return true;
-                }
+                return true;
+            }
 
-            // GetDAL.CloseConnection(); <- only needed if above is needed?
             getDAL.CloseConnection();
 
             return false;
         }
 
         // Compute hash of a string using SHA 256
-        public static string ComputeSHA256Hash(String toHash, byte[] salt)
+        public static byte[] ComputeSHA256Hash(String toHash, byte[] salt)
         {
             using (SHA256 hash = SHA256.Create())
             {
@@ -79,17 +78,8 @@ namespace ensemble_webapp.Database
 
                 // Concatenate toHash and salt byte arrays
                 byte[] full = new int[b.Length + salt.Length];
-                Array.Copy(b, full, b.Length);
-                Array.Copy(salt, full, b.Length, salt.Length);
 
-                // Convert byte array hash back to string
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < full.Length; i++)
-                {
-                    builder.Append(full[i].ToString("x2"));
-                }
-
-                return builder.ToString();
+                return full;
             }
         }
     }
