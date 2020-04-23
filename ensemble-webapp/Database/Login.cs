@@ -86,6 +86,7 @@ namespace ensemble_webapp.Database
 
                 insertDAL.CloseConnection();
 
+                Globals.LOGIN_STATUS = true;
                 return true;
             }
 
