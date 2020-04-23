@@ -7,6 +7,16 @@ namespace ensemble_webapp.Models
 {
     public class Users
     {
+        public Users(int intUserID, string strName, byte[] bytSalt, byte[] bytKey, string strUsername, string strEmail, int intPhone)
+        {
+            IntUserID = intUserID;
+            StrName = strName;
+            BytSalt = bytSalt;
+            BytKey = bytKey;
+            StrUsername = strUsername;
+            StrEmail = strEmail;
+            IntPhone = intPhone;
+        }
 
         public int IntUserID { get; set; }
 

@@ -18,7 +18,7 @@ namespace ensemble_webapp.Database
             getDAL.OpenConnection();
 
             // find enteredUser in database
-            Member usr = getDAL.GetMemberByUsername(enteredUser);
+            Users usr = getDAL.GetUserByUsername(enteredUser);
 
             // if username is found
             if (usr != null)
