@@ -33,7 +33,7 @@ CREATE TABLE public."attendanceActual" (
 );
 
 
-ALTER TABLE public."attendanceActual" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."attendanceActual" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: attendanceActual_intAttendanceActualID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -48,7 +48,7 @@ CREATE SEQUENCE public."attendanceActual_intAttendanceActualID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."attendanceActual_intAttendanceActualID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."attendanceActual_intAttendanceActualID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: attendanceActual_intAttendanceActualID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -68,7 +68,7 @@ CREATE TABLE public."attendancePlanned" (
 );
 
 
-ALTER TABLE public."attendancePlanned" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."attendancePlanned" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: attendancePlanned_intAttendancePlannedID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -83,7 +83,7 @@ CREATE SEQUENCE public."attendancePlanned_intAttendancePlannedID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."attendancePlanned_intAttendancePlannedID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."attendancePlanned_intAttendancePlannedID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: attendancePlanned_intAttendancePlannedID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -106,7 +106,7 @@ CREATE TABLE public.callboard (
 );
 
 
-ALTER TABLE public.callboard OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public.callboard OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: callboard_intCallboardID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -121,7 +121,7 @@ CREATE SEQUENCE public."callboard_intCallboardID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."callboard_intCallboardID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."callboard_intCallboardID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: callboard_intCallboardID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -142,7 +142,7 @@ CREATE TABLE public.conflicts (
 );
 
 
-ALTER TABLE public.conflicts OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public.conflicts OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: conflicts_intConflictID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -157,7 +157,7 @@ CREATE SEQUENCE public."conflicts_intConflictID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."conflicts_intConflictID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."conflicts_intConflictID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: conflicts_intConflictID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -185,7 +185,7 @@ CREATE TABLE public."eventSchedule" (
 );
 
 
-ALTER TABLE public."eventSchedule" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."eventSchedule" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: eventSchedule_intEventScheduleID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -200,7 +200,7 @@ CREATE SEQUENCE public."eventSchedule_intEventScheduleID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."eventSchedule_intEventScheduleID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."eventSchedule_intEventScheduleID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: eventSchedule_intEventScheduleID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -222,7 +222,7 @@ CREATE TABLE public.events (
 );
 
 
-ALTER TABLE public.events OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public.events OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: events_intEventID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -237,7 +237,7 @@ CREATE SEQUENCE public."events_intEventID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."events_intEventID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."events_intEventID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: events_intEventID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -256,7 +256,7 @@ CREATE TABLE public.groups (
 );
 
 
-ALTER TABLE public.groups OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public.groups OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: groups_intGroupID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -271,7 +271,7 @@ CREATE SEQUENCE public."groups_intGroupID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."groups_intGroupID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."groups_intGroupID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: groups_intGroupID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -296,7 +296,7 @@ CREATE TABLE public.members (
 );
 
 
-ALTER TABLE public.members OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public.members OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: members_intMemberID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -311,7 +311,7 @@ CREATE SEQUENCE public."members_intMemberID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."members_intMemberID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."members_intMemberID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: members_intMemberID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -332,7 +332,7 @@ CREATE TABLE public.parts (
 );
 
 
-ALTER TABLE public.parts OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public.parts OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: parts_intPartID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -347,7 +347,7 @@ CREATE SEQUENCE public."parts_intPartID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."parts_intPartID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."parts_intPartID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: parts_intPartID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -369,7 +369,7 @@ CREATE TABLE public."rehearsalParts" (
 );
 
 
-ALTER TABLE public."rehearsalParts" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."rehearsalParts" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: rehearsalparts_intRehearsalPartID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -384,7 +384,7 @@ CREATE SEQUENCE public."rehearsalparts_intRehearsalPartID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."rehearsalparts_intRehearsalPartID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."rehearsalparts_intRehearsalPartID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: rehearsalparts_intRehearsalPartID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -407,7 +407,7 @@ CREATE TABLE public.rehearsals (
 );
 
 
-ALTER TABLE public.rehearsals OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public.rehearsals OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: rehearsals_intRehearsalID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -422,7 +422,7 @@ CREATE SEQUENCE public."rehearsals_intRehearsalID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."rehearsals_intRehearsalID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."rehearsals_intRehearsalID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: rehearsals_intRehearsalID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -446,7 +446,7 @@ CREATE TABLE public.tasks (
 );
 
 
-ALTER TABLE public.tasks OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public.tasks OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: tasks_intTaskID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -461,7 +461,7 @@ CREATE SEQUENCE public."tasks_intTaskID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."tasks_intTaskID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."tasks_intTaskID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: tasks_intTaskID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -481,7 +481,7 @@ CREATE TABLE public.types (
 );
 
 
-ALTER TABLE public.types OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public.types OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: types_intTypeID_seq; Type: SEQUENCE; Schema: public; Owner: gccnzcuoxvsjiv
@@ -496,7 +496,7 @@ CREATE SEQUENCE public."types_intTypeID_seq"
     CACHE 1;
 
 
-ALTER TABLE public."types_intTypeID_seq" OWNER TO gccnzcuoxvsjiv;
+--ALTER TABLE public."types_intTypeID_seq" OWNER TO gccnzcuoxvsjiv;
 
 --
 -- Name: types_intTypeID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gccnzcuoxvsjiv
@@ -1021,7 +1021,7 @@ ALTER TABLE ONLY public.tasks
 
 ALTER TABLE ONLY public.tasks
     ADD CONSTRAINT "tasks_intAssignedToMemberID_fkey" FOREIGN KEY ("intAssignedToMemberID") REFERENCES public.members("intMemberID");
-
+--OWNER TO gccnzcuoxvsjiv
 
 --
 -- Name: tasks tasks_intEventID_fkey; Type: FK CONSTRAINT; Schema: public; Owner: gccnzcuoxvsjiv
@@ -1045,7 +1045,7 @@ ALTER TABLE ONLY public.types
 
 REVOKE ALL ON SCHEMA public FROM postgres;
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-GRANT ALL ON SCHEMA public TO gccnzcuoxvsjiv;
+--GRANT ALL ON SCHEMA public TO gccnzcuoxvsjiv;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
@@ -1053,7 +1053,7 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 -- Name: LANGUAGE plpgsql; Type: ACL; Schema: -; Owner: postgres
 --
 
-GRANT ALL ON LANGUAGE plpgsql TO gccnzcuoxvsjiv;
+--GRANT ALL ON LANGUAGE plpgsql TO gccnzcuoxvsjiv;
 
 
 --

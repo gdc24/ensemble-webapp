@@ -85,6 +85,25 @@ namespace ensemble_webapp.Database
 
         public bool InsertAttendanceActual(AttendanceActual attendanceActual)
         {
+            // define a query
+            string query = "INSERT INTO public.\"attendanceActual\"(" +
+                " \"ysnDidShow\", \"intAttendancePlannedID\", \"dtmInTime\", \"dtmOutTime\")" +
+                " VALUES(@ysnDidShow, @intAttendancePlannedID, @dtmInTime, @dtmOutTime); ";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("ysnDidShow", attendanceActual.YsnDidShow);
+            cmd.Parameters.AddWithValue("intAttendancePlannedID", attendanceActual.AttendancePlanned.IntAttendancePlannedID);
+            cmd.Parameters.AddWithValue("dtmInTime", attendanceActual.DtmInTime);
+            cmd.Parameters.AddWithValue("dtmOutTime", attendanceActual.DtmOutTime);
+
+            int result = cmd.ExecuteNonQuery();
+
+            conn.Close();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
             //TODO
             throw new NotImplementedException("todo");
         }

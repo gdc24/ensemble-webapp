@@ -6,8 +6,11 @@ using System.Web;
 
 namespace ensemble_webapp.ViewModels
 {
-    public class ScheduleHomeVM
+    public class ConflictsHomeVM
     {
-        List<Rehearsal> LstUpcomingRehearsals { get; set; }
+
+        List<Conflict> LstConflicts { get; set; }
+
+        Conflict ConflictToPost { get; set; }
     }
 }
