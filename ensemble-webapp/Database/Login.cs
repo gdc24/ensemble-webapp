@@ -4,6 +4,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Dynamic;
 using System.Linq;
+using ensemble_webapp.Models;
 
 namespace ensemble_webapp.Database
 {
@@ -14,12 +15,15 @@ namespace ensemble_webapp.Database
         public static bool VerifyUser(string enteredUser, string enteredPassword, byte[] salt, byte[] key)
         {
             // GetDAL.GetDAL(); <- is this needed here?
+            GetDAL getDAL = new GetDAL();
+            getDAL.OpenConnection();
             // find enteredUser in database
+            Member usr = getDAL.GetMemberByUsername(enteredUser);
             // if cannot find entered User, return false;
             // if can find enteredUser then
             String userPass = "";
-            byte[] userSalt;
-            byte[] userKey;
+            byte[] userSalt = usr.BytSalt;
+            byte[] userKey = usr.BytKey;
             String actual = ComputeSHA256Hash(userPass, userSalt);
             String toCheck = ComputeSHA256Hash(enteredPassword, salt);
 
@@ -29,6 +33,7 @@ namespace ensemble_webapp.Database
             }
 
             // GetDAL.CloseConnection(); <- only needed if above is needed?
+            getDAL.CloseConnection();
         }
         
         // Compute hash of a string using SHA 256

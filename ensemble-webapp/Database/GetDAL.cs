@@ -68,9 +68,12 @@ namespace ensemble_webapp.Database
             string strName = dr["strName"].ToString();
             string strEmail = dr["strEmail"].ToString();
             int intPhone = Convert.ToInt32(dr["intPhone"]);
+            string strUsername = dr["strUsername"].ToString();
+            byte[] bytSalt = (byte[])dr["bytSalt"];
+            byte[] bytKey = (byte[])dr["bytKey"];
             Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
 
-            return new Member(intMemberID, strName, strEmail, intPhone, paramEvent);
+            return new Member(intMemberID, strName, bytSalt, bytKey, strUsername, strEmail, intPhone, paramEvent);
         }
 
         private Rehearsal GetRehearsalFromDR(NpgsqlDataReader dr)
@@ -576,6 +579,26 @@ namespace ensemble_webapp.Database
             {
                 Member tmpMember = GetMemberFromDR(dr);
                 retval.Add(tmpMember);
+            }
+
+            return retval;
+        }
+
+        public Member GetMemberByUsername(string strUsername)
+        {
+            Member retval = null;
+
+            // define a query
+            string query = "SELECT * FROM \"members\" WHERE \"strUsername\" = " + strUsername;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                retval = GetMemberFromDR(dr);
             }
 
             return retval;
