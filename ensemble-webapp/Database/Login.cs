@@ -3,14 +3,15 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Collections;
 
 namespace ensemble_webapp.Database
 {
 
     public class Login
-    {
+    { 
         // returns true for successful login
-        public static bool VerifyUser(String enteredUser, String enteredPassword)
+        public static bool VerifyUser(string enteredUser, string enteredPassword)
         {
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
@@ -23,9 +24,9 @@ namespace ensemble_webapp.Database
             {
                 byte[] userSalt = usr.BytSalt;
                 byte[] userKey = usr.BytKey;
-                string actual = ComputeSHA256Hash(enteredPassword, userSalt);
+                byte[] actual = ComputeSHA256Hash(enteredPassword, userSalt);
 
-                if (userKey.SequenceEqual(actual))
+                if (StructuralComparisons.StructuralEqualityComparer.Equals(userKey, actual))
                 {
                     Globals.LOGIN_STATUS = true;
                     return true;
@@ -51,20 +52,24 @@ namespace ensemble_webapp.Database
             {
                 // prompt for name, email, phone, eventID
 
-                Event e = getDAL.GetEvent(eventID); // somehow get an event
+                // somehow get an event
+                Event e = getDAL.GetEventByID(eventID); 
                 if (e == null)
                 {
                     return false;
                 }
 
+                // get name
                 string name = "";
 
+                // get email
                 string email = "";
                 if (!IsValidEmail(email))
                 {
                     return false;
                 }
 
+                // get phone
                 string phone = "";
                 if (phone.Length != 10)
                 {
@@ -74,14 +79,15 @@ namespace ensemble_webapp.Database
                 InsertDAL insertDAL = new InsertDAL();
                 insertDAL.OpenConnection();
 
-                // generate random number and convert it to a byte array for salt
-                byte[] salt = BitConverter.GetBytes(new Random().Next(Int32));
+                // generate random number for salt and convert it to a byte array for key
+                byte[] salt = BitConverter.GetBytes(new Random().Next());
 
                 byte[] key = ComputeSHA256Hash(password, salt);
                 insertDAL.InsertMember(new Member(name, salt, key, username, email, phone, e));
 
                 insertDAL.CloseConnection();
 
+                Globals.LOGIN_STATUS = true;
                 return true;
             }
 
@@ -93,12 +99,13 @@ namespace ensemble_webapp.Database
         // closes database connection for logging out
         public static bool Logout()
         {
-            DatabaseConnnection.CloseConnection();
+            // DatabaseConnnection.CloseConnection();
             Globals.LOGIN_STATUS = false;
+            return true;
         }
 
         // Compute hash of a string using SHA 256
-        public static byte[] ComputeSHA256Hash(String toHash, byte[] salt)
+        public static byte[] ComputeSHA256Hash(string toHash, byte[] salt)
         {
             using (SHA256 hash = SHA256.Create())
             {
@@ -106,23 +113,27 @@ namespace ensemble_webapp.Database
                 byte[] b = hash.ComputeHash(Encoding.UTF8.GetBytes(toHash));
 
                 // Concatenate toHash and salt byte arrays
-                byte[] full = new int[b.Length + salt.Length];
+                byte[] key = new byte[b.Length + salt.Length];
 
-                return full;
+                Buffer.BlockCopy(b, 0, key, 0, b.Length);
+                Buffer.BlockCopy(salt, 0, key, b.Length, salt.Length);
+
+                return key;
             }
         }
-    }
 
-    private bool IsValidEmail(string email)
-    {
-        try
+        // check for valid email
+        private static bool IsValidEmail(string email)
         {
-            var addr = new System.Net.Mail.MailAddress(email);
-            return addr.Address == email;
-        }
-        catch
-        {
-            return false;
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
