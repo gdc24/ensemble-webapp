@@ -63,7 +63,7 @@ only screen and (                min-resolution: 2dppx) {
     }
     
     .sidebar.light .logo a {
-    	background-image: url(../img/logo-dark@2x.png) !important;
+    	background-image: url(../img/logo@2x.png) !important;
     }
 	
 }

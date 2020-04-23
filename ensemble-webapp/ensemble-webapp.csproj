@@ -180,6 +180,11 @@
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\Types.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CallboardHomeVM.cs" />
+    <Compile Include="ViewModels\ProfileHomeVM.cs" />
+    <Compile Include="ViewModels\ReportsHomeVM.cs" />
+    <Compile Include="ViewModels\ScheduleHomeVM.cs" />
+    <Compile Include="ViewModels\TasksHomeVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\assets\css\animate.css" />
@@ -248,14 +253,14 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Callboard\CallboardHome.cshtml" />
+    <Content Include="Views\Profile\ProfileHome.cshtml" />
+    <Content Include="Views\Reports\ReportsHome.cshtml" />
+    <Content Include="Views\Schedule\ScheduleHome.cshtml" />
+    <Content Include="Views\Tasks\TasksHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Callboard\" />
-    <Folder Include="Views\Profile\" />
-    <Folder Include="Views\Reports\" />
-    <Folder Include="Views\Schedule\" />
-    <Folder Include="Views\Tasks\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
