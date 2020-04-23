@@ -10,7 +10,7 @@ namespace ensemble_webapp.Database
     public class Login
     {
         // returns true for successful login
-        public static bool VerifyUser(String enteredUser, String enteredPassword)
+        public static bool VerifyUser(string enteredUser, string enteredPassword)
         {
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
@@ -51,20 +51,24 @@ namespace ensemble_webapp.Database
             {
                 // prompt for name, email, phone, eventID
 
-                Event e = getDAL.GetEvent(eventID); // somehow get an event
+                // somehow get an event
+                Event e = getDAL.GetEvent(eventID); 
                 if (e == null)
                 {
                     return false;
                 }
 
+                // get name
                 string name = "";
 
+                // get email
                 string email = "";
                 if (!IsValidEmail(email))
                 {
                     return false;
                 }
 
+                // get phone
                 string phone = "";
                 if (phone.Length != 10)
                 {
@@ -74,7 +78,7 @@ namespace ensemble_webapp.Database
                 InsertDAL insertDAL = new InsertDAL();
                 insertDAL.OpenConnection();
 
-                // generate random number and convert it to a byte array for salt
+                // generate random number for salt and convert it to a byte array for key
                 byte[] salt = BitConverter.GetBytes(new Random().Next(Int32));
 
                 byte[] key = ComputeSHA256Hash(password, salt);
@@ -93,12 +97,12 @@ namespace ensemble_webapp.Database
         // closes database connection for logging out
         public static bool Logout()
         {
-            DatabaseConnnection.CloseConnection();
+            // DatabaseConnnection.CloseConnection();
             Globals.LOGIN_STATUS = false;
         }
 
         // Compute hash of a string using SHA 256
-        public static byte[] ComputeSHA256Hash(String toHash, byte[] salt)
+        public static byte[] ComputeSHA256Hash(string toHash, byte[] salt)
         {
             using (SHA256 hash = SHA256.Create())
             {
@@ -111,18 +115,19 @@ namespace ensemble_webapp.Database
                 return full;
             }
         }
-    }
 
-    private bool IsValidEmail(string email)
-    {
-        try
+        // check for valid email
+        private bool IsValidEmail(string email)
         {
-            var addr = new System.Net.Mail.MailAddress(email);
-            return addr.Address == email;
-        }
-        catch
-        {
-            return false;
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
