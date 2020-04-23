@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+
+// below for ComputerSHA256Hash function
 using System.Text;
 using System.Security.Cryptography;
 using System.Security.Policy;
