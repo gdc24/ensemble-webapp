@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ensemble-webapp", "ensemble-webapp\ensemble-webapp.csproj", "{167F1137-3D13-4C6C-ABD5-B36E21C71903}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{167F1137-3D13-4C6C-ABD5-B36E21C71903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167F1137-3D13-4C6C-ABD5-B36E21C71903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167F1137-3D13-4C6C-ABD5-B36E21C71903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167F1137-3D13-4C6C-ABD5-B36E21C71903}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0AD3CE03-66CA-4813-B9A2-3B549C102E7C}
+	EndGlobalSection
+EndGlobal
