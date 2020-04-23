@@ -3,6 +3,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Collections;
 
 namespace ensemble_webapp.Database
 {
@@ -23,9 +24,9 @@ namespace ensemble_webapp.Database
             {
                 byte[] userSalt = usr.BytSalt;
                 byte[] userKey = usr.BytKey;
-                string actual = ComputeSHA256Hash(enteredPassword, userSalt);
+                byte[] actual = ComputeSHA256Hash(enteredPassword, userSalt);
 
-                if (userKey.SequenceEqual(actual))
+                if (StructuralComparisons.StructuralEqualityComparer.Equals(userKey, actual))
                 {
                     Globals.LOGIN_STATUS = true;
                     return true;
@@ -79,7 +80,7 @@ namespace ensemble_webapp.Database
                 insertDAL.OpenConnection();
 
                 // generate random number for salt and convert it to a byte array for key
-                byte[] salt = BitConverter.GetBytes(new Random().Next(Int32));
+                byte[] salt = BitConverter.GetBytes(new Random().Next());
 
                 byte[] key = ComputeSHA256Hash(password, salt);
                 insertDAL.InsertMember(new Member(name, salt, key, username, email, phone, e));
@@ -100,6 +101,7 @@ namespace ensemble_webapp.Database
         {
             // DatabaseConnnection.CloseConnection();
             Globals.LOGIN_STATUS = false;
+            return true;
         }
 
         // Compute hash of a string using SHA 256
@@ -111,14 +113,17 @@ namespace ensemble_webapp.Database
                 byte[] b = hash.ComputeHash(Encoding.UTF8.GetBytes(toHash));
 
                 // Concatenate toHash and salt byte arrays
-                byte[] full = new int[b.Length + salt.Length];
+                byte[] key = new byte[b.Length + salt.Length];
 
-                return full;
+                Buffer.BlockCopy(b, 0, key, 0, b.Length);
+                Buffer.BlockCopy(salt, 0, key, b.Length, salt.Length);
+
+                return key;
             }
         }
 
         // check for valid email
-        private bool IsValidEmail(string email)
+        private static bool IsValidEmail(string email)
         {
             try
             {
