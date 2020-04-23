@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Security.Cryptography;
-using System.Dynamic;
 using System.Linq;
-using ensemble_webapp.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ensemble_webapp.Database
 {
@@ -48,10 +45,11 @@ namespace ensemble_webapp.Database
             Member usr = getDAL.GetMemberByUsername(username);
 
             // if no user found by username
-            if (usr == null) {
+            if (usr == null)
+            {
                 InsertDAL insertDAL = new InsertDAL();
                 insertDAL.OpenConnection();
-                
+
                 // generate random number and convert it to a byte array for salt
                 byte[] salt = BitConverter.GetBytes(new Random().Next(Int32));
 
@@ -68,6 +66,11 @@ namespace ensemble_webapp.Database
             return false;
         }
 
+        // closes database connection for logging out
+        public static bool Logout()
+        {
+            DatabaseConnnection.CloseConnection();
+        }
         // Compute hash of a string using SHA 256
         public static byte[] ComputeSHA256Hash(String toHash, byte[] salt)
         {
