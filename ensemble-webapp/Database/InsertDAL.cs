@@ -108,6 +108,11 @@ namespace ensemble_webapp.Database
             throw new NotImplementedException("todo");
         }
 
+        public void InsertUser(Users user)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool InsertType(Type type)
         {
             //TODO

@@ -18,6 +18,16 @@ namespace ensemble_webapp.Models
             IntPhone = intPhone;
         }
 
+        public Users(string strName, byte[] bytSalt, byte[] bytKey, string strUsername, string strEmail, int intPhone)
+        {
+            StrName = strName;
+            BytSalt = bytSalt;
+            BytKey = bytKey;
+            StrUsername = strUsername;
+            StrEmail = strEmail;
+            IntPhone = intPhone;
+        }
+
         public int IntUserID { get; set; }
 
         public byte[] BytSalt { get; set; }

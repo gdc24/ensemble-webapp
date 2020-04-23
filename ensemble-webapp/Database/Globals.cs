@@ -7,6 +7,6 @@ namespace ensemble_webapp.Database
     {
         public static bool LOGIN_STATUS = false;
 
-        public Member LOGGED_IN_MEMBER { get; set; }
+        public static Users LOGGED_IN_USER { get; set; }
     }
 }

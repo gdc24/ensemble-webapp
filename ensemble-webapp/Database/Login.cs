@@ -46,7 +46,7 @@ namespace ensemble_webapp.Database
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
 
-            Member usr = getDAL.GetMemberByUsername(username);
+            Users usr = getDAL.GetUserByUsername(username);
 
             // if no user found by username
             if (usr == null)
@@ -71,8 +71,8 @@ namespace ensemble_webapp.Database
                 }
 
                 // get phone
-                string phone = "";
-                if (phone.Length != 10)
+                int phone = 0;
+                if (phone > 999999999)
                 {
                     return false;
                 }
@@ -84,7 +84,7 @@ namespace ensemble_webapp.Database
                 byte[] salt = BitConverter.GetBytes(new Random().Next());
 
                 byte[] key = ComputeSHA256Hash(password, salt);
-                insertDAL.InsertMember(new Member(name, salt, key, username, email, phone, e));
+                insertDAL.InsertUser(new Users(name, salt, key, username, email, phone));
 
                 insertDAL.CloseConnection();
 
