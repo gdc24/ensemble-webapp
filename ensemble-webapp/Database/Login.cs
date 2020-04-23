@@ -56,7 +56,7 @@ namespace ensemble_webapp.Database
                 byte[] salt = BitConverter.GetBytes(new Random().Next(Int32));
 
                 byte[] key = ComputeSHA256Hash(password, salt);
-                insertDAL.InsertUser(username, password, salt, key);
+                insertDAL.InsertUser(username, salt, key);
 
                 insertDAL.CloseConnection();
 
