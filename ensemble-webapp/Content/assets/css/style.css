@@ -1,10 +1,10 @@
 
-body { font-family: 'Roboto', sans-serif; font-size: 16px; font-weight: 300; color: #888; line-height: 30px; text-align: center; }
+body { font-family: 'Roboto', sans-serif; font-size: 16px; font-weight: 300; color: #888; line-height: 30px; /*text-align: center;*/ }
 
 strong { font-weight: 500; }
 
-a { color: #f35b3f; border-bottom: 1px dashed #f35b3f; text-decoration: none; transition: all .3s; }
-a:hover, a:focus { color: #f35b3f; border: 0; text-decoration: none; }
+a { color: #1fc2a9; border-bottom: 1px dashed #1fc2a9; text-decoration: none; transition: all .3s; }
+a:hover, a:focus { color: #1fc2a9; border: 0; text-decoration: none; }
 
 h1, h2 { margin-top: 10px; font-size: 38px; font-weight: 100; color: #555; line-height: 50px; }
 h3 { font-size: 22px; font-weight: 300; color: #555; line-height: 30px; }
@@ -14,8 +14,8 @@ img { max-width: 100%; }
 
 .medium-paragraph { font-size: 18px; line-height: 34px; }
 
-::-moz-selection { background: #f35b3f; color: #fff; text-shadow: none; }
-::selection { background: #f35b3f; color: #fff; text-shadow: none; }
+::-moz-selection { background: #1fc2a9; color: #fff; text-shadow: none; }
+::selection { background: #1fc2a9; color: #fff; text-shadow: none; }
 
 
 /***** Wrapper *****/
@@ -187,7 +187,7 @@ img { max-width: 100%; }
 
 a.btn-customized {
 	margin-left: 5px; margin-right: 5px; padding: .75rem 1.5rem; 
-	background: #f35b3f; border: 0; border-radius: 4px; 
+	background: #1fc2a9; border: 0; border-radius: 4px; 
 	font-size: 16px; font-weight: 300; color: #fff; box-shadow: none;
 }
 
@@ -311,8 +311,8 @@ a.btn-customized-4.btn-customized-light.btn.btn-primary:not(:disabled):not(.disa
 
 .section-1-box .section-1-box-icon {
 	width: 80px; height: 80px; margin: 0 auto;
-	border: 1px solid #f35b3f;
-    font-size: 40px; color: #f35b3f; line-height: 78px; text-align: center;
+	border: 1px solid #1fc2a9;
+    font-size: 40px; color: #1fc2a9; line-height: 78px; text-align: center;
     border-radius: 50%;
 }
 
@@ -333,7 +333,7 @@ a.btn-customized-4.btn-customized-light.btn.btn-primary:not(:disabled):not(.disa
 
 .section-3-box .section-3-box-icon {
 	width: 60px; height: 60px; margin: 0 auto;
-	background: #f35b3f;
+	background: #1fc2a9;
     font-size: 28px; color: #fff; line-height: 60px; text-align: center;
     border-radius: 50%;
 }
@@ -351,7 +351,7 @@ a.btn-customized-4.btn-customized-light.btn.btn-primary:not(:disabled):not(.disa
 
 .section-5-box h3 { margin-top: 30px; }
 .section-5-box h3 a { color: #555; border: 0; }
-.section-5-box h3 a:hover, .section-5-box h3 a:focus { color: #f35b3f; }
+.section-5-box h3 a:hover, .section-5-box h3 a:focus { color: #1fc2a9; }
 
 .section-5-box h3 i { padding-left: 10px; color: #ccc; transition: all .3s; }
 .section-5-box h3:hover i { padding-left: 15px; }
@@ -386,7 +386,7 @@ a.btn-customized-4.btn-customized-light.btn.btn-primary:not(:disabled):not(.disa
 .section-6-form textarea:focus { outline: 0; background: #fff; border: 1px solid #fff; color: #888; box-shadow: none; }
 
 .section-6-form input[type="text"].input-error, 
-.section-6-form textarea.input-error { border-color: #f35b3f; }
+.section-6-form textarea.input-error { border-color: #1fc2a9; }
 
 .section-6-form input[type="text"]::-moz-placeholder,
 .section-6-form textarea::-moz-placeholder { color: #ccc; font-style: italic; }
@@ -399,7 +399,7 @@ a.btn-customized-4.btn-customized-light.btn.btn-primary:not(:disabled):not(.disa
 
 .section-6-form button.btn-customized {
 	padding: .75rem 1.5rem; 
-	background: #f35b3f; border: 0; border-radius: 4px; 
+	background: #1fc2a9; border: 0; border-radius: 4px; 
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px; font-weight: 300; color: #fff; box-shadow: none;
 }

@@ -40,7 +40,7 @@
             </div>
 
             <div class="logo">
-                <h3><a href="index.html">Bootstrap 4 Template with Sidebar Menu</a></h3>
+                <h3><a href="@Url.Action("Index", "Home")">Bootstrap 4 Template with Sidebar Menu</a></h3>
             </div>
 
             <ul class="list-unstyled menu-elements">
@@ -51,7 +51,7 @@
                     <a class="scroll-link" href="#section-1"><i class="fas fa-cog"></i> What we do</a>
                 </li>
                 <li>
-                    <a class="scroll-link" href="#section-2"><i class="fas fa-user"></i> About us</a>
+                    <a class="scroll-link" href="@Url.Action("About", "Home")"><i class="fas fa-user"></i> About us</a>
                 </li>
                 <li>
                     <a class="scroll-link" href="#section-5"><i class="fas fa-pencil-alt"></i> Portfolio</a>
@@ -91,28 +91,20 @@
         <div class="overlay"></div>
 
         <!-- Content -->
-        <div class="content">
+        <div class="content body-content">
 
             <!-- open sidebar menu -->
             <a class="btn btn-primary btn-customized open-menu" href="#" role="button">
                 <i class="fas fa-align-left"></i> <span>Menu</span>
             </a>
+            <br />
 
             @RenderBody()
 
             <!-- Footer -->
-            <footer class="footer-container">
-
-                <div class="container">
-                    <div class="row">
-
-                        <div class="col">
-                            &copy; Bootstrap 4 Template with Sidebar Menu. Download it for free on <a href="https://azmind.com">AZMIND</a>.
-                        </div>
-
-                    </div>
-                </div>
-
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
             </footer>
 
         </div>
