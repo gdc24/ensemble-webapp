@@ -34,5 +34,7 @@ namespace ensemble_webapp.Models
         public int IntPhone { get; set; }
 
         public Event Event { get; set; }
+
+        public bool 
     }
 }
