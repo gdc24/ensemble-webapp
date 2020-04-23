@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -38,7 +39,7 @@ namespace ensemble_webapp.Database
         }
 
         // returns true if new user is created successfully
-        public static bool CreateUser(String username, String password)
+        public static bool CreateUser(string username, string password, int eventID)
         {
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
@@ -48,6 +49,28 @@ namespace ensemble_webapp.Database
             // if no user found by username
             if (usr == null)
             {
+                // prompt for name, email, phone, eventID
+
+                Event e = getDAL.GetEvent(eventID); // somehow get an event
+                if (e == null)
+                {
+                    return false;
+                }
+
+                string name = "";
+
+                string email = "";
+                if (!IsValidEmail(email))
+                {
+                    return false;
+                }
+
+                string phone = "";
+                if (phone.Length != 10)
+                {
+                    return false;
+                }
+
                 InsertDAL insertDAL = new InsertDAL();
                 insertDAL.OpenConnection();
 
@@ -55,7 +78,7 @@ namespace ensemble_webapp.Database
                 byte[] salt = BitConverter.GetBytes(new Random().Next(Int32));
 
                 byte[] key = ComputeSHA256Hash(password, salt);
-                insertDAL.InsertUser(username, salt, key);
+                insertDAL.InsertMember(new Member(name, salt, key, username, email, phone, e));
 
                 insertDAL.CloseConnection();
 
@@ -87,6 +110,19 @@ namespace ensemble_webapp.Database
 
                 return full;
             }
+        }
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == email;
+        }
+        catch
+        {
+            return false;
         }
     }
 }
