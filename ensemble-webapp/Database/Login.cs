@@ -10,10 +10,10 @@ namespace ensemble_webapp.Database
 
     public class Login
     {
-
+        // returns true for successful login
         public static bool VerifyUser(string enteredUser, string enteredPassword, byte[] salt, byte[] key)
         {
-            // GetDAL.GetDAL(); 
+            // GetDAL.GetDAL(); <- is this needed here?
             // find enteredUser in database
             // if cannot find entered User, return false;
             // if can find enteredUser then
@@ -28,7 +28,7 @@ namespace ensemble_webapp.Database
                 return true;
             }
 
-            // GetDAL.CloseConnection();
+            // GetDAL.CloseConnection(); <- only needed if above is needed?
         }
         
         // Compute hash of a string using SHA 256
