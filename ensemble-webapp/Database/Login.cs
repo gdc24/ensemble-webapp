@@ -26,6 +26,7 @@ namespace ensemble_webapp.Database
 
                 if (userKey.SequenceEqual(actual))
                 {
+                    Globals.LOGIN_STATUS = true;
                     return true;
                 }
             }
@@ -70,7 +71,9 @@ namespace ensemble_webapp.Database
         public static bool Logout()
         {
             DatabaseConnnection.CloseConnection();
+            Globals.LOGIN_STATUS = false;
         }
+
         // Compute hash of a string using SHA 256
         public static byte[] ComputeSHA256Hash(String toHash, byte[] salt)
         {
