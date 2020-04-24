@@ -24,7 +24,7 @@ namespace ensemble_webapp.Controllers
 
             get.CloseConnection();
 
-            return View();
+            return View("ConflictsHome", model);
         }
 
         public ActionResult ConflictsHome()
