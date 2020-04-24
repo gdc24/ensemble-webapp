@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using IronPdf;
 
 namespace ensemble_webapp.Controllers
 {
@@ -12,6 +13,17 @@ namespace ensemble_webapp.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        
+        //add text to GenerateReport.cshtml
+        public ActionResult MakeReport(int rehearsalID){
+            
+        }
+        
+        //turn GenerateReport.cshtml into pdf
+        public ActionResult GenerateReport(){
+            var Renderer = new IronPdf.HtmlToPdf();
+            Renderer.RenderHtmlAsPdf("ensemble-webapp/ensemble-webapp/Views/Reports/GenerateReport.cshtml").SaveAs("Report.pdf");
         }
     }
 }
