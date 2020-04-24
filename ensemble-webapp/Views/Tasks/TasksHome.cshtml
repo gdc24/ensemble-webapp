@@ -3,67 +3,94 @@
     ViewBag.Title = "TasksHome";
 }
 
-<h2>Tasks</h2>
 
-<p>Name: @Model.CurrentUser.StrName</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>Tasks</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>Name: @Model.CurrentUser.StrName</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Tasks to do
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ul>
+                    @foreach (var t in Model.TasksNotYetDueForUser)
+                    {
+                        <li>
+                            @t.StrName (due @t.DtmDue) for @t.Event.StrName
+                            <br />
+                            @t.StrAttachment
+                        </li>
 
-<p>
-    Tasks to do
-</p>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Overdue Tasks
+                </p>
 
-<ul>
-    @foreach (var t in Model.TasksNotYetDueForUser)
-    {
-        <li>
-            @t.StrName (due @t.DtmDue) for @t.Event.StrName
-            <br />
-            @t.StrAttachment
-        </li>
-        
-    }
-</ul>
+                <ul>
+                    @foreach (var t in Model.TasksOverDueForUser)
+                    {
+                        <li>
+                            <span style="color: #f00">
+                                @t.StrName (due @t.DtmDue) for @t.Event.StrName
+                                <br />
+                                @t.StrAttachment
+                            </span>
+                        </li>
+
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    if this user is an admin, then show a form to add a task for the event
+                </p>
+
+                <p>
+                    Tasks Assigned By You
+                </p>
+
+                <ul>
+                    @foreach (var t in Model.TasksAssignedByUser)
+                    {
+                        <li>
+                            @t.StrName (due @t.DtmDue from @t.UserAssignedTo) for @t.StrName
+                            <br />
+                            @t.StrAttachment
+                        </li>
+
+                    }
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
+
 
 <br />
 <br />
 <br />
 
-<p>
-    Overdue Tasks
-</p>
-
-<ul>
-    @foreach (var t in Model.TasksOverDueForUser)
-    {
-        <li>
-            <span style="color: #f00">
-                @t.StrName (due @t.DtmDue) for @t.Event.StrName
-                <br />
-                @t.StrAttachment
-            </span>
-        </li>
-        
-    }
-</ul>
-
-<p>
-    if this user is an admin, then show a form to add a task for the event
-</p>
-
-<p>
-    Tasks Assigned By You
-</p>
-
-<ul>
-    @foreach (var t in Model.TasksAssignedByUser)
-    {
-        <li>
-            @t.StrName (due @t.DtmDue from @t.UserAssignedTo) for @t.StrName
-            <br />
-            @t.StrAttachment
-        </li>
-
-    }
-</ul>
 
 @*
 @using (Html.BeginForm("AddAttachmentToTasks", "Tasks", FormMethod.Post, new { enctype = "multipart/form-data" }))
