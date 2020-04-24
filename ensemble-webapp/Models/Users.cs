@@ -38,6 +38,12 @@ namespace ensemble_webapp.Models
 
         public string StrName { get; set; }
 
+        public bool setName(string newName)
+        {
+            StrUsername = newName;
+            return true;
+        }
+
         public string StrEmail { get; set; }
 
         public string StrPhone { get; set; }
