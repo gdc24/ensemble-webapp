@@ -429,27 +429,27 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public Task GetTaskByID(int intTaskID)
-        {
-            Task retval = null;
+        //public Task GetTaskByID(int intTaskID)
+        //{
+        //    Task retval = null;
 
-            // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intTaskID\" = " + intTaskID;
-            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+        //    // define a query
+        //    string query = "SELECT * FROM \"tasks\" WHERE \"intTaskID\" = " + intTaskID;
+        //    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-            // execute query
-            NpgsqlDataReader dr = cmd.ExecuteReader();
+        //    // execute query
+        //    NpgsqlDataReader dr = cmd.ExecuteReader();
 
-            // read all rows and output the first column in each row
-            while (dr.Read())
-            {
-                retval = GetTaskFromDR(dr);
-            }
+        //    // read all rows and output the first column in each row
+        //    while (dr.Read())
+        //    {
+        //        retval = GetTaskFromDR(dr);
+        //    }
 
-            dr.Close();
+        //    dr.Close();
 
-            return retval;
-        }
+        //    return retval;
+        //}
 
         public EventSchedule GetEventScheduleByID(int intEventScheduleID)
         {
@@ -1128,7 +1128,28 @@ namespace ensemble_webapp.Database
             List<Task> retval = new List<Task>();
 
             // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedByUserID\" = " + user.IntUserID;
+            string query = "SELECT g.\"strName\" as \"groupName\"," +
+                " e.\"dtmDate\" as \"eventDate\"," +
+                " e.\"strLocation\" as \"eventLocation\"," +
+                " e.\"intGroupID\"," +
+                " s.\"intEventID\"," +
+                " e.\"strName\" as \"eventName\"," +
+                " s.\"intAssignedToUserID\"," +
+                " s.\"assignedToUserName\"," +
+                " s.\"intTaskID\"," +
+                " s.\"dtmDue\"," +
+                " s.\"strName\"," +
+                " s.\"strAttachment\"," +
+                " u.\"strName\" as \"strAssignedByName\"," +
+                " u.\"intUserID\" as \"intAssignedByUserID\" from (" +
+                " select t.*, u.\"strName\" as \"assignedToUserName\"" +
+                " from \"tasks\" t, \"users\" u" +
+                " where u.\"intUserID\" = t.\"intAssignedToUserID\"" +
+                " ) s, \"users\" u, \"events\" e, \"groups\" g" +
+                " WHERE u.\"intUserID\" = s.\"intAssignedByUserID\"" +
+                " and e.\"intEventID\" = s.\"intEventID\"" +
+                " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and s.\"intAssignedByUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -1151,7 +1172,28 @@ namespace ensemble_webapp.Database
             List<Task> retval = new List<Task>();
 
             // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intEventID\" = " + paramEvent.IntEventID;
+            string query = "SELECT g.\"strName\" as \"groupName\"," +
+                " e.\"dtmDate\" as \"eventDate\"," +
+                " e.\"strLocation\" as \"eventLocation\"," +
+                " e.\"intGroupID\"," +
+                " s.\"intEventID\"," +
+                " e.\"strName\" as \"eventName\"," +
+                " s.\"intAssignedToUserID\"," +
+                " s.\"assignedToUserName\"," +
+                " s.\"intTaskID\"," +
+                " s.\"dtmDue\"," +
+                " s.\"strName\"," +
+                " s.\"strAttachment\"," +
+                " u.\"strName\" as \"strAssignedByName\"," +
+                " u.\"intUserID\" as \"intAssignedByUserID\" from (" +
+                " select t.*, u.\"strName\" as \"assignedToUserName\"" +
+                " from \"tasks\" t, \"users\" u" +
+                " where u.\"intUserID\" = t.\"intAssignedToUserID\"" +
+                " ) s, \"users\" u, \"events\" e, \"groups\" g" +
+                " WHERE u.\"intUserID\" = s.\"intAssignedByUserID\"" +
+                " and e.\"intEventID\" = s.\"intEventID\"" +
+                " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and s.\"intEventID\" = " + paramEvent.IntEventID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -1175,7 +1217,29 @@ namespace ensemble_webapp.Database
             List<Task> retval = new List<Task>();
 
             // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToUserID\" = " + user.IntUserID + " AND \"dtmDue\" < '" + dateTime + "'"; // YYYY-MM-DD HH:MM:SS.MMM
+            string query = "SELECT g.\"strName\" as \"groupName\"," +
+                " e.\"dtmDate\" as \"eventDate\"," +
+                " e.\"strLocation\" as \"eventLocation\"," +
+                " e.\"intGroupID\"," +
+                " s.\"intEventID\"," +
+                " e.\"strName\" as \"eventName\"," +
+                " s.\"intAssignedToUserID\"," +
+                " s.\"assignedToUserName\"," +
+                " s.\"intTaskID\"," +
+                " s.\"dtmDue\"," +
+                " s.\"strName\"," +
+                " s.\"strAttachment\"," +
+                " u.\"strName\" as \"strAssignedByName\"," +
+                " u.\"intUserID\" as \"intAssignedByUserID\" from (" +
+                " select t.*, u.\"strName\" as \"assignedToUserName\"" +
+                " from \"tasks\" t, \"users\" u" +
+                " where u.\"intUserID\" = t.\"intAssignedToUserID\"" +
+                " ) s, \"users\" u, \"events\" e, \"groups\" g" +
+                " WHERE u.\"intUserID\" = s.\"intAssignedByUserID\"" +
+                " and e.\"intEventID\" = s.\"intEventID\"" +
+                " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and s.\"intAssignedToUserID\" = " + user.IntUserID +
+                " and s.\"dtmDue\" >'" + dateTime + "'"; // YYYY-MM-DD HH:MM:SS.MMM
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -1198,7 +1262,30 @@ namespace ensemble_webapp.Database
             List<Task> retval = new List<Task>();
 
             // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToUserID\" = " + user.IntUserID + " AND \"intEventID\" = " + paramEvent.IntEventID;
+            //string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToUserID\" = " + user.IntUserID + " AND \"intEventID\" = " + paramEvent.IntEventID;
+            string query = "SELECT g.\"strName\" as \"groupName\"," +
+                " e.\"dtmDate\" as \"eventDate\"," +
+                " e.\"strLocation\" as \"eventLocation\"," +
+                " e.\"intGroupID\"," +
+                " s.\"intEventID\"," +
+                " e.\"strName\" as \"eventName\"," +
+                " s.\"intAssignedToUserID\"," +
+                " s.\"assignedToUserName\"," +
+                " s.\"intTaskID\"," +
+                " s.\"dtmDue\"," +
+                " s.\"strName\"," +
+                " s.\"strAttachment\"," +
+                " u.\"strName\" as \"strAssignedByName\"," +
+                " u.\"intUserID\" as \"intAssignedByUserID\" from (" +
+                " select t.*, u.\"strName\" as \"assignedToUserName\"" +
+                " from \"tasks\" t, \"users\" u" +
+                " where u.\"intUserID\" = t.\"intAssignedToUserID\"" +
+                " ) s, \"users\" u, \"events\" e, \"groups\" g" +
+                " WHERE u.\"intUserID\" = s.\"intAssignedByUserID\"" +
+                " and e.\"intEventID\" = s.\"intEventID\"" +
+                " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and s.\"intAssignedToUserID\" = " + user.IntUserID +
+                " and s.\"intEventID\" = " + paramEvent.IntEventID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
