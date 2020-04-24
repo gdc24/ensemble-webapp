@@ -22,6 +22,10 @@ namespace ensemble_webapp.Controllers
             GetDAL get = new GetDAL();
             get.OpenConnection();
             model.LstAllEvents = get.GetAllEvents();
+
+            IEnumerable<Event> difference = get.GetAllEvents().Except(model.CurrentUser.LstEvents);
+            model.LstEventsToJoin = difference.ToList();
+
             get.CloseConnection();
 
             return View("ProfileHome", model);

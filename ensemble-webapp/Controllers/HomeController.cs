@@ -47,7 +47,7 @@ namespace ensemble_webapp.Controllers
         public ActionResult LoginUser(LoginVM vm)
         {
             if (Database.Login.VerifyUser(vm.logInUser)) {
-                return RedirectToAction("Index");
+                return RedirectToAction("ProfileHome", "Profile");
             }
 
             //ProfileHomeVM model = new ProfileHomeVM();
