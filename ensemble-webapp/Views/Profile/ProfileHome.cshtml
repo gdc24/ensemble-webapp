@@ -3,7 +3,6 @@
     ViewBag.Title = "ProfileHome";
 }
 
-
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -38,17 +37,18 @@
                 <input type="submit" value="edit user details" class="form-control btn-primary" />
             }
         </div>
+        <br />
         <div class="row add-group">
-            <p>form to add group</p>
             @using (Html.BeginForm("AddUserToEvent", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
+                <label>Join Event</label>
                 <p>
                     @Html.ListBoxFor(m => m.EditedUserProfile.LstEvents, new SelectList(Model.LstAllEvents, "intEventID", "strName"))
                 </p>
+                <input type="submit" value="join event" class="form-control btn-primary" />
             }
         </div>
         <div class="row mt-5">
-            <p>logout</p>
             @using (Html.BeginForm("LogOut", "Home"))
             {
                 <input type="submit" value="Logout" />
