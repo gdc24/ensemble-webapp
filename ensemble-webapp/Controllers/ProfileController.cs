@@ -22,7 +22,6 @@ namespace ensemble_webapp.Controllers
             GetDAL get = new GetDAL();
             get.OpenConnection();
             model.LstAllEvents = get.GetAllEvents();
-
             get.CloseConnection();
 
             return View("ProfileHome", model);
