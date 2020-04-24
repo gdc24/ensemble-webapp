@@ -11,17 +11,17 @@
 
 <p>Email: @Model.CurrentUser.StrEmail</p>
 
-<p>Phone: @Model.CurrentUser.StrPhone</p
+<p>Phone: @Model.CurrentUser.StrPhone</p>
 
-@*
-    @using (Html.BeginForm("EditedUserProfile", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        <p>
-            <label for="EditedUserProfile.setName">New Name</label>
-            @Html.EditorFor(m => m.EditUserName.setName) I DON'T KNOW HOW THIS WORKS
-            <br />
-        </p>
-    }*@
+
+    @*@using (Html.BeginForm("EditedUserProfile", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))*@
+    @*{*@
+        @*<p>*@
+            @*<label for="EditedUserProfile.setName">New Name</label>*@
+            @*@Html.EditorFor(m => m.EditUserName.setName) I DON'T KNOW HOW THIS WORKS*@
+            @*<br />*@
+        @*</p>*@
+    @*}*@
 
 <p>list of groups you're part of</p>
 <ul>

@@ -45,7 +45,10 @@ namespace ensemble_webapp.Database
             string strName = dr["strName"].ToString();
             DateTime dtmDate = Convert.ToDateTime(dr["dtmDate"]);
             string strLocation = dr["strLocation"].ToString();
-            Group group = GetGroupByID(Convert.ToInt32(dr["intGroupID"]));
+            int intGroupID = Convert.ToInt32(dr["intGroupID"]);
+            dr.Close();
+
+            Group group = GetGroupByID(intGroupID);
 
             return new Event(intEventID, strName, dtmDate, strLocation, group);
         }
@@ -62,27 +65,18 @@ namespace ensemble_webapp.Database
             return new Callboard(intCallboardID, strSubject, strNote, dtmDateTime, postedByUser, paramEvent);
         }
 
-        //private Member GetMemberFromDR(NpgsqlDataReader dr)
-        //{
-        //    int intMemberID = Convert.ToInt32(dr["intMemberID"]);
-        //    Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
-        //    Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
-
-        //    return new Member(intMemberID, paramEvent, user);
-        //}
-
         private Users GetUserFromDR(NpgsqlDataReader dr)
         {
             int intUserID = Convert.ToInt32(dr["intUserID"]);
             string strName = dr["strName"].ToString();
             string strEmail = dr["strEmail"].ToString();
-            string strPhone = dr["intPhone"].ToString();
+            string strPhone = dr["strPhone"].ToString();
             //string strUsername = dr["strUsername"].ToString();
             byte[] bytSalt = (byte[])dr["bytSalt"];
             byte[] bytKey = (byte[])dr["bytKey"];
             List<Event> events = this.GetEventsByUser(intUserID);
 
-            return new Users(intUserID, strName, bytSalt, bytKey, strEmail, strPhone);
+            return new Users(intUserID, strName, bytSalt, bytKey, strEmail, strPhone, events);
         }
 
         private Rehearsal GetRehearsalFromDR(NpgsqlDataReader dr)
@@ -665,7 +659,7 @@ namespace ensemble_webapp.Database
             Users retval = null;
 
             // define a query
-            string query = "SELECT * FROM \"users\" WHERE \"strName\" = " + strName;
+            string query = "SELECT * FROM \"users\" WHERE \"strName\" = '" + strName + "'";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -695,7 +689,7 @@ namespace ensemble_webapp.Database
             while (dr.Read())
             {
                 Rehearsal tmpRehearsal = GetRehearsalFromDR(dr);
-                retval.Add(tmpRehearsal);
+                retval.Add(tmpRehearsal); 
             }
 
             return retval;

@@ -13,24 +13,25 @@ namespace ensemble_webapp.Database
     public class Login
     { 
         // returns true for successful login
-        public static bool VerifyUser(string enteredUser, string enteredPassword)
+        public static bool VerifyUser(Users users)
         {
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
 
             // find enteredUser in database
-            Users usr = getDAL.GetUserByName(enteredUser);
+            Users usr = getDAL.GetUserByName(users.StrName);
 
             // if username is found
             if (usr != null)
             {
                 byte[] userSalt = usr.BytSalt;
                 byte[] userKey = usr.BytKey;
-                byte[] actual = ComputeSHA256Hash(enteredPassword, userSalt);
+                byte[] actual = ComputeSHA256Hash(users.StrPassword, userSalt);
 
                 if (StructuralComparisons.StructuralEqualityComparer.Equals(userKey, actual))
                 {
                     Globals.LOGIN_STATUS = true;
+                    Globals.LOGGED_IN_USER = usr;
                     return true;
                 }
             }
@@ -42,30 +43,27 @@ namespace ensemble_webapp.Database
         }
 
         // returns true if new user is created successfully
-        public static bool CreateUser(string username, string password)
+        public static bool CreateUser(Users newUser)
         {
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
 
-            Users usr = getDAL.GetUserByName(username);
+            Users usr = getDAL.GetUserByName(newUser.StrName);
 
             // if no user found by username
             if (usr == null)
             {
                 // prompt for name, email, phone, eventID
 
-                // get name
-                string name = "";
-
                 // get email
-                string email = "";
+                string email = newUser.StrEmail;
                 if (!IsValidEmail(email))
                 {
                     return false;
                 }
 
                 // get phone
-                string phone = "";
+                string phone = newUser.StrPhone;
                 if (phone.Length != 10)
                 {
                     return false;
@@ -76,13 +74,22 @@ namespace ensemble_webapp.Database
 
                 // generate random number for salt and convert it to a byte array for key
                 byte[] salt = BitConverter.GetBytes(new Random().Next());
+                byte[] key = ComputeSHA256Hash(newUser.StrPassword, salt);
 
-                byte[] key = ComputeSHA256Hash(password, salt);
-                insertDAL.InsertUser(new Users(name, salt, key, email, phone));
+                int intNewUserID = insertDAL.InsertUser(new Users(newUser.StrName, salt, key, email, phone));
 
                 insertDAL.CloseConnection();
 
+                GetDAL get = new GetDAL();
+                get.OpenConnection();
+
+                Users completeUser = get.GetUserByID(intNewUserID);
+
+                get.CloseConnection();
+
+                Globals.LOGGED_IN_USER = completeUser;
                 Globals.LOGIN_STATUS = true;
+
                 return true;
             }
 
@@ -96,6 +103,7 @@ namespace ensemble_webapp.Database
         {
             // DatabaseConnnection.CloseConnection();
             Globals.LOGIN_STATUS = false;
+            Globals.LOGGED_IN_USER = null;
             return true;
         }
 

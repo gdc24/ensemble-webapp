@@ -15,5 +15,10 @@ namespace ensemble_webapp.ViewModels
         public List<Event> LstAllEvents { get; set; }
 
         public Event SelectEvent { get; set; }
+
+        public LoginVM()
+        {
+
+        }
     }
 }

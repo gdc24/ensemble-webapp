@@ -1,4 +1,5 @@
-﻿<!doctype html>
+﻿@using ensemble_webapp.Database;
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -74,10 +75,14 @@
                 </li>
             </ul>
 
-            <div class="to-top">
-                <a class="btn btn-primary btn-customized-3" href="#" role="button">
-                    <i class="fas fa-arrow-up"></i> Top
-                </a>
+            @if (Globals.LOGIN_STATUS)
+            {
+                <div>
+                    <p>@Globals.LOGGED_IN_USER.StrName</p>
+                </div>
+            }
+            <div>
+                <p></p>
             </div>
 
             <div class="dark-light-buttons">

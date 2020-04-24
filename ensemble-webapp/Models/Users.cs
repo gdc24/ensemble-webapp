@@ -7,7 +7,7 @@ namespace ensemble_webapp.Models
 {
     public class Users
     {
-        public Users(int intUserID, string strName, byte[] bytSalt, byte[] bytKey, string strEmail, string strPhone)
+        public Users(int intUserID, string strName, byte[] bytSalt, byte[] bytKey, string strEmail, string strPhone, List<Event> events)
         {
             IntUserID = intUserID;
             StrName = strName;
@@ -15,6 +15,7 @@ namespace ensemble_webapp.Models
             BytKey = bytKey;
             StrEmail = strEmail;
             StrPhone = strPhone;
+            LstEvents = LstEvents;
         }
 
         public Users(string strName, byte[] bytSalt, byte[] bytKey, string strEmail, string strPhone)
@@ -32,22 +33,16 @@ namespace ensemble_webapp.Models
 
         public byte[] BytKey { get; set; }
 
-        public string StrUsername { get; set; }
-
         public string StrPassword { get; set; }
 
         public string StrName { get; set; }
-
-        public bool setName(string newName)
-        {
-            StrUsername = newName;
-            return true;
-        }
 
         public string StrEmail { get; set; }
 
         public string StrPhone { get; set; }
 
         public List<Event> LstEvents { get; set; }
+
+        public Users() { }
     }
 }

@@ -44,35 +44,36 @@ namespace ensemble_webapp.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoginUser(Users logInUser)
+        public ActionResult LoginUser(LoginVM vm)
         {
-            if (Database.Login.VerifyUser(logInUser.StrUsername, logInUser.StrPassword)) {
+            if (Database.Login.VerifyUser(vm.logInUser)) {
                 return RedirectToAction("Index");
             }
 
-            ProfileHomeVM model = new ProfileHomeVM();
+            //ProfileHomeVM model = new ProfileHomeVM();
 
-            GetDAL get = new GetDAL();
-            get.OpenConnection();
+            //GetDAL get = new GetDAL();
+            //get.OpenConnection();
 
-            Globals.LOGGED_IN_USER = get.GetUserByName(logInUser.StrUsername);
-            model.LstAllEvents = get.GetAllEvents();
+            //Globals.LOGGED_IN_USER = get.GetUserByName(vm.logInUser.StrName);
+            //model.LstAllEvents = get.GetAllEvents();
 
-            get.CloseConnection();
+            //get.CloseConnection();
 
-            model.CurrentUser = Globals.LOGGED_IN_USER;
-            model.EditedUserProfile = model.CurrentUser;
+            //model.CurrentUser = Globals.LOGGED_IN_USER;
+            //model.EditedUserProfile = model.CurrentUser;
 
-            return View("Profile/ProfileHome", model);
+            return RedirectToAction("Login");
         }
 
+        [HttpPost]
         public ActionResult NewUser(Users newUser)
         {
-            if (Database.Login.CreateUser(newUser.StrUsername, newUser.StrPassword)) {
+            if (Database.Login.CreateUser(newUser)) {
                 return RedirectToAction("Index");
             }
 
-            return View();
+            return RedirectToAction("Login");
         }
 
         public ActionResult Logout()
