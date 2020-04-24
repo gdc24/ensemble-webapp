@@ -46,5 +46,15 @@ namespace ensemble_webapp.Controllers
 
             return View();
         }
+
+        public ActionResult Logout()
+        {
+            if (Login.Logout())
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View();
+        }
     }
 }

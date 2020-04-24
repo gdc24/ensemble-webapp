@@ -106,7 +106,7 @@ namespace ensemble_webapp.Database
         }
 
         // Compute hash of a string using SHA 256
-        public static byte[] ComputeSHA256Hash(string toHash, byte[] salt)
+        private static byte[] ComputeSHA256Hash(string toHash, byte[] salt)
         {
             using (SHA256 hash = SHA256.Create())
             {

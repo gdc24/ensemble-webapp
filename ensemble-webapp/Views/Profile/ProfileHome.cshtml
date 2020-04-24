@@ -36,3 +36,10 @@
         @Html.ListBoxFor(m => m.LstNewEvents, new SelectList(Model.LstAllEvents, "intGroupID", "strName"))
     </p>
 }
+
+<p>logout</p>
+
+@using (Html.BeginForm("LogOut", "Home")
+{
+    <input type="submit" value="Logout" />
+}
