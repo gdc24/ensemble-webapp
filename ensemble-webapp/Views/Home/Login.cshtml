@@ -6,10 +6,6 @@
 
 <h2>Login</h2>
 
-<p>
-    username & password form
-</p>
-
 @using (Html.BeginForm("LoginUser", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <p>
@@ -22,6 +18,11 @@
 <br />
 <br />
 
-<p>
-    create an account form
-</p>
+@using (Html.BeginForm("NewUser", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <p>
+        @Html.EditorFor(m => m.newUser.StrUsername)
+        @Html.EditorFor(m => m.newUser.StrPassword)
+        @Html.EditorFor(m => m.newUser.LstEvents)
+    </p>
+}

@@ -37,5 +37,14 @@ namespace ensemble_webapp.Controllers
 
             return View();
         }
+
+        public ActionResult NewUser(Users newUser)
+        {
+            if (Login.CreateUser(newUser.StrUsername, newUser.StrPassword, newUser.LstEvents) {
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
     }
 }
