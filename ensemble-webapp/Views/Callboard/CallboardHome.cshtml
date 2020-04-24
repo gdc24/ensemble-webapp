@@ -3,5 +3,24 @@
     ViewBag.Title = "CallboardHome";
 }
 
-<h2>CallboardHome</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>CallboardHome</h2>
+        </div>
+        <div class="col-12">
+            <p>callboard notifications</p>
+            <ul>
+                @foreach (var c in Model.LstAllCallboards)
+                {
+                    <li>
+                        <p>@c.StrSubject in @c.Event from @c.PostedByUser at @c.DtmDateTime</p>
+                        <br />
+                        <p>@c.StrNote</p>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
 
