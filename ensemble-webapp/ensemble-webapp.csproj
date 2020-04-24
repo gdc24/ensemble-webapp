@@ -175,7 +175,6 @@
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventSchedule.cs" />
     <Compile Include="Models\Group.cs" />
-    <Compile Include="Models\Member.cs" />
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Rehearsal.cs" />
     <Compile Include="Models\RehearsalPart.cs" />

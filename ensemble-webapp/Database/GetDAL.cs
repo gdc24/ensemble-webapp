@@ -56,20 +56,20 @@ namespace ensemble_webapp.Database
             string strSubject = dr["strSubject"].ToString();
             string strNote = dr["strNote"].ToString();
             DateTime dtmDateTime = Convert.ToDateTime(dr["dtmDateTime"]);
-            Member postedByMember = GetMemberByID(Convert.ToInt32(dr["intPostedByMemberID"]));
+            Users postedByUser = GetUserByID(Convert.ToInt32(dr["intPostedByUserID"]));
             Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
 
-            return new Callboard(intCallboardID, strSubject, strNote, dtmDateTime, postedByMember, paramEvent);
+            return new Callboard(intCallboardID, strSubject, strNote, dtmDateTime, postedByUser, paramEvent);
         }
 
-        private Member GetMemberFromDR(NpgsqlDataReader dr)
-        {
-            int intMemberID = Convert.ToInt32(dr["intMemberID"]);
-            Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
-            Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
+        //private Member GetMemberFromDR(NpgsqlDataReader dr)
+        //{
+        //    int intMemberID = Convert.ToInt32(dr["intMemberID"]);
+        //    Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
+        //    Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
 
-            return new Member(intMemberID, paramEvent, user);
-        }
+        //    return new Member(intMemberID, paramEvent, user);
+        //}
 
         private Users GetUserFromDR(NpgsqlDataReader dr)
         {
@@ -112,18 +112,18 @@ namespace ensemble_webapp.Database
             int intConflictID = Convert.ToInt32(dr["intConflictID"]);
             DateTime dtmStartDateTime = Convert.ToDateTime(dr["dtmStartDateTime"]);
             DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
-            Member member = GetMemberByID(Convert.ToInt32(dr["intMemberID"]));
+            Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
 
-            return new Conflict(intConflictID, dtmStartDateTime, dtmEndDateTime, member);
+            return new Conflict(intConflictID, dtmStartDateTime, dtmEndDateTime, user);
         }
 
         private AttendancePlanned GetAttendancePlannedFromDR(NpgsqlDataReader dr)
         {
             int intAttendancePlannedID = Convert.ToInt32(dr["intAttendancePlannedID"]);
             RehearsalPart rehearsalPart = GetRehearsalPartByID(Convert.ToInt32(dr["intRehearsalPartID"]));
-            Member member = GetMemberByID(Convert.ToInt32(dr["intMemberID"]));
+            Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
 
-            return new AttendancePlanned(intAttendancePlannedID, rehearsalPart, member);
+            return new AttendancePlanned(intAttendancePlannedID, rehearsalPart, user);
         }
 
         private AttendanceActual GetAttendanceActualFromDR(NpgsqlDataReader dr)
@@ -152,11 +152,11 @@ namespace ensemble_webapp.Database
             DateTime dtmDue = Convert.ToDateTime(dr["dtmDue"]);
             string strName = dr["strName"].ToString();
             string strAttachment = dr["strAttachment"].ToString();
-            Member memberAssignedTo = GetMemberByID(Convert.ToInt32(dr["intAssignedToMemberID"]));
-            Member memberAssignedBy = GetMemberByID(Convert.ToInt32(dr["intAssignedByMemberID"]));
+            Users userAssignedTo = GetUserByID(Convert.ToInt32(dr["intAssignedToUserID"]));
+            Users userAssignedBy = GetUserByID(Convert.ToInt32(dr["intAssignedByUserID"]));
             Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
 
-            return new Task(intTaskID, dtmDue, strName, strAttachment, memberAssignedTo, memberAssignedBy, paramEvent);
+            return new Task(intTaskID, dtmDue, strName, strAttachment, userAssignedTo, userAssignedBy, paramEvent);
         }
 
         private EventSchedule GetEventScheduleFromDR(NpgsqlDataReader dr)
@@ -192,10 +192,10 @@ namespace ensemble_webapp.Database
         {
             int intPartID = Convert.ToInt32(dr["intPartID"]);
             string strRole = dr["strRole"].ToString();
-            Member member = GetMemberByID(Convert.ToInt32(dr["intMemberID"]));
+            Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
             Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
 
-            return new Part(intPartID, strRole, member, paramEvent);
+            return new Part(intPartID, strRole, user, paramEvent);
         }
 
         #endregion
@@ -262,25 +262,25 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public Member GetMemberByID(int intMemberID)
-        {
-            Member retval = null;
+        //public Member GetMemberByID(int intMemberID)
+        //{
+        //    Member retval = null;
 
-            // define a query
-            string query = "SELECT * FROM \"members\" WHERE \"intMemberID\" = " + intMemberID;
-            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+        //    // define a query
+        //    string query = "SELECT * FROM \"members\" WHERE \"intMemberID\" = " + intMemberID;
+        //    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-            // execute query
-            NpgsqlDataReader dr = cmd.ExecuteReader();
+        //    // execute query
+        //    NpgsqlDataReader dr = cmd.ExecuteReader();
 
-            // read all rows and output the first column in each row
-            while (dr.Read())
-            {
-                retval = GetMemberFromDR(dr);
-            }
+        //    // read all rows and output the first column in each row
+        //    while (dr.Read())
+        //    {
+        //        retval = GetMemberFromDR(dr);
+        //    }
 
-            return retval;
-        }
+        //    return retval;
+        //}
 
         public Rehearsal GetRehearsalByID(int intRehearsalID)
         {
@@ -549,12 +549,12 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Callboard> GetCallboardsByPostedByMember(Member member)
+        public List<Callboard> GetCallboardsByPostedByUser(Users user)
         {
             List<Callboard> retval = new List<Callboard>();
 
             // define a query
-            string query = "SELECT * FROM \"callboard\" WHERE \"intPostedByMemberID\" = " + member.IntMemberID;
+            string query = "SELECT * FROM \"callboard\" WHERE \"intPostedByUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -570,12 +570,12 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Member> GetAllMembers()
+        public List<Users> GetAllUsers()
         {
-            List<Member> retval = new List<Member>();
+            List<Users> retval = new List<Users>();
 
             // define a query
-            string query = "SELECT * FROM \"members\"";
+            string query = "SELECT * FROM \"users\"";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -584,8 +584,8 @@ namespace ensemble_webapp.Database
             // read all rows and output the first column in each row
             while (dr.Read())
             {
-                Member tmpMember = GetMemberFromDR(dr);
-                retval.Add(tmpMember);
+                Users tmpUser = GetUserFromDR(dr);
+                retval.Add(tmpUser);
             }
 
             return retval;
@@ -744,12 +744,12 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<AttendancePlanned> GetAttendancePlannedByMember(Member member)
+        public List<AttendancePlanned> GetAttendancePlannedByUser(Users user)
         {
             List<AttendancePlanned> retval = new List<AttendancePlanned>();
 
             // define a query
-            string query = "SELECT * FROM \"attendancePlanned\" WHERE \"intMemberID\" = " + member.IntMemberID;
+            string query = "SELECT * FROM \"attendancePlanned\" WHERE \"intUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -831,13 +831,13 @@ namespace ensemble_webapp.Database
         }
 
         // get a list of the attendance for a given member
-        public List<AttendanceActual> GetAttendanceActualByMember(Member member)
+        public List<AttendanceActual> GetAttendanceActualByUser(Users user)
         {
             List<AttendanceActual> retval = new List<AttendanceActual>();
 
             // define a query
             string query = "SELECT * FROM \"attendanceActual\" aa, \"attendancePlanned\" ap" +
-                " WHERE ap.\"intMemberID\" = " + member.IntMemberID +
+                " WHERE ap.\"intUserID\" = " + user.IntUserID +
                 " AND ap.\"intAttendancePlannedID\" = aa.\"intAttendancePlannedID\"";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
@@ -903,12 +903,12 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Conflict> GetConflictsByMember(Member member)
+        public List<Conflict> GetConflictsByUser(Users user)
         {
             List<Conflict> retval = new List<Conflict>();
 
             // define a query
-            string query = "SELECT * FROM \"conflicts\" WHERE \"intMemberID\" = " + member.IntMemberID;
+            string query = "SELECT * FROM \"conflicts\" WHERE \"intUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -924,13 +924,13 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Conflict> GetConflictsByMemberAndDay(Member member, LocalDate date)
+        public List<Conflict> GetConflictsByUserAndDay(Users user, LocalDate date)
         {
             List<Conflict> retval = new List<Conflict>();
             string strDateOnly = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
             // define a query
-            string query = "SELECT * FROM \"conflicts\" WHERE \"intAssignedToMemberID\" = " + member.IntMemberID +
+            string query = "SELECT * FROM \"conflicts\" WHERE \"intAssignedToUserID\" = " + user.IntUserID +
                 " AND DATE(\"dtmStartDateTime\") = " + strDateOnly;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
@@ -969,12 +969,12 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Task> GetTasksByAssignedToMember(Member member)
+        public List<Task> GetTasksByAssignedToUser(Users user)
         {
             List<Task> retval = new List<Task>();
 
             // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToMemberID\" = " + member.IntMemberID;
+            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -990,12 +990,12 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Task> GetTasksByAssignedByMember(Member member)
+        public List<Task> GetTasksByAssignedByUser(Users user)
         {
             List<Task> retval = new List<Task>();
 
             // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedByMemberID\" = " + member.IntMemberID;
+            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedByUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -1033,12 +1033,12 @@ namespace ensemble_webapp.Database
         }
 
         // get a list of tasks assigned to a user after a certain time
-        public List<Task> GetTasksDueAfter(Member member, DateTime dateTime)
+        public List<Task> GetTasksDueAfter(Users user, DateTime dateTime)
         {
             List<Task> retval = new List<Task>();
 
             // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToMemberID\" = " + member.IntMemberID + " AND \"dtmDue\" < '" + dateTime + "'"; // YYYY-MM-DD HH:MM:SS.MMM
+            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToUserID\" = " + user.IntUserID + " AND \"dtmDue\" < '" + dateTime + "'"; // YYYY-MM-DD HH:MM:SS.MMM
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -1054,12 +1054,12 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Task> GetTasksByEventAndMember(Member member, Event paramEvent)
+        public List<Task> GetTasksByEventAndUser(Users user, Event paramEvent)
         {
             List<Task> retval = new List<Task>();
 
             // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToMemberID\" = " + member.IntMemberID + " AND \"intEventID\" = " + paramEvent.IntEventID;
+            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToUserID\" = " + user.IntUserID + " AND \"intEventID\" = " + paramEvent.IntEventID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -1075,12 +1075,12 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Part> GetPartsByMember(Member member)
+        public List<Part> GetPartsByUser(Users user)
         {
             List<Part> retval = new List<Part>();
 
             // define a query
-            string query = "SELECT * FROM \"parts\" WHERE \"intMemberID\" = " + member.IntMemberID;
+            string query = "SELECT * FROM \"parts\" WHERE \"intUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query

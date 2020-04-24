@@ -8,17 +8,17 @@ namespace ensemble_webapp.Models
     public class AttendancePlanned
     {
 
-        public AttendancePlanned(int intAttendancePlannedID, RehearsalPart rehearsalPart, Member member)
+        public AttendancePlanned(int intAttendancePlannedID, RehearsalPart rehearsalPart, Users user)
         {
             IntAttendancePlannedID = intAttendancePlannedID;
             RehearsalPart = rehearsalPart;
-            Member = member;
+            User = user;
         }
 
         public int IntAttendancePlannedID { get; set; }
 
         public RehearsalPart RehearsalPart { get; set; }
 
-        public Member Member { get; set; }
+        public Users User { get; set; }
     }
 }

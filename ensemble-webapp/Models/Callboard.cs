@@ -7,13 +7,13 @@ namespace ensemble_webapp.Models
 {
     public class Callboard
     {
-        public Callboard(int intCallboardID, string strSubject, string strNote, DateTime dtmDateTime, Member postedByMember, Event paramEvent)
+        public Callboard(int intCallboardID, string strSubject, string strNote, DateTime dtmDateTime, Users postedByUser, Event paramEvent)
         {
             IntCallboardID = intCallboardID;
             StrSubject = strSubject;
             StrNote = strNote;
             DtmDateTime = dtmDateTime;
-            PostedByMember = postedByMember;
+            PostedByUser = postedByUser;
             Event = paramEvent;
         }
 
@@ -25,7 +25,7 @@ namespace ensemble_webapp.Models
 
         public DateTime DtmDateTime { get; set; }
 
-        public Member PostedByMember { get; set; }
+        public Users PostedByUser { get; set; }
 
         public Event Event { get; set; }
     }
