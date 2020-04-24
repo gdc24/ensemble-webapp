@@ -26,8 +26,11 @@
 @using (Html.BeginForm("NewUser", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <p>
+        <label for="newUser.StrUsername">Username</label>
         @Html.EditorFor(m => m.newUser.StrUsername)
+        <label for="newUser.StrPassword">Username</label>
         @Html.EditorFor(m => m.newUser.StrPassword)
-        @Html.EditorFor(m => m.newUser.LstEvents)
+        <label for="newUser.LstEvents">Add Events</label>
+        @Html.ListBoxFor(m => m.newUser.LstEvents, new SelectList(Model.LstAllEvents, "intEventID", "strName"))
     </p>
 }
