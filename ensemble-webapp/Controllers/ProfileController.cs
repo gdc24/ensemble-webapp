@@ -17,6 +17,12 @@ namespace ensemble_webapp.Controllers
             return View();
         }
 
+        public ActionResult EditName(Users user )
+        {
+            user.setName(user.StrName); //???THIS DOESN'T SEEM RIGHT???
+            return View();
+        }
+
         //[HttpPost]
         //public ActionResult AddUserToGroup(List<Event> newEvents)
         //{
