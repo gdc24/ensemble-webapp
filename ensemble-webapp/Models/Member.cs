@@ -7,6 +7,11 @@ namespace ensemble_webapp.Models
 {
     public class Member
     {
+        public Member(Event e, Users user)
+        {
+            Event = e;
+            User = user;
+        }
 
         // this is basically a matrix table for users and events
 

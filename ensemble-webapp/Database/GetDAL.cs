@@ -591,6 +591,27 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
+        public List<Event> GetAllEvents()
+        {
+            List<Event> retval = new List<Event>();
+
+            // define a query
+            string query = "SELECT * FROM \"events\"";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Event tmpEvent = GetEventFromDR(dr);
+                retval.Add(tmpEvent);
+            }
+
+            return retval;
+        }
+
         public List<Users> GetUsersByEvent(Event paramEvent)
         {
             List<Users> retval = new List<Users>();
