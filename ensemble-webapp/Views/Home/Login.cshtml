@@ -32,8 +32,5 @@
         <br />
         <label for="newUser.StrPassword">New Password</label>
         @Html.EditorFor(m => m.newUser.StrPassword)
-        <br />
-        <label for="newUser.LstEvents">Event To Join</label>
-        @Html.ListBoxFor(m => m.newUser.LstEvents, new SelectList(Model.LstAllEvents, "intEventID", "strName"))
     </p>
 }

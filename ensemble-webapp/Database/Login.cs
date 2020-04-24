@@ -42,7 +42,7 @@ namespace ensemble_webapp.Database
         }
 
         // returns true if new user is created successfully
-        public static bool CreateUser(string username, string password, List<Event> e)
+        public static bool CreateUser(string username, string password)
         {
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
@@ -53,12 +53,6 @@ namespace ensemble_webapp.Database
             if (usr == null)
             {
                 // prompt for name, email, phone, eventID
-
-                // check for empty list
-                if(!e.Any())
-                {
-                    return false;
-                }
 
                 // get name
                 string name = "";
