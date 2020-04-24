@@ -101,25 +101,19 @@ namespace ensemble_webapp.Database
         // returns true if password successfully changed
         public static bool ChangePass(Users user, string oldPassword, string newPassword)
         {
-            GetDAL getDAL = new GetDAL();
-            getDAL.OpenConnection();
 
-            Users usr = getDAL.GetUserByName(user.StrName);
-
-            if (VerifyUser(new Users(user.StrName, user.BytSalt, ComputeSHA256Hash(oldPassword, getDAL.GetUserByID(user.IntUserID).BytSalt), user.StrEmail, user.StrPhone)))
+            if (VerifyUser(new Users(user.StrName, user.BytSalt, ComputeSHA256Hash(oldPassword, user.BytSalt), user.StrEmail, user.StrPhone)))
             {
                 InsertDAL insertDAL = new InsertDAL();
                 insertDAL.OpenConnection();
 
-                insertDAL.InsertNewHash(ComputeSHA256Hash(newPassword, getDAL.GetUserByID(user.IntUserID).BytSalt));
+                insertDAL.InsertNewHash(ComputeSHA256Hash(newPassword, user.BytSalt));
                 
                 insertDAL.CloseConnection();
                     
                 return true;
                 
             }
-
-            getDAL.CloseConnection();
 
             return false;
 
