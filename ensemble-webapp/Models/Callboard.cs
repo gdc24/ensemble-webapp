@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ensemble_webapp.Models
 {
-    public class Callboard
+    public class Callboard : IComparable<Callboard>
     {
         public Callboard(int intCallboardID, string strSubject, string strNote, DateTime dtmDateTime, Users postedByUser, Event paramEvent)
         {
@@ -28,5 +28,10 @@ namespace ensemble_webapp.Models
         public Users PostedByUser { get; set; }
 
         public Event Event { get; set; }
+
+        public int CompareTo(Callboard other)
+        {
+            return this.DtmDateTime.CompareTo(other.DtmDateTime);
+        }
     }
 }

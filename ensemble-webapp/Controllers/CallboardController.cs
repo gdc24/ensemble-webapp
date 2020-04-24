@@ -23,10 +23,14 @@ namespace ensemble_webapp.Controllers
 
             foreach (Event e in model.CurrentUser.LstEvents)
             {
-                model.LstAllCallboards.Concat(get.GetCallboardsByEvent(e));
+                model.LstAllCallboards = get.GetCallboardsByEvent(e);
             }
 
-            return View();
+            model.LstAllCallboards.Sort();
+
+            get.CloseConnection();
+
+            return View("CallboardHome", model);
         }
 
         public ActionResult CallboardHome()
