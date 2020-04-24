@@ -8,7 +8,7 @@
 <p>Name: @Model.CurrentUser.StrName</p>
 
 <p>
-    List of this user's tasks that are not yet due
+    Tasks to do
 </p>
 
 <ul>
@@ -19,13 +19,13 @@
 </ul>
 
 <p>
-    maybe a list of their past due tasks?
+    Overdue Tasks
 </p>
 
 <ul>
     @foreach (var t in Model.TasksOverDueForUser)
     {
-        <li>@t.StrName</li>
+        <li><span style="color: #f00">>@t.StrName</span></li>
     }
 </ul>
 
