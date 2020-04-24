@@ -3,45 +3,55 @@
     ViewBag.Title = "ProfileHome";
 }
 
-<h2>ProfileHome</h2>
 
-@*make these all editable (so a toggle or form or something):*@
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>ProfileHome</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>Name: @Model.CurrentUser.StrName</p>
+                <p>Email: @Model.CurrentUser.StrEmail</p>
+                <p>Phone: @Model.CurrentUser.StrPhone</p>
+            </div>
+            <div class="col-12">
+                <p>list of groups you're part of</p>
+                <ul>
+                    @foreach (var e in Model.CurrentUser.LstEvents)
+                    {
+                        <li>@e.StrName</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row edit-user">
+            @using (Html.BeginForm("EditUser", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="newUser.StrName">New Email</label>
+                @Html.EditorFor(m => m.EditedUserProfile.StrEmail, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+                <label for="newUser.StrName">New Phone</label>
+                @Html.EditorFor(m => m.EditedUserProfile.StrPhone, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+            }
+        </div>
+        <div class="row add-group">
+            <p>form to add group</p>
+            @using (Html.BeginForm("AddUserToEvent", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <p>
+                    @Html.ListBoxFor(m => m.EditedUserProfile.LstEvents, new SelectList(Model.LstAllEvents, "intEventID", "strName"))
+                </p>
+            }
+        </div>
+        <div class="row mt-5">
+            <p>logout</p>
+            @using (Html.BeginForm("LogOut", "Home"))
+            {
+                <input type="submit" value="Logout" />
+            }
 
-<p>Name: @Model.CurrentUser.StrName</p>
-<p>Email: @Model.CurrentUser.StrEmail</p>
-<p>Phone: @Model.CurrentUser.StrPhone</p>
-
-@using (Html.BeginForm("EditUser", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <label for="newUser.StrName">New Email</label>
-    @Html.EditorFor(m => m.EditedUserProfile.StrEmail, new { htmlAttributes = new { @class = "form-control" } })
-    <br />
-    <label for="newUser.StrName">New Phone</label>
-    @Html.EditorFor(m => m.EditedUserProfile.StrPhone, new { htmlAttributes = new { @class = "form-control" } })
-    <br />
-}
-
-<p>list of groups you're part of</p>
-<ul>
-    @foreach (var e in Model.CurrentUser.LstEvents)
-    {
-        <li>@e.StrName</li>
-    }
-</ul>
-
-<br />
-<br />
-
-<p>form to add group</p>
-@using (Html.BeginForm("AddUserToEvent", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <p>
-        @Html.ListBoxFor(m => m.EditedUserProfile.LstEvents, new SelectList(Model.LstAllEvents, "intEventID", "strName"))
-    </p>
-}
-
-<p>logout</p>
-@using (Html.BeginForm("LogOut", "Home"))
-{
-    <input type="submit" value="Logout" />
-}
+        </div>
+    </div>
