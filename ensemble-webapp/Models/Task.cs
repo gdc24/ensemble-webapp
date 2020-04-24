@@ -31,5 +31,11 @@ namespace ensemble_webapp.Models
         public Users UserAssignedBy { get; set; }
 
         public Event Event { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Task task &&
+                   IntTaskID == task.IntTaskID;
+        }
     }
 }

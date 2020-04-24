@@ -28,7 +28,7 @@
                     @foreach (var t in Model.TasksNotYetDueForUser)
                     {
                         <li>
-                            @t.StrName (due @t.DtmDue) for @t.Event.StrName
+                            @t.IntTaskID:  @t.StrName (due @t.DtmDue) for @t.Event.StrName
                             <br />
                             @t.StrAttachment
                         </li>
@@ -45,7 +45,7 @@
                     {
                         <li>
                             <span style="color: #f00">
-                                @t.StrName (due @t.DtmDue) for @t.Event.StrName
+                                @t.IntTaskID: @t.StrName (due @t.DtmDue) for @t.Event.StrName
                                 <br />
                                 @t.StrAttachment
                             </span>
