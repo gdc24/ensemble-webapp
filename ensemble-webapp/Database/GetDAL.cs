@@ -65,15 +65,23 @@ namespace ensemble_webapp.Database
         private Member GetMemberFromDR(NpgsqlDataReader dr)
         {
             int intMemberID = Convert.ToInt32(dr["intMemberID"]);
+            Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
+            Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
+
+            return new Member(intMemberID, paramEvent, user);
+        }
+
+        private Users GetUserFromDR(NpgsqlDataReader dr)
+        {
+            int intUserID = Convert.ToInt32(dr["intUserID"]);
             string strName = dr["strName"].ToString();
             string strEmail = dr["strEmail"].ToString();
             int intPhone = Convert.ToInt32(dr["intPhone"]);
             string strUsername = dr["strUsername"].ToString();
             byte[] bytSalt = (byte[])dr["bytSalt"];
             byte[] bytKey = (byte[])dr["bytKey"];
-            Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
 
-            return new Member(intMemberID, strName, bytSalt, bytKey, strUsername, strEmail, intPhone, paramEvent);
+            return new Users(intUserID, strName, bytSalt, bytKey, strUsername, strEmail, intPhone);
         }
 
         private Rehearsal GetRehearsalFromDR(NpgsqlDataReader dr)
@@ -454,6 +462,26 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
+        public Users GetUserByID(int intUserID)
+        {
+            Users retval = null;
+
+            // define a query
+            string query = "SELECT * FROM \"users\" WHERE \"intUserID\" = " + intUserID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                retval = GetUserFromDR(dr);
+            }
+
+            return retval;
+        }
+
         #endregion
 
         #region GET LISTS
@@ -563,12 +591,14 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Member> GetMembersByEvent(Event paramEvent)
+        public List<Users> GetUsersByEvent(Event paramEvent)
         {
-            List<Member> retval = new List<Member>();
+            List<Users> retval = new List<Users>();
 
             // define a query
-            string query = "SELECT * FROM \"members\" WHERE \"intEventID\" = " + paramEvent.IntEventID;
+            string query = "SELECT u.* FROM \"users\" u, \"members\" me" +
+                " WHERE me.\"intUserID\" = u.\"intUserID\"" +
+                " AND me.\"intEventID\" = " + paramEvent.IntEventID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -577,19 +607,19 @@ namespace ensemble_webapp.Database
             // read all rows and output the first column in each row
             while (dr.Read())
             {
-                Member tmpMember = GetMemberFromDR(dr);
-                retval.Add(tmpMember);
+                Users tmpUsers = GetUserFromDR(dr);
+                retval.Add(tmpUsers);
             }
 
             return retval;
         }
 
-        public Member GetMemberByUsername(string strUsername)
+        public Users GetUserByUsername(string strUsername)
         {
-            Member retval = null;
+            Users retval = null;
 
             // define a query
-            string query = "SELECT * FROM \"members\" WHERE \"strUsername\" = " + strUsername;
+            string query = "SELECT * FROM \"users\" WHERE \"strUsername\" = " + strUsername;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -598,7 +628,7 @@ namespace ensemble_webapp.Database
             // read all rows and output the first column in each row
             while (dr.Read())
             {
-                retval = GetMemberFromDR(dr);
+                retval = GetUserFromDR(dr);
             }
 
             return retval;
