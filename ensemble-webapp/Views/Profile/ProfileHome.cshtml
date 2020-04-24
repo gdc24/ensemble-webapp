@@ -13,10 +13,12 @@
 
 @using (Html.BeginForm("EditUser", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-
-    @Html.ListBoxFor(m => m.EditedUserProfile.StrName, new SelectList(Model.CurrentUser.StrName, "strName"))
+    <label for="newUser.StrName">New Email</label>
     @Html.ListBoxFor(m => m.EditedUserProfile.StrEmail, new SelectList(Model.CurrentUser.StrEmail, "strEmail"))
+    <br />
+    <label for="newUser.StrName">New Phone</label>
     @Html.ListBoxFor(m => m.EditedUserProfile.StrPhone, new SelectList(Model.CurrentUser.StrPhone, "strPhone"))
+    <br />
 }
 
 <p>list of groups you're part of</p>
