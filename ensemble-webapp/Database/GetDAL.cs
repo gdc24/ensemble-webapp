@@ -122,7 +122,16 @@ namespace ensemble_webapp.Database
             int intConflictID = Convert.ToInt32(dr["intConflictID"]);
             DateTime dtmStartDateTime = Convert.ToDateTime(dr["dtmStartDateTime"]);
             DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
-            Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
+
+            int intUserID = Convert.ToInt32(dr["intUserID"]);
+            string strName = dr["strName"].ToString();
+            string strEmail = dr["strEmail"].ToString();
+            string strPhone = dr["strPhone"].ToString();
+            byte[] bytSalt = (byte[])dr["bytSalt"];
+            byte[] bytKey = (byte[])dr["bytKey"];
+
+
+            Users user = new Users(intUserID, strName, bytSalt, bytKey, strEmail, strPhone);
 
             return new Conflict(intConflictID, dtmStartDateTime, dtmEndDateTime, user);
         }
@@ -1039,7 +1048,10 @@ namespace ensemble_webapp.Database
             List<Conflict> retval = new List<Conflict>();
 
             // define a query
-            string query = "SELECT * FROM \"conflicts\" WHERE \"intUserID\" = " + user.IntUserID;
+            string query = "SELECT u.*, c.*" +
+                " FROM \"conflicts\" c, \"users\" u" +
+                " WHERE u.\"intUserID\" = c.\"intUserID\"" +
+                " AND u.\"intUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
