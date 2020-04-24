@@ -111,12 +111,12 @@ namespace ensemble_webapp.Database
                 InsertDAL insertDAL = new InsertDAL();
                 insertDAL.OpenConnection();
 
-                // need to implement GetSaltByUser
-                byte[] newKey = ComputeSHA256Hash(newPassword, getDAL.GetUserByID(user.IntUserID).BytSalt);
-
-                insertDAL.InsertNewHash(newKey);
-
+                insertDAL.InsertNewHash(ComputeSHA256Hash(newPassword, getDAL.GetUserByID(user.IntUserID).BytSalt));
+                
                 insertDAL.CloseConnection();
+                    
+                return true;
+                
             }
 
             getDAL.CloseConnection();
