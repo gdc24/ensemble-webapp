@@ -97,6 +97,33 @@ namespace ensemble_webapp.Database
 
             return false;
         }
+        
+        // returns true if password successfully changed
+        public static bool ChangePass(Users user, string oldPassword, string newPassword)
+        {
+            GetDAL getDAL = new GetDAL();
+            getDAL.OpenConnection();
+
+            Users usr = getDAL.GetUserByName(user.StrName);
+
+            if (VerifyUser(new Users(user.StrName, user.BytSalt, ComputeSHA256Hash(oldPassword, getDAL.GetUserByID(user.IntUserID).BytSalt), user.StrEmail, user.StrPhone)))
+            {
+                InsertDAL insertDAL = new InsertDAL();
+                insertDAL.OpenConnection();
+
+                // need to implement GetSaltByUser
+                byte[] newKey = ComputeSHA256Hash(newPassword, getDAL.GetUserByID(user.IntUserID).BytSalt);
+
+                insertDAL.InsertNewHash(newKey);
+
+                insertDAL.CloseConnection();
+            }
+
+            getDAL.CloseConnection();
+
+            return false;
+
+        }
 
         // closes database connection for logging out
         public static bool Logout()

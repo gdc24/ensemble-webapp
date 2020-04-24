@@ -9,13 +9,6 @@
 
 <p>Name: @Model.CurrentUser.StrName</p>
 
-@using (Html.BeginForm("EditName", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <p>
-        @Html.ListBoxFor(m => m.EditedUserProfile.StrName, new SelectList(Model.CurrentUser.StrName, "strName"))
-    </p>
-}
-
 <p>Email: @Model.CurrentUser.StrEmail</p>
 
 @using (Html.BeginForm("EditEmail", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -28,6 +21,15 @@
 <p>Phone: @Model.CurrentUser.StrPhone</p>
 
 @using (Html.BeginForm("EditPhone", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <p>
+        @Html.ListBoxFor(m => m.EditedUserProfile.StrPhone, new SelectList(Model.CurrentUser.StrPhone, "strPhone"))
+    </p>
+}
+
+<p>change password form</p>
+
+@using (Html.BeginForm("EditPass", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <p>
         @Html.ListBoxFor(m => m.EditedUserProfile.StrPhone, new SelectList(Model.CurrentUser.StrPhone, "strPhone"))

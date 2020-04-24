@@ -168,5 +168,11 @@ namespace ensemble_webapp.Database
             //TODO
             throw new NotImplementedException("todo");
         }
+
+        public bool InsertNewHash(byte[] newHash)
+        {
+            //TODO
+            throw new NotImplementedException("todo");
+        }
     }
 }
