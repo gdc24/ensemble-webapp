@@ -22,6 +22,9 @@
     <input type="submit" value="edit user details" class="form-control btn-primary" />
 }
 
+<br />
+<br />
+
 <p>list of events you're part of</p>
 <ul>
     @foreach (var e in Model.CurrentUser.LstEvents)
@@ -52,6 +55,9 @@
         <input type="submit" value="join event" class="form-control btn-primary" />
     </p>
 }
+
+<br />
+<br />
 
 <p>logout</p>
 @using (Html.BeginForm("LogOut", "Home"))
