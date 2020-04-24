@@ -1,6 +1,6 @@
 using System;
 
-namespace ensemble {
+namespace ensemble_webapp {
 
   public class SchedulingAlgorithm {
 
