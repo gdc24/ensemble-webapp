@@ -14,41 +14,41 @@ namespace ensemble_webapp.Controllers
         // GET: Profile
         public ActionResult Index()
         {
-            return View();
+
+            ProfileHomeVM model = new ProfileHomeVM();
+            model.CurrentUser = Globals.LOGGED_IN_USER;
+            model.EditedUserProfile = model.CurrentUser;
+
+            GetDAL get = new GetDAL();
+            get.OpenConnection();
+
+            model.LstAllEvents = get.GetAllEvents();
+
+            get.CloseConnection();
+
+            return View("ProfileHome", model);
         }
 
-        //[HttpPost]
-        //public ActionResult AddUserToGroup(List<Event> newEvents)
-        //{
-        //    // add user to group
-        //    InsertDAL insertDAL = new InsertDAL();
-        //    insertDAL.OpenConnection();
+        public ActionResult ProfileHome()
+        {
+            return RedirectToAction("Index");
+        }
 
-        //    List<Member> membershipsToAdd = new List<Member>();
-        //    foreach (Event e in newEvents)
-        //    {
-        //        Member tmpMember = new Member(e, Globals.LOGGED_IN_USER);
-        //        membershipsToAdd.Add(tmpMember);
-        //    }
+        [HttpPost]
+        public ActionResult AddUserToEvent(Users editedUserProfile)
+        {
+            // add user to group
+            InsertDAL insertDAL = new InsertDAL();
+            insertDAL.OpenConnection();
 
-        //    foreach (Member m in membershipsToAdd)
-        //    {
-        //        insertDAL.InsertMember(m);
-        //    }
+            foreach (var e in editedUserProfile.LstEvents)
+            {
+                insertDAL.InsertToUserEvents(e, editedUserProfile);
+            }
 
-        //    insertDAL.CloseConnection();
+            insertDAL.CloseConnection();
 
-        //    GetDAL getDAL = new GetDAL();
-        //    getDAL.OpenConnection();
-
-        //    ProfileHomeVM model = new ProfileHomeVM();
-        //    model.CurrentUser = Globals.LOGGED_IN_USER;
-        //    model.EditedUserProfile = model.CurrentUser;
-        //    model.LstAllEvents = getDAL.GetAllEvents();
-        //    model.LstUsersEvents = getDAL.GetEventsByUser(Globals.LOGGED_IN_USER);
-
-        //    getDAL.CloseConnection();
-        //    return View("ProfileHome");
-        //}
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -14,9 +14,5 @@ namespace ensemble_webapp.ViewModels
 
         public List<Event> LstAllEvents { get; set; }
 
-        public List<Event> LstUsersEvents { get; set; }
-
-        public List<Event> LstNewEvents { get; set; }
-
     }
 }
