@@ -49,5 +49,11 @@ namespace ensemble_webapp.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public ActionResult EditUserName(Users editedUserProfile)
+        {
+            editedUserProfile.setName(editedUserProfile.StrName); //???THIS DOESN'T SEEM RIGHT???//
+            return View();
+        }
     }
 }

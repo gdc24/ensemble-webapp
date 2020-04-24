@@ -10,6 +10,8 @@ namespace ensemble_webapp.ViewModels
     {
         public Users EditedUserProfile { get; set; }
 
+        public string EditUserName { get; set; }
+
         public Users CurrentUser { get; set; }
 
         public List<Event> LstAllEvents { get; set; }

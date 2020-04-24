@@ -68,7 +68,7 @@ namespace ensemble_webapp.Controllers
 
         public ActionResult NewUser(Users newUser)
         {
-            if (Database.Login.CreateUser(newUser.StrUsername, newUser.StrPassword, newUser.LstEvents)) {
+            if (Database.Login.CreateUser(newUser.StrUsername, newUser.StrPassword)) {
                 return RedirectToAction("Index");
             }
 
