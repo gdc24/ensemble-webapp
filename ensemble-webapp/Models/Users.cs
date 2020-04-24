@@ -7,7 +7,7 @@ namespace ensemble_webapp.Models
 {
     public class Users
     {
-        public Users(int intUserID, string strName, byte[] bytSalt, byte[] bytKey, string strEmail, string strPhone, List<Event> events)
+        public Users(int intUserID, string strName, byte[] bytSalt, byte[] bytKey, string strEmail, string strPhone)
         {
             IntUserID = intUserID;
             StrName = strName;
@@ -15,7 +15,7 @@ namespace ensemble_webapp.Models
             BytKey = bytKey;
             StrEmail = strEmail;
             StrPhone = strPhone;
-            LstEvents = LstEvents;
+            //LstEvents = LstEvents;
         }
 
         public Users(string strName, byte[] bytSalt, byte[] bytKey, string strEmail, string strPhone)

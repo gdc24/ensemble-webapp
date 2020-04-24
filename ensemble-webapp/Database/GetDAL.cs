@@ -71,12 +71,11 @@ namespace ensemble_webapp.Database
             string strName = dr["strName"].ToString();
             string strEmail = dr["strEmail"].ToString();
             string strPhone = dr["strPhone"].ToString();
-            //string strUsername = dr["strUsername"].ToString();
             byte[] bytSalt = (byte[])dr["bytSalt"];
             byte[] bytKey = (byte[])dr["bytKey"];
-            List<Event> events = this.GetEventsByUser(intUserID);
+            //List<Event> events = this.GetEventsByUser(intUserID);
 
-            return new Users(intUserID, strName, bytSalt, bytKey, strEmail, strPhone, events);
+            return new Users(intUserID, strName, bytSalt, bytKey, strEmail, strPhone);
         }
 
         private Rehearsal GetRehearsalFromDR(NpgsqlDataReader dr)
@@ -214,6 +213,8 @@ namespace ensemble_webapp.Database
                 retval = GetGroupFromDR(dr);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -234,6 +235,8 @@ namespace ensemble_webapp.Database
                 retval = GetEventFromDR(dr);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -253,6 +256,8 @@ namespace ensemble_webapp.Database
             {
                 retval = GetCallboardFromDR(dr);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -294,6 +299,8 @@ namespace ensemble_webapp.Database
                 retval = GetRehearsalFromDR(dr);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -313,6 +320,8 @@ namespace ensemble_webapp.Database
             {
                 retval = GetRehearsalPartFromDR(dr);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -334,6 +343,8 @@ namespace ensemble_webapp.Database
                 retval = GetConflictFromDR(dr);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -353,6 +364,8 @@ namespace ensemble_webapp.Database
             {
                 retval = GetAttendancePlannedFromDR(dr);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -374,6 +387,8 @@ namespace ensemble_webapp.Database
                 retval = GetAttendanceActualFromDR(dr);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -393,6 +408,8 @@ namespace ensemble_webapp.Database
             {
                 retval = GetTypesFromDR(dr);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -414,6 +431,8 @@ namespace ensemble_webapp.Database
                 retval = GetTaskFromDR(dr);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -433,6 +452,8 @@ namespace ensemble_webapp.Database
             {
                 retval = GetEventScheduleFromDR(dr);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -454,6 +475,8 @@ namespace ensemble_webapp.Database
                 retval = GetPartFromDR(dr);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -473,6 +496,8 @@ namespace ensemble_webapp.Database
             {
                 retval = GetUserFromDR(dr);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -499,6 +524,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tmpGroup);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -508,7 +535,12 @@ namespace ensemble_webapp.Database
             List<Event> retval = new List<Event>();
 
             // define a query
-            string query = "SELECT \"intEventID\" FROM \"events\" WHERE \"intUserID\" = " + intUserID;
+            string query = "SELECT e.*, u.\"intUserID\", g.\"strName\" as \"groupName\"" +
+                " FROM events e, \"userEvents\" ue, \"users\" u, \"groups\" g" +
+                " WHERE u.\"intUserID\" = ue.\"intUserID\"" +
+                " AND u.\"intUserID\" = ue.\"intUserID\"" +
+                " AND g.\"intGroupID\" = e.\"intGroupID\"" +
+                " AND u.\"intUserID\" = " + intUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -517,10 +549,13 @@ namespace ensemble_webapp.Database
             // read all rows and output the first column in each row
             while (dr.Read())
             {
-                int intEventID = Convert.ToInt32(dr["intEventID"]);
-                Event tmpEvent = GetEventByID(intEventID);
+                Event tmpEvent = GetEventFromDR(dr);
+                //int intEventID = Convert.ToInt32(dr["intEventID"]);
+                //Event tmpEvent = GetEventByID(intEventID);
                 retval.Add(tmpEvent);
             }
+
+            dr.Close();
 
             return retval;
 
@@ -544,6 +579,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tmpEvent);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -564,6 +601,8 @@ namespace ensemble_webapp.Database
                 Callboard tmpCallboard = GetCallboardFromDR(dr);
                 retval.Add(tmpCallboard);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -586,6 +625,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tmpCallboard);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -607,6 +648,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tmpUser);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -627,6 +670,8 @@ namespace ensemble_webapp.Database
                 Event tmpEvent = GetEventFromDR(dr);
                 retval.Add(tmpEvent);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -671,6 +716,8 @@ namespace ensemble_webapp.Database
                 retval = GetUserFromDR(dr);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -692,6 +739,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tmpRehearsal); 
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -712,6 +761,8 @@ namespace ensemble_webapp.Database
                 RehearsalPart tmpRehearsalPart = GetRehearsalPartFromDR(dr);
                 retval.Add(tmpRehearsalPart);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -735,6 +786,8 @@ namespace ensemble_webapp.Database
                 RehearsalPart tmpRehearsalPart = GetRehearsalPartFromDR(dr);
                 retval.Add(tmpRehearsalPart);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -760,6 +813,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tmpRehearsalPart);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -780,6 +835,8 @@ namespace ensemble_webapp.Database
                 AttendancePlanned tmpAttendancePlanned = GetAttendancePlannedFromDR(dr);
                 retval.Add(tmpAttendancePlanned);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -802,6 +859,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tmpAttendancePlanned);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -822,6 +881,8 @@ namespace ensemble_webapp.Database
                 Types tmpTypes = GetTypesFromDR(dr);
                 retval.Add(tmpTypes);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -845,6 +906,8 @@ namespace ensemble_webapp.Database
                 AttendanceActual tmpAttendanceActual = GetAttendanceActualFromDR(dr);
                 retval.Add(tmpAttendanceActual);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -870,6 +933,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tmpAttendanceActual);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -893,6 +958,8 @@ namespace ensemble_webapp.Database
                 AttendanceActual tmpAttendanceActual = GetAttendanceActualFromDR(dr);
                 retval.Add(tmpAttendanceActual);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -919,6 +986,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tmpAttendanceActual);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -939,6 +1008,8 @@ namespace ensemble_webapp.Database
                 Conflict conflict = GetConflictFromDR(dr);
                 retval.Add(conflict);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -963,6 +1034,8 @@ namespace ensemble_webapp.Database
                 retval.Add(conflict);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -985,6 +1058,8 @@ namespace ensemble_webapp.Database
                 retval.Add(conflict);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -1005,6 +1080,8 @@ namespace ensemble_webapp.Database
                 Task tasks = GetTaskFromDR(dr);
                 retval.Add(tasks);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -1027,6 +1104,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tasks);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -1047,6 +1126,8 @@ namespace ensemble_webapp.Database
                 Task tasks = GetTaskFromDR(dr);
                 retval.Add(tasks);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -1070,6 +1151,8 @@ namespace ensemble_webapp.Database
                 retval.Add(tasks);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -1090,6 +1173,8 @@ namespace ensemble_webapp.Database
                 Task tasks = GetTaskFromDR(dr);
                 retval.Add(tasks);
             }
+
+            dr.Close();
 
             return retval;
         }
@@ -1112,6 +1197,8 @@ namespace ensemble_webapp.Database
                 retval.Add(parts);
             }
 
+            dr.Close();
+
             return retval;
         }
 
@@ -1132,6 +1219,8 @@ namespace ensemble_webapp.Database
                 Part parts = GetPartFromDR(dr);
                 retval.Add(parts);
             }
+
+            dr.Close();
 
             return retval;
         }

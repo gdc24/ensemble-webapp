@@ -14,10 +14,10 @@
 @using (Html.BeginForm("EditUser", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <label for="newUser.StrName">New Email</label>
-    @Html.ListBoxFor(m => m.EditedUserProfile.StrEmail, new SelectList(Model.CurrentUser.StrEmail, "strEmail"))
+    @Html.EditorFor(m => m.EditedUserProfile.StrEmail, new { htmlAttributes = new { @class = "form-control" } })
     <br />
     <label for="newUser.StrName">New Phone</label>
-    @Html.ListBoxFor(m => m.EditedUserProfile.StrPhone, new SelectList(Model.CurrentUser.StrPhone, "strPhone"))
+    @Html.EditorFor(m => m.EditedUserProfile.StrPhone, new { htmlAttributes = new { @class = "form-control" } })
     <br />
 }
 

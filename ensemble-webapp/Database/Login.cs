@@ -30,6 +30,7 @@ namespace ensemble_webapp.Database
 
                 if (StructuralComparisons.StructuralEqualityComparer.Equals(userKey, actual))
                 {
+                    usr.LstEvents = getDAL.GetEventsByUser(usr.IntUserID);
                     Globals.LOGIN_STATUS = true;
                     Globals.LOGGED_IN_USER = usr;
                     return true;
@@ -84,6 +85,7 @@ namespace ensemble_webapp.Database
                 get.OpenConnection();
 
                 Users completeUser = get.GetUserByID(intNewUserID);
+                completeUser.LstEvents = get.GetEventsByUser(intNewUserID);
 
                 get.CloseConnection();
 
