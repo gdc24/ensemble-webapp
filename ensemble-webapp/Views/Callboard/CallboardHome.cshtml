@@ -10,17 +10,26 @@
         </div>
         <div class="col-12">
             <p>callboard notifications</p>
-            <ul>
-                @foreach (var c in Model.LstAllCallboards)
+                @if (Model.LstAllCallboards != null)
                 {
-                    <li>
-                        <p>@c.StrSubject in @c.Event from @c.PostedByUser at @c.DtmDateTime</p>
-                        <br />
-                        <p>@c.StrNote</p>
-                    </li>
+                    foreach (var c in Model.LstAllCallboards)
+                    {
+                        <ul>
+                            <li>
+                                <p>@c.StrSubject in @c.Event from @c.PostedByUser at @c.DtmDateTime</p>
+                                <br />
+                                <p>@c.StrNote</p>
+                            </li>
+                        </ul>
+                    }
+                }
+                else
+                {
+                    <p>You do not have any current annoucements.</p>
                 }
             </ul>
         </div>
     </div>
 </div>
 
+@*        place for admin to add callboard annoucements*@

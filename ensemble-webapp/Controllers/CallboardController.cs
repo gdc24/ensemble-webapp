@@ -26,7 +26,11 @@ namespace ensemble_webapp.Controllers
                 model.LstAllCallboards = get.GetCallboardsByEvent(e);
             }
 
-            model.LstAllCallboards.Sort();
+            if (model.LstAllCallboards != null)
+            {
+                model.LstAllCallboards.Sort();
+            }
+
 
             get.CloseConnection();
 
