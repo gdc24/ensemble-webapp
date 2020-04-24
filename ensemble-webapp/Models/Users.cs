@@ -43,5 +43,7 @@ namespace ensemble_webapp.Models
         public string StrEmail { get; set; }
 
         public int IntPhone { get; set; }
+
+        public List<Event> LstEvents { get; set; }
     }
 }

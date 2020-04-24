@@ -7,11 +7,11 @@ namespace ensemble_webapp.Models
 {
     public class Part
     {
-        public Part(int intPartID, string strRole, Member member, Event paramEvent)
+        public Part(int intPartID, string strRole, Users user, Event paramEvent)
         {
             IntPartID = intPartID;
             StrRole = strRole;
-            Member = member;
+            User = user;
             Event = paramEvent;
         }
 
@@ -19,7 +19,7 @@ namespace ensemble_webapp.Models
 
         public string StrRole { get; set; }
 
-        public Member Member { get; set; }
+        public Users User { get; set; }
 
         public Event Event { get; set; }
     }

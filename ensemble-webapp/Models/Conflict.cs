@@ -7,12 +7,12 @@ namespace ensemble_webapp.Models
 {
     public class Conflict
     {
-        public Conflict(int intConflictID, DateTime dtmStartDateTime, DateTime dtmEndDateTime, Member member)
+        public Conflict(int intConflictID, DateTime dtmStartDateTime, DateTime dtmEndDateTime, Users user)
         {
             IntConflictID = intConflictID;
             DtmStartDateTime = dtmStartDateTime;
             DtmEndDateTime = dtmEndDateTime;
-            Member = member;
+            User = user;
         }
 
         public int IntConflictID { get; set; }
@@ -21,6 +21,6 @@ namespace ensemble_webapp.Models
 
         public DateTime DtmEndDateTime { get; set; }
 
-        public Member Member { get; set; }
+        public Users User { get; set; }
     }
 }
