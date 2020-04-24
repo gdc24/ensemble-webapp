@@ -15,10 +15,12 @@ namespace ensemble_webapp.Controllers
             return View();
         }
         
+        //add text to GenerateReport.cshtml
         public ActionResult MakeReport(int rehearsalID){
             
         }
         
+        //turn GenerateReport.cshtml into pdf
         public ActionResult GenerateReport(){
             var Renderer = new IronPdf.HtmlToPdf();
             Renderer.RenderHtmlAsPdf("ensemble-webapp/ensemble-webapp/Views/Reports/GenerateReport.cshtml").SaveAs("Report.pdf");
