@@ -28,5 +28,10 @@ namespace ensemble_webapp.Controllers
 
             return View();
         }
+
+        public ActionResult CallboardHome()
+        {
+            return RedirectToAction("Index");
+        }
     }
 }
