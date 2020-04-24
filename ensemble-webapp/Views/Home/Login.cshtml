@@ -8,9 +8,12 @@
 
 <p>login</p>
 @using (Html.BeginForm("LoginUser", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
+    {
     <p>
+        <label for="logInUser.StrUsername">Username</label>
         @Html.EditorFor(m => m.logInUser.StrUsername)
+        <br />
+        <label for="logInUser.StrPassword">Password</label>
         @Html.EditorFor(m => m.logInUser.StrPassword)
     </p>
 }

@@ -47,8 +47,25 @@ namespace ensemble_webapp.Database
             throw new NotImplementedException("todo");
         }
 
-        public bool InsertMember(Member member)
+        public bool InsertToUserEvents(Event e, Users editedUserProfile)
         {
+            // define a query
+            string query = "INSERT INTO public.\"userEvents\"(" +
+                " \"intEventID\", \"intUserID\")" +
+                " VALUES(@intEventID, @intUserID); ";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("intEventID", e.IntEventID);
+            cmd.Parameters.AddWithValue("intUserID", editedUserProfile.IntUserID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            conn.Close();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
             //TODO
             throw new NotImplementedException("todo");
         }

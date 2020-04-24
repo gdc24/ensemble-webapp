@@ -5,25 +5,17 @@
 
 <h2>ProfileHome</h2>
 
-<p>Username: @Model.CurrentUser.StrUsername</p>
-
 @*make these all editable (so a toggle or form or something):*@
 
 <p>Name: @Model.CurrentUser.StrName</p>
 
 <p>Email: @Model.CurrentUser.StrEmail</p>
 
-<p>Phone: @Model.CurrentUser.IntPhone</p>
-@using (Html.BeginForm("EditName", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <p>
-        @Html.ListBoxFor(m => m.EditedUserProfile.setName("")) @*???HOW TO DO THIS???*@
-    </p>
-}
+<p>Phone: @Model.CurrentUser.StrPhone</p>
 
 <p>list of groups you're part of</p>
 <ul>
-    @foreach (var e in Model.LstUsersEvents)
+    @foreach (var e in Model.CurrentUser.LstEvents)
     {
         <li>@e.StrName</li>
     }
@@ -34,10 +26,12 @@
 
 
 <p>form to add group</p>
-@using (Html.BeginForm("AddUserToGroup", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+
+@using (Html.BeginForm("AddUserToEvent", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <p>
-        @Html.ListBoxFor(m => m.LstNewEvents, new SelectList(Model.LstAllEvents, "intGroupID", "strName"))
+        @Html.ListBoxFor(m => m.EditedUserProfile.LstEvents, new SelectList(Model.LstAllEvents, "intEventID", "strName"))
     </p>
 }
 

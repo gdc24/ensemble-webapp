@@ -76,12 +76,13 @@ namespace ensemble_webapp.Database
             int intUserID = Convert.ToInt32(dr["intUserID"]);
             string strName = dr["strName"].ToString();
             string strEmail = dr["strEmail"].ToString();
-            int intPhone = Convert.ToInt32(dr["intPhone"]);
-            string strUsername = dr["strUsername"].ToString();
+            string strPhone = dr["intPhone"].ToString();
+            //string strUsername = dr["strUsername"].ToString();
             byte[] bytSalt = (byte[])dr["bytSalt"];
             byte[] bytKey = (byte[])dr["bytKey"];
+            List<Event> events = this.GetEventsByUser(intUserID);
 
-            return new Users(intUserID, strName, bytSalt, bytKey, strUsername, strEmail, intPhone);
+            return new Users(intUserID, strName, bytSalt, bytKey, strEmail, strPhone);
         }
 
         private Rehearsal GetRehearsalFromDR(NpgsqlDataReader dr)
@@ -507,6 +508,30 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
+
+        public List<Event> GetEventsByUser(int intUserID)
+        {
+            List<Event> retval = new List<Event>();
+
+            // define a query
+            string query = "SELECT \"intEventID\" FROM \"events\" WHERE \"intUserID\" = " + intUserID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                int intEventID = Convert.ToInt32(dr["intEventID"]);
+                Event tmpEvent = GetEventByID(intEventID);
+                retval.Add(tmpEvent);
+            }
+
+            return retval;
+
+        }
+
         public List<Event> GetEventsByGroup(Group group)
         {
             List<Event> retval = new List<Event>();
@@ -612,35 +637,35 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public List<Users> GetUsersByEvent(Event paramEvent)
-        {
-            List<Users> retval = new List<Users>();
+        //public List<Users> GetUsersByEvent(Event paramEvent)
+        //{
+        //    List<Users> retval = new List<Users>();
 
-            // define a query
-            string query = "SELECT u.* FROM \"users\" u, \"members\" me" +
-                " WHERE me.\"intUserID\" = u.\"intUserID\"" +
-                " AND me.\"intEventID\" = " + paramEvent.IntEventID;
-            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+        //    // define a query
+        //    string query = "SELECT u.* FROM \"users\" u, \"members\" me" +
+        //        " WHERE me.\"intUserID\" = u.\"intUserID\"" +
+        //        " AND me.\"intEventID\" = " + paramEvent.IntEventID;
+        //    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-            // execute query
-            NpgsqlDataReader dr = cmd.ExecuteReader();
+        //    // execute query
+        //    NpgsqlDataReader dr = cmd.ExecuteReader();
 
-            // read all rows and output the first column in each row
-            while (dr.Read())
-            {
-                Users tmpUsers = GetUserFromDR(dr);
-                retval.Add(tmpUsers);
-            }
+        //    // read all rows and output the first column in each row
+        //    while (dr.Read())
+        //    {
+        //        Users tmpUsers = GetUserFromDR(dr);
+        //        retval.Add(tmpUsers);
+        //    }
 
-            return retval;
-        }
+        //    return retval;
+        //}
 
-        public Users GetUserByUsername(string strUsername)
+        public Users GetUserByName(string strName)
         {
             Users retval = null;
 
             // define a query
-            string query = "SELECT * FROM \"users\" WHERE \"strUsername\" = " + strUsername;
+            string query = "SELECT * FROM \"users\" WHERE \"strName\" = " + strName;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
