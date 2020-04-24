@@ -5,14 +5,29 @@
 
 <h2>Tasks</h2>
 
+<p>Name: @Model.CurrentUser.StrName</p>
 
 <p>
     List of this user's tasks that are not yet due
 </p>
 
+<ul>
+    @foreach (var t in Model.TasksNotYetDueForUser)
+    {
+        <li>@t.StrName</li>
+    }
+</ul>
+
 <p>
     maybe a list of their past due tasks?
 </p>
+
+<ul>
+    @foreach (var t in Model.TasksOverDueForUser)
+    {
+        <li>@t.StrName</li>
+    }
+</ul>
 
 <p>
     if this user is an admin, then show a form to add a task for the event

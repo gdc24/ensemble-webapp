@@ -11,6 +11,7 @@ namespace ensemble_webapp.ViewModels
 
         public List<Task> TasksNotYetDueForUser { get; set; }
 
+        public Users CurrentUser { get; set; }
 
         public List<Task> TasksOverDueForUser { get; set; }
 
