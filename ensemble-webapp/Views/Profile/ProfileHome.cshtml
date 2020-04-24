@@ -19,6 +19,7 @@
     <label for="newUser.StrName">New Phone</label>
     @Html.EditorFor(m => m.EditedUserProfile.StrPhone, new { htmlAttributes = new { @class = "form-control" } })
     <br />
+    <input type="submit" value="edit user details" class="form-control btn-primary" />
 }
 
 <p>list of events you're part of</p>
@@ -48,6 +49,7 @@
 {
     <p>
         @Html.ListBoxFor(m => m.EditedUserProfile.LstEvents, new SelectList(Model.LstAllEvents, "intEventID", "strName"))
+        <input type="submit" value="join event" class="form-control btn-primary" />
     </p>
 }
 
