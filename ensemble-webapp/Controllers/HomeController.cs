@@ -31,7 +31,7 @@ namespace ensemble_webapp.Controllers
 
         public ActionResult LoginUser(Users logInUser)
         {
-            if (Login.VerifyUser(logInUser.StrUsername, logInUser.StrPassword) {
+            if (Login.VerifyUser(logInUser.StrUsername, logInUser.StrPassword)) {
                 return RedirectToAction("Index");
             }
 
@@ -40,7 +40,7 @@ namespace ensemble_webapp.Controllers
 
         public ActionResult NewUser(Users newUser)
         {
-            if (Login.CreateUser(newUser.StrUsername, newUser.StrPassword, newUser.LstEvents) {
+            if (Login.CreateUser(newUser.StrUsername, newUser.StrPassword, newUser.LstEvents)) {
                 return RedirectToAction("Index");
             }
 
