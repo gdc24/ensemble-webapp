@@ -9,8 +9,10 @@ namespace ensemble_webapp.ViewModels
     public class ConflictsHomeVM
     {
 
-        List<Conflict> LstConflicts { get; set; }
+        public Users CurrentUser { get; set; }
 
-        Conflict ConflictToPost { get; set; }
+        public List<Conflict> LstConflicts { get; set; }
+
+        public Conflict ConflictToAdd { get; set; }
     }
 }

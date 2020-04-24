@@ -3,13 +3,35 @@
     ViewBag.Title = "ConflictsHome";
 }
 
-<h2>Conflicts Home</h2>
-
-
-<p>
-    list of this user's conflicts here
-</p>
-
-<p>
-    form and button to add conflicts
-</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2>Conflicts Home</h2>
+        </div>
+        <div class="col-12">
+            <p>current conflicts</p>
+            <ul>
+                @foreach (var c in Model.LstConflicts)
+                {
+                    <li>
+                        <p>End: @c.DtmStartDateTime</p>
+                        <br />
+                        <p>End: @c.DtmEndDateTime</p>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="row add-conflict">
+            @using (Html.BeginForm("AddConflict", "Schedule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="newConflict.dtmStartDateTime">Start Time</label>
+                @Html.EditorFor(m => m.ConflictToAdd.DtmStartDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+                <label for="newConflict.dtmStartDateTime">End Time</label>
+                @Html.EditorFor(m => m.ConflictToAdd.DtmEndDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+                <input type="submit" value="add conflict" class="form-control btn-primary" />
+            }
+        </div>
+    </div>
+</div>
