@@ -34,7 +34,7 @@
 
 <p>list of events you can join</p>
 <ul>
-    @foreach (var e in Model.CurrentUser.LstEventsToJoin)
+    @foreach (var e in Model.LstEventsToJoin)
     {
         <li>@e.StrName</li>
     }
@@ -43,7 +43,7 @@
 <br />
 <br />
 
-<p>form to add group</p>
+<p>form to add event</p>
 @using (Html.BeginForm("AddUserToEvent", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <p>
