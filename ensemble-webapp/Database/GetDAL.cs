@@ -146,9 +146,24 @@ namespace ensemble_webapp.Database
             DateTime dtmDue = Convert.ToDateTime(dr["dtmDue"]);
             string strName = dr["strName"].ToString();
             string strAttachment = dr["strAttachment"].ToString();
-            Users userAssignedTo = GetUserByID(Convert.ToInt32(dr["intAssignedToUserID"]));
-            Users userAssignedBy = GetUserByID(Convert.ToInt32(dr["intAssignedByUserID"]));
-            Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
+            int intAssignedToUserID = Convert.ToInt32(dr["intAssignedToUserID"]);
+            string assignedToUserName = dr["assignedToUserName"].ToString();
+
+            int intAssignedByUserID = Convert.ToInt32(dr["intAssignedByUserID"]);
+            string strAssignedByName = dr["strAssignedByName"].ToString();
+
+            string groupName = dr["groupName"].ToString();
+            int intGroupID = Convert.ToInt32(dr["intGroupID"]);
+            Group group = new Group(intGroupID, groupName);
+
+            int intEventID = Convert.ToInt32(dr["intEventID"]);
+            string eventName = dr["eventName"].ToString();
+            DateTime eventDate = Convert.ToDateTime(dr["eventDate"]);
+            string eventLocation = dr["eventLocation"].ToString();
+
+            Users userAssignedTo = new Users(intAssignedToUserID, assignedToUserName);
+            Users userAssignedBy = new Users(intAssignedByUserID, strAssignedByName);
+            Event paramEvent = new Event(intEventID, eventName, eventDate, eventLocation, group);
 
             return new Task(intTaskID, dtmDue, strName, strAttachment, userAssignedTo, userAssignedBy, paramEvent);
         }
@@ -1068,7 +1083,29 @@ namespace ensemble_webapp.Database
             List<Task> retval = new List<Task>();
 
             // define a query
-            string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToUserID\" = " + user.IntUserID;
+            //string query = "SELECT * FROM \"tasks\" WHERE \"intAssignedToUserID\" = " + user.IntUserID;
+            string query = "SELECT g.\"strName\" as \"groupName\"," +
+                " e.\"dtmDate\" as \"eventDate\"," +
+                " e.\"strLocation\" as \"eventLocation\"," +
+                " e.\"intGroupID\"," +
+                " s.\"intEventID\"," +
+                " e.\"strName\" as \"eventName\"," +
+                " s.\"intAssignedToUserID\"," +
+                " s.\"assignedToUserName\"," +
+                " s.\"intTaskID\"," +
+                " s.\"dtmDue\"," +
+                " s.\"strName\"," +
+                " s.\"strAttachment\"," +
+                " u.\"strName\" as \"strAssignedByName\"," +
+                " u.\"intUserID\" as \"intAssignedByUserID\" from (" +
+                " select t.*, u.\"strName\" as \"assignedToUserName\"" +
+                " from \"tasks\" t, \"users\" u" +
+                " where u.\"intUserID\" = t.\"intAssignedToUserID\"" +
+                " ) s, \"users\" u, \"events\" e, \"groups\" g" +
+                " WHERE u.\"intUserID\" = s.\"intAssignedByUserID\"" +
+                " and e.\"intEventID\" = s.\"intEventID\"" +
+                " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and s.\"intAssignedToUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
