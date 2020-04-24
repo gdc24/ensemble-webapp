@@ -14,11 +14,11 @@
 <p>Phone: @Model.CurrentUser.StrPhone</p
 
 @*
-    @using (Html.BeginForm("EditName", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("EditedUserProfile", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <p>
-            <label for="EditUserName.setName">New Username</label>
-            @Html.EditorFor(m => m.EditUserName.setName) @*I DON'T KNOW HOW THIS WORKS
+            <label for="EditedUserProfile.setName">New Username</label>
+            @Html.EditorFor(m => m.EditUserName.setName) I DON'T KNOW HOW THIS WORKS
             <br />
         </p>
     }*@

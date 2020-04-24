@@ -8,13 +8,14 @@
 
 <p>login</p>
 @using (Html.BeginForm("LoginUser", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
+{
     <p>
         <label for="logInUser.StrUsername">Username</label>
         @Html.EditorFor(m => m.logInUser.StrUsername)
         <br />
         <label for="logInUser.StrPassword">Password</label>
         @Html.EditorFor(m => m.logInUser.StrPassword)
+
     </p>
 }
 
@@ -25,11 +26,14 @@
 <p>new user</p>
 @using (Html.BeginForm("NewUser", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-<p>
-    <label for="newUser.StrUsername">New Username</label>
-    @Html.EditorFor(m => m.newUser.StrUsername)
-    <br />
-    <label for="newUser.StrPassword">New Password</label>
-    @Html.EditorFor(m => m.newUser.StrPassword)
-</p>
+    <p>
+        <label for="newUser.StrUsername">New Username</label>
+        @Html.EditorFor(m => m.newUser.StrUsername)
+        <br />
+        <label for="newUser.StrPassword">New Password</label>
+        @Html.EditorFor(m => m.newUser.StrPassword)
+        <br />
+        <label for="newUser.LstEvents">Event To Join</label>
+        @Html.ListBoxFor(m => m.newUser.LstEvents, new SelectList(Model.LstAllEvents, "intEventID", "strName"))
+    </p>
 }
