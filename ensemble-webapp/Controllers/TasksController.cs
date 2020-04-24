@@ -36,8 +36,15 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult AddAttachmentToTask()
+        public ActionResult NewTask(Task newTask)
         {
+            InsertDAL insertDAL = new InsertDAL();
+            insertDAL.OpenConnection();
+
+            insertDAL.InsertTask(newTask);
+
+            insertDAL.CloseConnection();
+
             return RedirectToAction("Index");
         }
     }
