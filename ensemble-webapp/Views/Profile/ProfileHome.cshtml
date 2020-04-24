@@ -21,9 +21,20 @@
     <br />
 }
 
-<p>list of groups you're part of</p>
+<p>list of events you're part of</p>
 <ul>
     @foreach (var e in Model.CurrentUser.LstEvents)
+    {
+        <li>@e.StrName</li>
+    }
+</ul>
+
+<br />
+<br />
+
+<p>list of events you can join</p>
+<ul>
+    @foreach (var e in Model.CurrentUser.LstEventsToJoin)
     {
         <li>@e.StrName</li>
     }
