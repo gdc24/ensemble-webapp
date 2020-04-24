@@ -50,5 +50,16 @@ namespace ensemble_webapp.Controllers
             getDAL.CloseConnection();
             return View("ProfileHome");
         }
+
+        public ActionResult LoginUser(Member member)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                return RedirectToAction("ProfileHome");
+            }
+
+            return View(member);
+        }
     }
 }

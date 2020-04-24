@@ -36,6 +36,8 @@ namespace ensemble_webapp.Models
 
         public string StrUsername { get; set; }
 
+        public string StrPassword { get; set; }
+
         public string StrName { get; set; }
 
         public string StrEmail { get; set; }
