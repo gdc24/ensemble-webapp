@@ -26,6 +26,8 @@ namespace ensemble_webapp.Controllers
 
             model.TasksOverDueForUser = difference.ToList();
 
+            model.TasksAssignedByUser = get.GetTasksByAssignedByUser(model.CurrentUser);
+
             return View("TasksHome", model);
         }
 
@@ -34,6 +36,9 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-
+        public ActionResult AddAttachmentToTask()
+        {
+            return RedirectToAction("Index");
+        }
     }
 }

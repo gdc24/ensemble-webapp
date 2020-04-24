@@ -14,8 +14,12 @@
 <ul>
     @foreach (var t in Model.TasksNotYetDueForUser)
     {
-        <li>@t.StrName (due @t.DtmDue) for @t.Event.StrName</li>
-        @*show attachment somehow*@
+        <li>
+            @t.StrName (due @t.DtmDue) for @t.Event.StrName
+            <br />
+            @t.StrAttachment
+        </li>
+        
     }
 </ul>
 
@@ -30,11 +34,42 @@
 <ul>
     @foreach (var t in Model.TasksOverDueForUser)
     {
-        <li><span style="color: #f00">>@t.StrName</span></li>
-        @*show other info about it*@
+        <li>
+            <span style="color: #f00">
+                @t.StrName (due @t.DtmDue) for @t.Event.StrName
+                <br />
+                @t.StrAttachment
+            </span>
+        </li>
+        
     }
 </ul>
 
 <p>
     if this user is an admin, then show a form to add a task for the event
 </p>
+
+<p>
+    Tasks Assigned By You
+</p>
+
+<ul>
+    @foreach (var t in Model.TasksAssignedByUser)
+    {
+        <li>
+            @t.StrName (due @t.DtmDue from @t.UserAssignedTo) for @t.StrName
+            <br />
+            @t.StrAttachment
+        </li>
+
+    }
+</ul>
+
+@*
+@using (Html.BeginForm("AddAttachmentToTasks", "Tasks", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <p>
+        @Html.ListBoxFor(m => m.NewTask, new Model.NewTask("dtmDue", "strName", "strAttachment", "intAssignedToUserID", Model.CurrentUser.IntUserID, "intEventID")))
+    </p>
+}
+*@
