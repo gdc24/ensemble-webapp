@@ -26,13 +26,13 @@ CREATE TABLE "members" (
   "intUserID" int
 );
 
-CREATE TABLE "user" (
+CREATE TABLE "users" (
   "intUserID" SERIAL PRIMARY KEY,
   "strName" varchar(255),
   "strEmail" varchar(255),
   "intPhone" int,
-  "bytKey" varbinary,
-  "bytSalt" varbinary
+  "bytKey" bytea,
+  "bytSalt" bytea
 );
 
 CREATE TABLE "rehearsals" (
@@ -146,4 +146,4 @@ ALTER TABLE "parts" ADD FOREIGN KEY ("intMemberID") REFERENCES "members" ("intMe
 
 ALTER TABLE "parts" ADD FOREIGN KEY ("intEventID") REFERENCES "events" ("intEventID");
 
-ALTER TABLE "members" ADD FOREIGN KEY ("intUserID") REFERENCES "user" ("intUserID");
+ALTER TABLE "members" ADD FOREIGN KEY ("intUserID") REFERENCES "users" ("intUserID");
