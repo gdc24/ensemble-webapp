@@ -46,7 +46,7 @@ namespace ensemble_webapp.Database
             DateTime dtmDate = Convert.ToDateTime(dr["dtmDate"]);
             string strLocation = dr["strLocation"].ToString();
             int intGroupID = Convert.ToInt32(dr["intGroupID"]);
-            string strGroupName = dr["grounpName"].ToString();
+            string strGroupName = dr["groupName"].ToString();
 
             Group group = new Group(intGroupID, strGroupName);
 

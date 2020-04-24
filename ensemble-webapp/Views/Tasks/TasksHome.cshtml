@@ -14,7 +14,8 @@
 <ul>
     @foreach (var t in Model.TasksNotYetDueForUser)
     {
-        <li>@t.StrName</li>
+        <li>@t.StrName (due @t.DtmDue) for @t.Event.StrName</li>
+        @*show attachment somehow*@
     }
 </ul>
 
@@ -30,6 +31,7 @@
     @foreach (var t in Model.TasksOverDueForUser)
     {
         <li><span style="color: #f00">>@t.StrName</span></li>
+        @*show other info about it*@
     }
 </ul>
 
