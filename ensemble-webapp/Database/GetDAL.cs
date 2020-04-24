@@ -46,9 +46,9 @@ namespace ensemble_webapp.Database
             DateTime dtmDate = Convert.ToDateTime(dr["dtmDate"]);
             string strLocation = dr["strLocation"].ToString();
             int intGroupID = Convert.ToInt32(dr["intGroupID"]);
-            dr.Close();
+            string strGroupName = dr["grounpName"].ToString();
 
-            Group group = GetGroupByID(intGroupID);
+            Group group = new Group(intGroupID, strGroupName);
 
             return new Event(intEventID, strName, dtmDate, strLocation, group);
         }
@@ -222,7 +222,7 @@ namespace ensemble_webapp.Database
             Event retval = null;
 
             // define a query
-            string query = "SELECT * FROM \"events\" WHERE \"intEventID\" = " + intEventID;
+            string query = "select e.*, g.\"strName\" as \"groupName\" from \"events\" e, \"groups\" g where g.\"intGroupID\" = e.\"intGroupID\" AND \"intEventID\" = " + intEventID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -531,7 +531,7 @@ namespace ensemble_webapp.Database
             List<Event> retval = new List<Event>();
 
             // define a query
-            string query = "SELECT * FROM \"events\" WHERE \"intGroupID\" = " + group.IntGroupID;
+            string query = "select e.*, g.\"strName\" as \"groupName\" from \"events\" e, \"groups\" g where g.\"intGroupID\" = e.\"intGroupID\" AND \"intGroupID\" = " + group.IntGroupID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -615,7 +615,7 @@ namespace ensemble_webapp.Database
             List<Event> retval = new List<Event>();
 
             // define a query
-            string query = "SELECT * FROM \"events\"";
+            string query = "select e.*, g.\"strName\" as \"groupName\" from \"events\" e, \"groups\" g where g.\"intGroupID\" = e.\"intGroupID\"";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
