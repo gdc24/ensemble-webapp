@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Collections;
 using ensemble_webapp.Models;
+using System.Collections.Generic;
 
 namespace ensemble_webapp.Database
 {
@@ -41,7 +42,7 @@ namespace ensemble_webapp.Database
         }
 
         // returns true if new user is created successfully
-        public static bool CreateUser(string username, string password, int eventID)
+        public static bool CreateUser(string username, string password, List<Event> events)
         {
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
@@ -53,9 +54,8 @@ namespace ensemble_webapp.Database
             {
                 // prompt for name, email, phone, eventID
 
-                // somehow get an event
-                Event e = getDAL.GetEventByID(eventID); 
-                if (e == null)
+                // check events
+                if (events == null)
                 {
                     return false;
                 }
@@ -106,7 +106,7 @@ namespace ensemble_webapp.Database
         }
 
         // Compute hash of a string using SHA 256
-        public static byte[] ComputeSHA256Hash(string toHash, byte[] salt)
+        private static byte[] ComputeSHA256Hash(string toHash, byte[] salt)
         {
             using (SHA256 hash = SHA256.Create())
             {
