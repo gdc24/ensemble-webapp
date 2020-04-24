@@ -7,25 +7,23 @@ namespace ensemble_webapp.Models
 {
     public class Users
     {
-        public Users(int intUserID, string strName, byte[] bytSalt, byte[] bytKey, string strUsername, string strEmail, int intPhone)
+        public Users(int intUserID, string strName, byte[] bytSalt, byte[] bytKey, string strEmail, string strPhone)
         {
             IntUserID = intUserID;
             StrName = strName;
             BytSalt = bytSalt;
             BytKey = bytKey;
-            StrUsername = strUsername;
             StrEmail = strEmail;
-            IntPhone = intPhone;
+            StrPhone = strPhone;
         }
 
-        public Users(string strName, byte[] bytSalt, byte[] bytKey, string strUsername, string strEmail, int intPhone)
+        public Users(string strName, byte[] bytSalt, byte[] bytKey, string strEmail, string strPhone)
         {
             StrName = strName;
             BytSalt = bytSalt;
             BytKey = bytKey;
-            StrUsername = strUsername;
             StrEmail = strEmail;
-            IntPhone = intPhone;
+            StrPhone = strPhone;
         }
 
         public int IntUserID { get; set; }
@@ -34,13 +32,11 @@ namespace ensemble_webapp.Models
 
         public byte[] BytKey { get; set; }
 
-        public string StrUsername { get; set; }
-
         public string StrName { get; set; }
 
         public string StrEmail { get; set; }
 
-        public int IntPhone { get; set; }
+        public string StrPhone { get; set; }
 
         public List<Event> LstEvents { get; set; }
     }

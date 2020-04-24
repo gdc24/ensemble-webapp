@@ -16,12 +16,13 @@ namespace ensemble_webapp.Controllers
         {
 
             ProfileHomeVM model = new ProfileHomeVM();
-            model.CurrentUser = Globals.LOGGED_IN_USER;
-            model.EditedUserProfile = model.CurrentUser;
+            //model.CurrentUser = Globals.LOGGED_IN_USER;
+            //model.EditedUserProfile = model.CurrentUser;
 
             GetDAL get = new GetDAL();
             get.OpenConnection();
-
+            model.CurrentUser = get.GetUserByName("Giuliana Conte");
+            model.EditedUserProfile = model.CurrentUser;
             model.LstAllEvents = get.GetAllEvents();
 
             get.CloseConnection();
