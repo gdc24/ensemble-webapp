@@ -171,6 +171,7 @@ namespace ensemble_webapp.Database
             DateTime dtmDue = Convert.ToDateTime(dr["dtmDue"]);
             string strName = dr["strName"].ToString();
             string strAttachment = dr["strAttachment"].ToString();
+            bool ysnIsFinished = Convert.ToBoolean(dr["ysnIsFinished"]);
             int intAssignedToUserID = Convert.ToInt32(dr["intAssignedToUserID"]);
             string assignedToUserName = dr["assignedToUserName"].ToString();
 
@@ -190,7 +191,7 @@ namespace ensemble_webapp.Database
             Users userAssignedBy = new Users(intAssignedByUserID, strAssignedByName);
             Event paramEvent = new Event(intEventID, eventName, eventDate, eventLocation, group);
 
-            return new Task(intTaskID, dtmDue, strName, strAttachment, userAssignedTo, userAssignedBy, paramEvent);
+            return new Task(intTaskID, dtmDue, strName, strAttachment, userAssignedTo, userAssignedBy, paramEvent, ysnIsFinished);
         }
 
         private EventSchedule GetEventScheduleFromDR(NpgsqlDataReader dr)
@@ -1133,6 +1134,7 @@ namespace ensemble_webapp.Database
                 " s.\"intAssignedToUserID\"," +
                 " s.\"assignedToUserName\"," +
                 " s.\"intTaskID\"," +
+                " s.\"ysnIsFinished\"," +
                 " s.\"dtmDue\"," +
                 " s.\"strName\"," +
                 " s.\"strAttachment\"," +
@@ -1177,6 +1179,7 @@ namespace ensemble_webapp.Database
                 " s.\"intAssignedToUserID\"," +
                 " s.\"assignedToUserName\"," +
                 " s.\"intTaskID\"," +
+                " s.\"ysnIsFinished\"," +
                 " s.\"dtmDue\"," +
                 " s.\"strName\"," +
                 " s.\"strAttachment\"," +
@@ -1221,6 +1224,7 @@ namespace ensemble_webapp.Database
                 " s.\"intAssignedToUserID\"," +
                 " s.\"assignedToUserName\"," +
                 " s.\"intTaskID\"," +
+                " s.\"ysnIsFinished\"," +
                 " s.\"dtmDue\"," +
                 " s.\"strName\"," +
                 " s.\"strAttachment\"," +
@@ -1252,7 +1256,7 @@ namespace ensemble_webapp.Database
         }
 
         // get a list of tasks assigned to a user after a certain time
-        public List<Task> GetTasksDueAfter(Users user, DateTime dateTime)
+        public List<Task> GetUnfinishedTasksDueAfter(Users user, DateTime dateTime)
         {
             List<Task> retval = new List<Task>();
 
@@ -1266,6 +1270,7 @@ namespace ensemble_webapp.Database
                 " s.\"intAssignedToUserID\"," +
                 " s.\"assignedToUserName\"," +
                 " s.\"intTaskID\"," +
+                " s.\"ysnIsFinished\"," +
                 " s.\"dtmDue\"," +
                 " s.\"strName\"," +
                 " s.\"strAttachment\"," +
@@ -1278,6 +1283,7 @@ namespace ensemble_webapp.Database
                 " WHERE u.\"intUserID\" = s.\"intAssignedByUserID\"" +
                 " and e.\"intEventID\" = s.\"intEventID\"" +
                 " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and s.\"ysnIsFinished\" = false" +
                 " and s.\"intAssignedToUserID\" = " + user.IntUserID +
                 " and s.\"dtmDue\" >'" + dateTime + "'"; // YYYY-MM-DD HH:MM:SS.MMM
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
@@ -1296,6 +1302,54 @@ namespace ensemble_webapp.Database
 
             return retval;
         }
+
+
+        public List<Task> GetFinishedTasks(Users user)
+        {
+            List<Task> retval = new List<Task>();
+
+            // define a query
+            string query = "SELECT g.\"strName\" as \"groupName\"," +
+                " e.\"dtmDate\" as \"eventDate\"," +
+                " e.\"strLocation\" as \"eventLocation\"," +
+                " e.\"intGroupID\"," +
+                " s.\"intEventID\"," +
+                " e.\"strName\" as \"eventName\"," +
+                " s.\"intAssignedToUserID\"," +
+                " s.\"assignedToUserName\"," +
+                " s.\"intTaskID\"," +
+                " s.\"ysnIsFinished\"," +
+                " s.\"dtmDue\"," +
+                " s.\"strName\"," +
+                " s.\"strAttachment\"," +
+                " u.\"strName\" as \"strAssignedByName\"," +
+                " u.\"intUserID\" as \"intAssignedByUserID\" from (" +
+                " select t.*, u.\"strName\" as \"assignedToUserName\"" +
+                " from \"tasks\" t, \"users\" u" +
+                " where u.\"intUserID\" = t.\"intAssignedToUserID\"" +
+                " ) s, \"users\" u, \"events\" e, \"groups\" g" +
+                " WHERE u.\"intUserID\" = s.\"intAssignedByUserID\"" +
+                " and e.\"intEventID\" = s.\"intEventID\"" +
+                " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and s.\"ysnIsFinished\" = true" +
+                " and s.\"intAssignedToUserID\" = " + user.IntUserID; // YYYY-MM-DD HH:MM:SS.MMM
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Task tasks = GetTaskFromDR(dr);
+                retval.Add(tasks);
+            }
+
+            dr.Close();
+
+            return retval;
+        }
+
         // get a list of tasks assigned to a user before a certain time
         public List<Task> GetTasksDueBefore(Users user, DateTime dateTime)
         {
@@ -1311,6 +1365,7 @@ namespace ensemble_webapp.Database
                 " s.\"intAssignedToUserID\"," +
                 " s.\"assignedToUserName\"," +
                 " s.\"intTaskID\"," +
+                " s.\"ysnIsFinished\"," +
                 " s.\"dtmDue\"," +
                 " s.\"strName\"," +
                 " s.\"strAttachment\"," +
@@ -1357,6 +1412,7 @@ namespace ensemble_webapp.Database
                 " s.\"intAssignedToUserID\"," +
                 " s.\"assignedToUserName\"," +
                 " s.\"intTaskID\"," +
+                " s.\"ysnIsFinished\"," +
                 " s.\"dtmDue\"," +
                 " s.\"strName\"," +
                 " s.\"strAttachment\"," +

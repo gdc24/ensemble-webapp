@@ -7,7 +7,7 @@ namespace ensemble_webapp.Models
 {
     public class Task
     {
-        public Task(int intTaskID, DateTime dtmDue, string strName, string strAttachment, Users userAssignedTo, Users userAssignedBy, Event paramEvent)
+        public Task(int intTaskID, DateTime dtmDue, string strName, string strAttachment, Users userAssignedTo, Users userAssignedBy, Event paramEvent, bool ysnIsFinished)
         {
             IntTaskID = intTaskID;
             DtmDue = dtmDue;
@@ -16,6 +16,7 @@ namespace ensemble_webapp.Models
             UserAssignedTo = userAssignedTo;
             UserAssignedBy = userAssignedBy;
             Event = paramEvent;
+            YsnIsFinished = ysnIsFinished;
         }
 
         public int IntTaskID { get; set; }
@@ -31,6 +32,8 @@ namespace ensemble_webapp.Models
         public Users UserAssignedBy { get; set; }
 
         public Event Event { get; set; }
+
+        public bool YsnIsFinished { get; set; }
 
         public override bool Equals(object obj)
         {

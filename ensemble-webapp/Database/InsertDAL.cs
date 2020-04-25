@@ -65,6 +65,23 @@ namespace ensemble_webapp.Database
                 return false;
         }
 
+        public bool MarkTaskAsComplete(int intTaskID)
+        {
+            // define a query
+            string query = "UPDATE \"tasks\" SET \"ysnIsFinished\" = true" +
+                " WHERE \"intTaskID\" = " + intTaskID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            int result = cmd.ExecuteNonQuery();
+
+            conn.Close();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
+        }
+
         public bool InsertToUserEvents(Event e, Users editedUserProfile)
         {
             // define a query
@@ -96,8 +113,8 @@ namespace ensemble_webapp.Database
         {
             // define a query
             string query = "INSERT INTO public.tasks(" +
-                "\"dtmDue\", \"strName\", \"strAttachment\", \"intAssignedToUserID\", \"intAssignedByUserID\", \"intEventID\")" +
-                " VALUES(@dtmDue, @strName, @strAttachment, @intAssignedToUserID, @intAssignedByUserID, @intEventID); ";
+                "\"dtmDue\", \"strName\", \"strAttachment\", \"intAssignedToUserID\", \"intAssignedByUserID\", \"intEventID\", \"ysnIsFinished\")" +
+                " VALUES(@dtmDue, @strName, @strAttachment, @intAssignedToUserID, @intAssignedByUserID, @intEventID, false); ";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             cmd.Parameters.AddWithValue("dtmDue", task.DtmDue);

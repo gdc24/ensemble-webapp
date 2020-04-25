@@ -24,14 +24,17 @@ namespace ensemble_webapp.Controllers
                 TasksHomeVM model = new TasksHomeVM();
                 model.CurrentUser = Globals.LOGGED_IN_USER;
 
+                var taskEqualityComparer = new TaskEqualityComparer();
+
                 GetDAL get = new GetDAL();
                 get.OpenConnection();
 
-                model.TasksNotYetDueForUser = get.GetTasksDueAfter(model.CurrentUser, DateTime.Now);
+                model.TasksUnfinishedNotYetDueForUser = get.GetUnfinishedTasksDueAfter(model.CurrentUser, DateTime.Now);
                 model.LstAllUsers = get.GetAllUsers();
 
-                var taskEqualityComparer = new TaskEqualityComparer();
-                IEnumerable<Task> difference = get.GetTasksByAssignedToUser(model.CurrentUser).Except(model.TasksNotYetDueForUser, taskEqualityComparer);
+                model.FinishedTasks = get.GetFinishedTasks(model.CurrentUser);
+
+                IEnumerable<Task> difference = get.GetTasksByAssignedToUser(model.CurrentUser).Except(model.TasksUnfinishedNotYetDueForUser, taskEqualityComparer).Except(model.FinishedTasks, taskEqualityComparer);
 
                 model.TasksOverDueForUser = difference.ToList();
 
@@ -47,6 +50,18 @@ namespace ensemble_webapp.Controllers
 
         public ActionResult TasksHome()
         {
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult MarkTaskFinished(int intTaskID)
+        {
+            InsertDAL insertDAL = new InsertDAL();
+            insertDAL.OpenConnection();
+
+            insertDAL.MarkTaskAsComplete(intTaskID);
+
+            insertDAL.CloseConnection();
+
             return RedirectToAction("Index");
         }
 
