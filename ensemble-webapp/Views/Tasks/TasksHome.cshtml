@@ -54,7 +54,7 @@
         {
             <div class="row">
                 <div class="col-12">
-                    <p>you have no tasks due</p>
+                    <p><i>You have no unfinished tasks due</i></p>
                 </div>
             </div>
         }
@@ -62,7 +62,7 @@
         {
             <div class="row">
                 <div class="col-12">
-                    <p>overdue tasks</p>
+                    <p style="color:#ff0000"><strong>overdue tasks</strong></p>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -93,7 +93,7 @@
         {
             <div class="row">
                 <div class="col-12">
-                    <p>you have no over due tasks!</p>
+                    <p><i>You have no overdue tasks</i></p>
                 </div>
             </div>
         }
@@ -101,7 +101,7 @@
         {
             <div class="row">
                 <div class="col-12">
-                    <p>Completed Tasks</p>
+                    <p><strong>Completed Tasks</strong></p>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -129,7 +129,7 @@
          {
             <div class="row">
                 <div class="col-12">
-                    <p>no tasks completed yet</p>
+                    <p><i>You have not completed any tasks yet</i></p>
                 </div>
             </div>
          }
@@ -140,7 +140,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <p>Tasks Assigned By You</p>
+                        <p><strong>Tasks Assigned By You</strong></p>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -164,6 +164,13 @@
                                 </tr>
                             }
                         </table>
+                    </div>
+                </div>
+            } else
+            {
+                <div class="row">
+                    <div class="col-12">
+                        <p><i>You have not assigned any tasks yet</i></p>
                     </div>
                 </div>
             }

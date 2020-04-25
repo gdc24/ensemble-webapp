@@ -11,12 +11,12 @@
     </div>
     <div class=" row">
         <div class="col-12">
-            <p>Hello, @Model.CurrentUser.StrName!</p>
+            <p><i>Hello, @Model.CurrentUser.StrName!</i></p>
         </div>
         <div class="col-12">
             @if (Model.LstUpcomingRehearsals.Any())
             {
-                <p>upcoming rehearsals:</p>
+                <p><strong>Upcoming Rehearsals:</strong></p>
                 <ul>
                     @foreach (var r in Model.LstUpcomingRehearsals)
                     {
@@ -35,14 +35,14 @@
             }
             else
             {
-                <p>no upcoming rehearsals</p>
+                <p><i>You have no upcoming rehearsals</i></p>
             }
         </div>
         <br />
         <div class="col-12">
             @if (Model.LstUpcomingTasks.Any())
             {
-                <p>tasks due within 2 days:</p>
+                <p><strong>Tasks Due in Next 2 Days</strong></p>
                 <ul>
                     @foreach (var t in Model.LstUpcomingTasks)
                     {
@@ -61,11 +61,11 @@
             }
             else
             {
-                <p>no tasks due in next two days</p>
+                <p><i>You have no tasks due in the next 2 days</i></p>
             }
             @if (Model.LstOverdueTasks.Any())
             {
-                <p style="color:#ff0000">overdue tasks</p>
+                <p style="color:#ff0000"><strong>Overdue Tasks</strong></p>
                 <ul>
                     @foreach (var t in Model.LstOverdueTasks)
                     {
@@ -84,7 +84,7 @@
         <div class="col-12">
             @if (Model.LstEvents.Any())
             {
-                <p>events you're a part of</p>
+                <p><strong>Your Events</strong></p>
                 <ul>
                     @foreach (var e in Model.LstEvents)
                     {
@@ -93,9 +93,9 @@
                 </ul>
             } else
             {
-                <p>you're not a part of any events</p>
+                <p><i>you're not a part of any events</i></p>
                 <br />
-                <p>go to the profile page to join an event!</p>
+                <p><i>go to the profile page to join an event!</i></p>
             }
         </div>
     </div>  
