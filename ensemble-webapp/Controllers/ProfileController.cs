@@ -14,7 +14,6 @@ namespace ensemble_webapp.Controllers
         // GET: Profile
         public ActionResult Index()
         {
-
             ProfileHomeVM model = new ProfileHomeVM();
             model.CurrentUser = Globals.LOGGED_IN_USER;
             model.EditedUserProfile = model.CurrentUser;
@@ -23,7 +22,9 @@ namespace ensemble_webapp.Controllers
             get.OpenConnection();
             model.LstAllEvents = get.GetAllEvents();
 
-            IEnumerable<Event> difference = get.GetAllEvents().Except(model.CurrentUser.LstEvents);
+            var equalityComparer = new EventEqualityComparer();
+
+            IEnumerable<Event> difference = model.LstAllEvents.Except(model.CurrentUser.LstEvents, equalityComparer);
             model.LstEventsToJoin = difference.ToList();
 
             get.CloseConnection();
@@ -37,16 +38,13 @@ namespace ensemble_webapp.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddUserToEvent(Users editedUserProfile)
+        public ActionResult AddUserToEvent(ProfileHomeVM vm)
         {
             // add user to group
             InsertDAL insertDAL = new InsertDAL();
             insertDAL.OpenConnection();
 
-            foreach (var e in editedUserProfile.LstEvents)
-            {
-                insertDAL.InsertToUserEvents(e, editedUserProfile);
-            }
+            insertDAL.InsertToUserEvents(vm.NewEvent, vm.CurrentUser);
 
             insertDAL.CloseConnection();
 

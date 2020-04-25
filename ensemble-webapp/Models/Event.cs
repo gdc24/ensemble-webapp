@@ -29,5 +29,31 @@ namespace ensemble_webapp.Models
         public Group Group { get; set; }
 
         public Event() { }
+
+        public bool Equals(Event other)
+        {
+            return IntEventID == other.IntEventID;
+        }
+    }
+
+
+    class EventEqualityComparer : IEqualityComparer<Event>
+    {
+        public bool Equals(Event x, Event y)
+        {
+            return x.Equals(y);
+        }
+
+        public int GetHashCode(Event obj)
+        {
+            unchecked
+            {
+                if (obj == null)
+                    return 0;
+                int hashCode = obj.IntEventID.GetHashCode();
+                hashCode = (hashCode * 397) ^ obj.IntEventID.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }
