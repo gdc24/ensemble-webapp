@@ -13,7 +13,7 @@ namespace ensemble_webapp.Controllers
     {
         public ActionResult Index()
         {
-            if (Globals.LOGIN_STATUS)
+            if (!Globals.LOGIN_STATUS)
             {
                 return RedirectToAction("Login");
             }
@@ -25,16 +25,30 @@ namespace ensemble_webapp.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            if (!Globals.LOGIN_STATUS)
+            {
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                ViewBag.Message = "Your application description page.";
 
-            return View();
+                return View();
+            }
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            if (!Globals.LOGIN_STATUS)
+            {
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                ViewBag.Message = "Your contact page.";
 
-            return View();
+                return View();
+            }
         }
 
         public ActionResult Login()

@@ -38,24 +38,26 @@ namespace ensemble_webapp.Models
                    IntTaskID == task.IntTaskID;
         }
 
+        public Task() { }
 
-        public class TaskEqualityComparer : IEqualityComparer<Task>
+    }
+
+    class TaskEqualityComparer : IEqualityComparer<Task>
+    {
+        public bool Equals(Task x, Task y)
         {
-            public bool Equals(Task x, Task y)
-            {
-                return x.Equals(y);
-            }
+            return x.Equals(y);
+        }
 
-            public int GetHashCode(Task obj)
+        public int GetHashCode(Task obj)
+        {
+            unchecked
             {
-                unchecked
-                {
-                    if (obj == null)
-                        return 0;
-                    int hashCode = obj.IntTaskID.GetHashCode();
-                    hashCode = (hashCode * 397) ^ obj.IntTaskID.GetHashCode();
-                    return hashCode;
-                }
+                if (obj == null)
+                    return 0;
+                int hashCode = obj.IntTaskID.GetHashCode();
+                hashCode = (hashCode * 397) ^ obj.IntTaskID.GetHashCode();
+                return hashCode;
             }
         }
     }

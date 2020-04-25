@@ -15,23 +15,34 @@ namespace ensemble_webapp.Controllers
         // GET: Tasks
         public ActionResult Index()
         {
-            TasksHomeVM model = new TasksHomeVM();
-            model.CurrentUser = Globals.LOGGED_IN_USER;
+            if (!Globals.LOGIN_STATUS)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                TasksHomeVM model = new TasksHomeVM();
+                model.CurrentUser = Globals.LOGGED_IN_USER;
 
-            GetDAL get = new GetDAL();
-            get.OpenConnection();
+                GetDAL get = new GetDAL();
+                get.OpenConnection();
 
-            model.TasksNotYetDueForUser = get.GetTasksDueAfter(model.CurrentUser, DateTime.Now);
-            model.LstAllUsers = get.GetAllUsers();
+                model.TasksNotYetDueForUser = get.GetTasksDueAfter(model.CurrentUser, DateTime.Now);
+                model.LstAllUsers = get.GetAllUsers();
 
-            var taskEqualityComparer = new TaskEqualityComparer();
-            IEnumerable<Task> difference = get.GetTasksByAssignedToUser(model.CurrentUser).Except(model.TasksNotYetDueForUser, taskEqualityComparer);
+                var taskEqualityComparer = new TaskEqualityComparer();
+                IEnumerable<Task> difference = get.GetTasksByAssignedToUser(model.CurrentUser).Except(model.TasksNotYetDueForUser, taskEqualityComparer);
 
-            model.TasksOverDueForUser = difference.ToList();
+                model.TasksOverDueForUser = difference.ToList();
 
-            model.TasksAssignedByUser = get.GetTasksByAssignedByUser(model.CurrentUser);
+                model.TasksAssignedByUser = get.GetTasksByAssignedByUser(model.CurrentUser);
 
-            return View("TasksHome", model);
+                model.LstAllEvents = get.GetAllEvents();
+
+                get.CloseConnection();
+
+                return View("TasksHome", model);
+            }
         }
 
         public ActionResult TasksHome()
@@ -39,9 +50,12 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Task(TasksHomeVM vm)
+        public ActionResult AddTask(TasksHomeVM vm)
         {
             InsertDAL insertDAL = new InsertDAL();
+
+            vm.NewTask.UserAssignedBy = Globals.LOGGED_IN_USER;
+
             insertDAL.OpenConnection();
 
             insertDAL.InsertTask(vm.NewTask);

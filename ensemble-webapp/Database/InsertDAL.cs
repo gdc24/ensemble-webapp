@@ -97,10 +97,15 @@ namespace ensemble_webapp.Database
             // define a query
             string query = "INSERT INTO public.tasks(" +
                 "\"dtmDue\", \"strName\", \"strAttachment\", \"intAssignedToUserID\", \"intAssignedByUserID\", \"intEventID\")" +
-                " VALUES(?, ?, ?, ?, ?, ?); ";
+                " VALUES(@dtmDue, @strName, @strAttachment, @intAssignedToUserID, @intAssignedByUserID, @intEventID); ";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-            cmd.Parameters.AddWithValue("intEventID", e.IntEventID);
+            cmd.Parameters.AddWithValue("dtmDue", task.DtmDue);
+            cmd.Parameters.AddWithValue("strName", task.StrName);
+            cmd.Parameters.AddWithValue("strAttachment", task.StrAttachment);
+            cmd.Parameters.AddWithValue("intAssignedToUserID", task.UserAssignedTo.IntUserID);
+            cmd.Parameters.AddWithValue("intAssignedByUserID", task.UserAssignedBy.IntUserID);
+            cmd.Parameters.AddWithValue("intEventID", task.Event.IntEventID);
 
             int result = cmd.ExecuteNonQuery();
 

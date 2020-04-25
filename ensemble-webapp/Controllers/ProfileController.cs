@@ -14,22 +14,29 @@ namespace ensemble_webapp.Controllers
         // GET: Profile
         public ActionResult Index()
         {
-            ProfileHomeVM model = new ProfileHomeVM();
-            model.CurrentUser = Globals.LOGGED_IN_USER;
-            model.EditedUserProfile = model.CurrentUser;
+            if (!Globals.LOGIN_STATUS)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                ProfileHomeVM model = new ProfileHomeVM();
+                model.CurrentUser = Globals.LOGGED_IN_USER;
+                model.EditedUserProfile = model.CurrentUser;
 
-            GetDAL get = new GetDAL();
-            get.OpenConnection();
-            model.LstAllEvents = get.GetAllEvents();
+                GetDAL get = new GetDAL();
+                get.OpenConnection();
+                model.LstAllEvents = get.GetAllEvents();
 
-            var equalityComparer = new EventEqualityComparer();
+                var equalityComparer = new EventEqualityComparer();
 
-            IEnumerable<Event> difference = model.LstAllEvents.Except(model.CurrentUser.LstEvents, equalityComparer);
-            model.LstEventsToJoin = difference.ToList();
+                IEnumerable<Event> difference = model.LstAllEvents.Except(model.CurrentUser.LstEvents, equalityComparer);
+                model.LstEventsToJoin = difference.ToList();
 
-            get.CloseConnection();
+                get.CloseConnection();
 
-            return View("ProfileHome", model);
+                return View("ProfileHome", model);
+            }
         }
 
         public ActionResult ProfileHome()

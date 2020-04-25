@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static ensemble_webapp.Models.Task;
 
 namespace ensemble_webapp.Controllers
 {
@@ -21,7 +22,8 @@ namespace ensemble_webapp.Controllers
             GetDAL get = new GetDAL();
             get.OpenConnection();
 
-            model.LstUpcomingTasks = get.GetTasksDueAfter(model.CurrentUser, DateTime.Now).Except(get.GetTasksDueAfter(model.CurrentUser, DateTime.Now.AddDays(2.0))).ToList();
+            var taskEqualityComparer = new TaskEqualityComparer();
+            model.LstUpcomingTasks = get.GetTasksDueAfter(model.CurrentUser, DateTime.Now).Except(get.GetTasksDueAfter(model.CurrentUser, DateTime.Now.AddDays(2.0)), taskEqualityComparer).ToList();
             
             foreach (Event e in model.LstEvents)
             {
