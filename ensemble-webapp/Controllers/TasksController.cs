@@ -73,6 +73,8 @@ namespace ensemble_webapp.Controllers
 
             insertDAL.OpenConnection();
 
+            vm.NewTask.DtmDue = vm.NewTaskDtmDue;
+
             insertDAL.InsertTask(vm.NewTask);
 
             insertDAL.CloseConnection();

@@ -23,6 +23,7 @@
             {
                 <div class="row">
                     <div class="col-12">
+                        <p><strong>Upcoming Tasks Due</strong></p>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -62,7 +63,7 @@
         {
             <div class="row">
                 <div class="col-12">
-                    <p style="color:#ff0000"><strong>overdue tasks</strong></p>
+                    <p style="color:#ff0000"><strong>Overdue Tasks</strong></p>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -187,8 +188,8 @@
                 {
                     <div class="row row-new-task">
                         <div class="col-3">
-                            <label for="NewTask.DtmDue">due date</label>
-                            @Html.EditorFor(m => m.NewTask.DtmDue, new { htmlAttributes = new { @class = "form-control" } })
+                            <label for="NewTaskDtm.DtmDue">due date</label>
+                            @Html.EditorFor(m => m.NewTaskDtmDue, new { htmlAttributes = new { @class = "datepicker" } })
                         </div>
                         <div class="col-4">
                             <label for="NewTask.StrName">name</label>

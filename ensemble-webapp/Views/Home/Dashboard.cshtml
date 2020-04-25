@@ -50,9 +50,7 @@
                         {
                             <li>
                                 <p>@t.StrName due @t.DtmDue</p>
-                                <br />
                                 <p>@t.StrAttachment</p>
-                                <br />
                                 <p>in @t.Event.StrName from @t.UserAssignedBy.StrName</p>
                             </li>
                         }
@@ -70,11 +68,9 @@
                     @foreach (var t in Model.LstOverdueTasks)
                     {
                         <li><span style="color:#ff0000">
-                            <p>@t.StrName was due @t.DtmDue</p>
-                            <br />
-                            <p>@t.StrAttachment</p>
-                            <br />
-                            <p>in @t.Event.StrName from @t.UserAssignedBy.StrName </p>
+                            @t.StrName was due @t.DtmDue
+                            @t.StrAttachment
+                            in @t.Event.StrName from @t.UserAssignedBy.StrName
                         </span></li>
                     }
                 </ul>
