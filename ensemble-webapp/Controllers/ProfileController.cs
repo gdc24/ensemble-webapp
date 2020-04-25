@@ -47,13 +47,19 @@ namespace ensemble_webapp.Controllers
         [HttpPost]
         public ActionResult AddUserToEvent(ProfileHomeVM vm)
         {
+            Users currentUser = Globals.LOGGED_IN_USER;
             // add user to group
             InsertDAL insertDAL = new InsertDAL();
             insertDAL.OpenConnection();
 
-            insertDAL.InsertToUserEvents(vm.NewEvent, vm.CurrentUser);
+            insertDAL.InsertToUserEvents(vm.NewEvent, currentUser);
 
             insertDAL.CloseConnection();
+
+            GetDAL get = new GetDAL();
+            get.OpenConnection();
+            Globals.LOGGED_IN_USER.LstEvents = get.GetEventsByUser(currentUser.IntUserID);
+            get.CloseConnection();
 
             return RedirectToAction("Index");
         }
