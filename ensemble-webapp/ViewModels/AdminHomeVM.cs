@@ -14,5 +14,13 @@ namespace ensemble_webapp.ViewModels
 
         public List<Group> LstAllGroups { get; set; }
 
+        public List<Event> LstAllEvents { get; set; }
+
+        public EventSchedule NewEventSchedule { get; set; }
+
+        public Types NewType { get; set; }
+
+        public RehearsalPart NewRehearsalPart { get; set; }
+
     }
 }

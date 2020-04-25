@@ -62,6 +62,34 @@
                 Add An Event Schedule
             </h1>
         </div>
+        <div class="col-12">
+            @using (Html.BeginForm("AddEventSchedule", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="NewEventSchedule.StrMondayStart">Monday Start Time</label>
+                @Html.EditorFor(m => m.NewEventSchedule.StrMondayStart, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEventSchedule.StrTuesdayStart">Tuesday Start Time</label>
+                @Html.EditorFor(m => m.NewEventSchedule.StrTuesdayStart, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEventSchedule.StrWednesdayStart">Wednesday Start Time</label>
+                @Html.EditorFor(m => m.NewEventSchedule.StrWednesdayStart, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEventSchedule.StrThursdayStart">Thursday Start Time</label>
+                @Html.EditorFor(m => m.NewEventSchedule.StrThursdayStart, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEventSchedule.StrFridayStart">Friday Start Time</label>
+                @Html.EditorFor(m => m.NewEventSchedule.StrFridayStart, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEventSchedule.StrSaturdayStart">Saturday Start Time</label>
+                @Html.EditorFor(m => m.NewEventSchedule.StrSaturdayStart, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEventSchedule.StrSundayStart">Sunday Start Time</label>
+                @Html.EditorFor(m => m.NewEventSchedule.StrSundayStart, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEventSchedule.DurWeekdayDuration.TotalMinutes">Weekday Duration (Minutes)</label>
+                @Html.EditorFor(m => m.NewEventSchedule.DurWeekdayDuration.TotalMinutes, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEventSchedule.DurWeekendDuration.TotalMinutes">Weekend Duration (Minutes)</label>
+                @Html.EditorFor(m => m.NewEventSchedule.DurWeekendDuration.TotalMinutes, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEventSchedule.Event.IntEventID">Event</label>
+                @Html.DropDownListFor(m => m.NewEventSchedule.Event.IntEventID, new SelectList(Model.LstAllEvents, "intEventID", "strName"), new { @class = "form-control" })
+                <br />
+                <input type="submit" value="add event schedule" class="form-control btn-primary" />
+
+            }
+        </div>
     </div>
     <hr />
     <div class="row">

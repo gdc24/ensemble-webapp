@@ -1,6 +1,8 @@
 ﻿using NodaTime;
+using NodaTime.Text;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -44,5 +46,36 @@ namespace ensemble_webapp.Models
         public Duration DurWeekendDuration { get; set; }
 
         public Event Event { get; set; }
+
+
+        public string StrMondayStart { get; set; }
+
+        public string StrTuesdayStart { get; set; }
+
+        public string StrWednesdayStart { get; set; }
+
+        public string StrThursdayStart { get; set; }
+
+        public string StrFridayStart { get; set; }
+
+        public string StrSaturdayStart { get; set; }
+
+        public string StrSundayStart { get; set; }
+
+        public EventSchedule(Event @event, int intMinutesWeekday, int intMinutesWeekend, string strMondayStart, string strTuesdayStart, string strWednesdayStart, string strThursdayStart, string strFridayStart, string strSaturdayStart, string strSundayStart)
+        {
+            Event = @event;
+            DurWeekdayDuration = Duration.FromMinutes(intMinutesWeekday);
+            DurWeekendDuration = Duration.FromMinutes(intMinutesWeekend);
+            var culture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+            var pattern = LocalTimePattern.Create("hh:mm tt", culture);
+            TmeMondayStart = pattern.Parse(strMondayStart).Value;
+            TmeTuesdayStart = pattern.Parse(strTuesdayStart).Value;
+            TmeWednesdayStart = pattern.Parse(strWednesdayStart).Value;
+            TmeThursdayStart = pattern.Parse(strThursdayStart).Value;
+            TmeFridayStart = pattern.Parse(strFridayStart).Value;
+            TmeSaturdayStart = pattern.Parse(strSaturdayStart).Value;
+            TmeSundayStart = pattern.Parse(strSundayStart).Value;
+        }
     }
 }

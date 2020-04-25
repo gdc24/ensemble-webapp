@@ -21,6 +21,7 @@ namespace ensemble_webapp.Controllers
                 get.OpenConnection();
 
                 model.LstAllGroups = get.GetAllGroups();
+                model.LstAllEvents = get.GetAllEvents();
 
                 get.CloseConnection();
 
@@ -57,6 +58,19 @@ namespace ensemble_webapp.Controllers
             insert.OpenConnection();
 
             insert.InsertEvent(vm.NewEvent);
+
+            insert.CloseConnection();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult AddEvenSchedule(AdminHomeVM vm)
+        {
+            InsertDAL insert = new InsertDAL();
+            insert.OpenConnection();
+
+            insert.InsertEventSchedule(vm.NewEventSchedule);
 
             insert.CloseConnection();
 
