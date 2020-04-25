@@ -22,5 +22,7 @@ namespace ensemble_webapp.ViewModels
 
         public RehearsalPart NewRehearsalPart { get; set; }
 
+        public List<Event> LstAdminEvents { get; set; }
+
     }
 }

@@ -8,6 +8,8 @@ namespace ensemble_webapp.ViewModels
 {
     public class ScheduleHomeVM
     {
-        List<Rehearsal> LstUpcomingRehearsals { get; set; }
+        public List<Rehearsal> LstUpcomingRehearsals { get; set; }
+
+        public Users CurrentUser { get; set; }
     }
 }

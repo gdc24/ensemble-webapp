@@ -21,7 +21,9 @@
                 Add A Group
             </h1>
         </div>
-        <div class="col-12">
+    </div>
+    <div class="row">
+        <div class="col-6">
             @using (Html.BeginForm("AddGroup", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <label for="NewGroup.strName">Group Name</label>
@@ -30,15 +32,27 @@
                 <input type="submit" value="add Group" class="form-control btn-primary" />
             }
         </div>
+        @if (Model.LstAllGroups.Any())
+        {
+            <div class="col-6">
+                <h3>Current Groups</h3>
+                <ul>
+                    @foreach (var g in Model.LstAllGroups)
+                    {
+                        <li>@g.StrName</li>
+                    }
+                </ul>
+            </div>
+        }
     </div>
     <hr />
     <div class="row">
-        <div class="col-12">
-            <h1>
-                Add An Event
-            </h1>
-        </div>
-        <div class="col-12">
+        <h1>
+            Add An Event
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-6">
             @using (Html.BeginForm("AddEvent", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <label for="NewEvent.StrName">Event Name</label>
@@ -54,6 +68,18 @@
 
             }
         </div>
+        @if (Model.LstAllEvents.Any())
+        {
+            <div class="col-6">
+                <h3>Current Events</h3>
+                <ul>
+                    @foreach (var e in Model.LstAllEvents)
+                    {
+                        <li><i>@e.StrName</i> in @e.Group.StrName</li>
+                    }
+                </ul>
+            </div>
+        }
     </div>
     <hr />
     <div class="row">
@@ -62,32 +88,33 @@
                 Add An Event Schedule
             </h1>
         </div>
-        <div class="col-12">
+    </div>
+    <div class="row">
+        <div class="col-6">
             @using (Html.BeginForm("AddEventSchedule", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
+                <label for="NewEventSchedule.Event.IntEventID">Event</label>
+                @Html.DropDownListFor(m => m.NewEventSchedule.Event.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
                 <label for="NewEventSchedule.StrMondayStart">Monday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrMondayStart, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.NewEventSchedule.StrMondayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
                 <label for="NewEventSchedule.StrTuesdayStart">Tuesday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrTuesdayStart, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.NewEventSchedule.StrTuesdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
                 <label for="NewEventSchedule.StrWednesdayStart">Wednesday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrWednesdayStart, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.NewEventSchedule.StrWednesdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
                 <label for="NewEventSchedule.StrThursdayStart">Thursday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrThursdayStart, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.NewEventSchedule.StrThursdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
                 <label for="NewEventSchedule.StrFridayStart">Friday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrFridayStart, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.NewEventSchedule.StrFridayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
                 <label for="NewEventSchedule.StrSaturdayStart">Saturday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrSaturdayStart, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.NewEventSchedule.StrSaturdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
                 <label for="NewEventSchedule.StrSundayStart">Sunday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrSundayStart, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.NewEventSchedule.StrSundayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
                 <label for="NewEventSchedule.DurWeekdayDuration.TotalMinutes">Weekday Duration (Minutes)</label>
                 @Html.EditorFor(m => m.NewEventSchedule.DurWeekdayDuration.TotalMinutes, new { htmlAttributes = new { @class = "form-control" } })
                 <label for="NewEventSchedule.DurWeekendDuration.TotalMinutes">Weekend Duration (Minutes)</label>
                 @Html.EditorFor(m => m.NewEventSchedule.DurWeekendDuration.TotalMinutes, new { htmlAttributes = new { @class = "form-control" } })
-                <label for="NewEventSchedule.Event.IntEventID">Event</label>
-                @Html.DropDownListFor(m => m.NewEventSchedule.Event.IntEventID, new SelectList(Model.LstAllEvents, "intEventID", "strName"), new { @class = "form-control" })
                 <br />
                 <input type="submit" value="add event schedule" class="form-control btn-primary" />
-
             }
         </div>
     </div>

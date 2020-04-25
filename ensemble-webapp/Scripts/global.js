@@ -20,7 +20,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     jQuery('.datetimepicker').datetimepicker({
         minDate: 0,
-        format: 'm/d/Y H:i'
+        format: 'm/d/Y g:ia',
+        formatTime: 'g:ia',
+        validateOnBlur: false
+    });
+
+    jQuery('.timepicker').datetimepicker({
+        datepicker: false,
+        format: 'g:ia',
+        formatTime: 'g:ia',
+        validateOnBlur: false
     });
 
     //if (isInvalidPassword) {

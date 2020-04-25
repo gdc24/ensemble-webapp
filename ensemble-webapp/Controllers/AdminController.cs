@@ -22,6 +22,7 @@ namespace ensemble_webapp.Controllers
 
                 model.LstAllGroups = get.GetAllGroups();
                 model.LstAllEvents = get.GetAllEvents();
+                model.LstAdminEvents = get.GetAdminEventsByUser(Globals.LOGGED_IN_USER.IntUserID);
 
                 get.CloseConnection();
 
