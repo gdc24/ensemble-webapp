@@ -37,5 +37,26 @@ namespace ensemble_webapp.Models
             return obj is Task task &&
                    IntTaskID == task.IntTaskID;
         }
+
+
+        public class TaskEqualityComparer : IEqualityComparer<Task>
+        {
+            public bool Equals(Task x, Task y)
+            {
+                return x.Equals(y);
+            }
+
+            public int GetHashCode(Task obj)
+            {
+                unchecked
+                {
+                    if (obj == null)
+                        return 0;
+                    int hashCode = obj.IntTaskID.GetHashCode();
+                    hashCode = (hashCode * 397) ^ obj.IntTaskID.GetHashCode();
+                    return hashCode;
+                }
+            }
+        }
     }
 }

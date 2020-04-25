@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static ensemble_webapp.Models.Task;
 
 namespace ensemble_webapp.Controllers
 {
@@ -21,8 +22,10 @@ namespace ensemble_webapp.Controllers
             get.OpenConnection();
 
             model.TasksNotYetDueForUser = get.GetTasksDueAfter(model.CurrentUser, DateTime.Now);
+            model.LstAllUsers = get.GetAllUsers();
 
-            IEnumerable<Task> difference = get.GetTasksByAssignedToUser(model.CurrentUser).Except(model.TasksNotYetDueForUser);
+            var taskEqualityComparer = new TaskEqualityComparer();
+            IEnumerable<Task> difference = get.GetTasksByAssignedToUser(model.CurrentUser).Except(model.TasksNotYetDueForUser, taskEqualityComparer);
 
             model.TasksOverDueForUser = difference.ToList();
 
@@ -36,12 +39,12 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult NewTask(Task newTask)
+        public ActionResult Task(TasksHomeVM vm)
         {
             InsertDAL insertDAL = new InsertDAL();
             insertDAL.OpenConnection();
 
-            insertDAL.InsertTask(newTask);
+            insertDAL.InsertTask(vm.NewTask);
 
             insertDAL.CloseConnection();
 

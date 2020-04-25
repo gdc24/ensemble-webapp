@@ -84,7 +84,8 @@
                 @Html.EditorFor(m => m.NewTask.StrAttachment, new { htmlAttributes = new { @class = "form-control" } })
                 <br />
                 <label for="newTask.usserAssignedTo">assign to user</label>
-                @Html.EditorFor(m => m.NewTask.UserAssignedTo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(m => m.NewTask.UserAssignedTo.IntUserID, new SelectList(Model.LstAllUsers, "intUserID", "strName"), new { @class = "form-control" })
+                <br/>
                 <input type="submit" value="create task" class="form-control btn-primary" />
             }
         </div>

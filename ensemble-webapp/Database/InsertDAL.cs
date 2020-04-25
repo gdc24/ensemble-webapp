@@ -94,8 +94,22 @@ namespace ensemble_webapp.Database
 
         public bool InsertTask(Task task)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            // define a query
+            string query = "INSERT INTO public.tasks(" +
+                "\"dtmDue\", \"strName\", \"strAttachment\", \"intAssignedToUserID\", \"intAssignedByUserID\", \"intEventID\")" +
+                " VALUES(?, ?, ?, ?, ?, ?); ";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("intEventID", e.IntEventID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            conn.Close();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
 
         public bool InsertRehearsal(Rehearsal rehearsal)

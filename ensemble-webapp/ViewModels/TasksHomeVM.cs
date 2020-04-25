@@ -18,5 +18,7 @@ namespace ensemble_webapp.ViewModels
         public List<Task> TasksAssignedByUser { get; set; }
 
         public Task NewTask { get; set; }
+
+        public List<Users> LstAllUsers { get; set; }
     }
 }

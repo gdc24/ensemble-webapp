@@ -30,9 +30,10 @@ namespace ensemble_webapp.Models
 
         public Event() { }
 
-        public bool Equals(Event other)
+        public override bool Equals(object obj)
         {
-            return IntEventID == other.IntEventID;
+            return obj is Event @event &&
+                   IntEventID == @event.IntEventID;
         }
     }
 
