@@ -41,6 +41,7 @@ namespace ensemble_webapp.Controllers
                 model.TasksAssignedByUser = get.GetTasksByAssignedByUser(model.CurrentUser);
 
                 model.LstAllEvents = get.GetAllEvents();
+                model.LstAdminEvents = get.GetAdminEventsByUser(model.CurrentUser.IntUserID);
 
                 get.CloseConnection();
 

@@ -37,6 +37,15 @@
                     }
                 </ul>
             </div>
+            <div class="col-12">
+                <p>list of events you're an admin for</p>
+                <ul>
+                    @foreach (var e in Model.CurrentUser.LstEventsIsAdmin)
+                    {
+                        <li>@e.StrName</li>
+                    }
+                </ul>
+            </div>
         </div>
         <button onclick="showDiv('edit-user-row')" class="btn btn-info">Toggle Edit User Form</button>
         <div id="edit-user-row" class="row edit-user" style="display: none;">

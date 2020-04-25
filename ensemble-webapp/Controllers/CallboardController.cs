@@ -15,28 +15,38 @@ namespace ensemble_webapp.Controllers
         // GET: Callboard
         public ActionResult Index()
         {
-            CallboardHomeVM model = new CallboardHomeVM();
-            model.CurrentUser = Globals.LOGGED_IN_USER;
-
-            GetDAL get = new GetDAL();
-            get.OpenConnection();
-
-            foreach (Event e in model.CurrentUser.LstEvents)
+            if (!Globals.LOGIN_STATUS)
             {
-                model.LstAllCallboards = get.GetCallboardsByEvent(e);
+                return RedirectToAction("Login", "Home");
             }
-
-            if (model.LstAllCallboards != null)
+            else
             {
-                model.LstAllCallboards.Sort();
+                CallboardHomeVM model = new CallboardHomeVM();
+                model.CurrentUser = Globals.LOGGED_IN_USER;
+
+                GetDAL get = new GetDAL();
+                get.OpenConnection();
+
+                model.LstAllCallboards = new List<Callboard>();
+
+                foreach (Event e in model.CurrentUser.LstEvents)
+                {
+                    List<Callboard> callboards = get.GetCallboardsByEvent(e);
+                    model.LstAllCallboards.AddRange(callboards);
+                }
+
+                if (model.LstAllCallboards != null)
+                {
+                    model.LstAllCallboards.Sort();
+                }
+
+                model.LstAdminEvents = get.GetAdminEventsByUser(model.CurrentUser.IntUserID);
+
+
+                get.CloseConnection();
+
+                return View("CallboardHome", model);
             }
-
-            model.LstAllEvents = get.GetAllEvents();
-
-
-            get.CloseConnection();
-
-            return View("CallboardHome", model);
         }
 
         public ActionResult CallboardHome()

@@ -602,6 +602,38 @@ namespace ensemble_webapp.Database
 
         }
 
+        public List<Event> GetAdminEventsByUser(int intUserID)
+        {
+            List<Event> retval = new List<Event>();
+
+            // define a query
+            string query = "SELECT e.*, u.\"intUserID\", g.\"strName\" as \"groupName\"" +
+                " FROM events e, \"userEvents\" ue, \"users\" u, \"groups\" g" +
+                " WHERE u.\"intUserID\" = ue.\"intUserID\"" +
+                " AND e.\"intEventID\" = ue.\"intEventID\"" +
+                " AND g.\"intGroupID\" = e.\"intGroupID\"" +
+                " AND ue.\"ysnIsAdmin\" = true" +
+                " AND u.\"intUserID\" = " + intUserID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Event tmpEvent = GetEventFromDR(dr);
+                //int intEventID = Convert.ToInt32(dr["intEventID"]);
+                //Event tmpEvent = GetEventByID(intEventID);
+                retval.Add(tmpEvent);
+            }
+
+            dr.Close();
+
+            return retval;
+
+        }
+
         public List<Event> GetEventsByGroup(Group group)
         {
             List<Event> retval = new List<Event>();

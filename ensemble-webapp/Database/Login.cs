@@ -20,6 +20,7 @@ namespace ensemble_webapp.Database
             getDAL.OpenConnection();
 
             usr.LstEvents = getDAL.GetEventsByUser(usr.IntUserID);
+            usr.LstEventsIsAdmin = getDAL.GetAdminEventsByUser(usr.IntUserID);
             Globals.LOGIN_STATUS = true;
             Globals.LOGGED_IN_USER = usr;
 
@@ -121,7 +122,7 @@ namespace ensemble_webapp.Database
 
                 get.CloseConnection();
 
-                return LoginUser(usr);
+                return LoginUser(completeUser);
             }
 
             getDAL.CloseConnection();

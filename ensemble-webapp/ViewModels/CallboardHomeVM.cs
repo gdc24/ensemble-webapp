@@ -14,6 +14,11 @@ namespace ensemble_webapp.ViewModels
 
         public Callboard NewAnnouncement { get; set; }
 
-        public List<Event> LstAllEvents { get; set; }
+        public List<Event> LstAdminEvents { get; set; }
+
+        public CallboardHomeVM()
+        {
+            LstAllCallboards = new List<Callboard>();
+        }
     }
 }

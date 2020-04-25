@@ -206,7 +206,7 @@
                         </div>
                         <div class="col-4">
                             <label for="NewTask.Event.IntEventID">event</label>
-                            @Html.DropDownListFor(m => m.NewTask.Event.IntEventID, new SelectList(Model.LstAllEvents, "intEventID", "strName"), new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.NewTask.Event.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
                         </div>
                         <div class="col-2">
                             <br />

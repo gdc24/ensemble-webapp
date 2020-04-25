@@ -43,6 +43,8 @@ namespace ensemble_webapp.Models
 
         public List<Event> LstEvents { get; set; }
 
+        public List<Event> LstEventsIsAdmin { get; set; }
+
         public Users() { }
 
         public Users(int intUserID, string strName)

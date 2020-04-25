@@ -12,7 +12,7 @@
         </div>
         <div class="col-12">
             <p>callboard notifications</p>
-            @if (Model.LstAllCallboards != null)
+            @if (Model.LstAllCallboards.Any())
             {
                 foreach (var c in Model.LstAllCallboards)
                 {
@@ -40,9 +40,9 @@
                     <label for="NewAnnouncement.StrSubject">Subject</label>
                     @Html.EditorFor(m => m.NewAnnouncement.StrSubject, new { htmlAttributes = new { @class = "form-control" } })
                     <label for="NewAnnouncement.StrSubject">Note</label>
-                    @Html.EditorFor(m => m.NewAnnouncement.StrNote, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.TextAreaFor(m => m.NewAnnouncement.StrNote, new { @class = "form-control" } )
                     <label for="NewAnnouncement.Event">Event</label>
-                    @Html.DropDownListFor(m => m.NewAnnouncement.Event.IntEventID, new SelectList(Model.LstAllEvents, "intEventID", "strName"), new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.NewAnnouncement.Event.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
                     <br/>
                     <input type="submit" value="add callboard announcement" class="form-control btn-primary" />
                 }

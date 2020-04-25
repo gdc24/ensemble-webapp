@@ -33,5 +33,7 @@ namespace ensemble_webapp.ViewModels
         public List<Users> LstAllUsers { get; set; }
 
         public List<Event> LstAllEvents { get; set; }
+
+        public List<Event> LstAdminEvents { get; set; }
     }
 }
