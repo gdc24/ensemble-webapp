@@ -14,17 +14,24 @@ namespace ensemble_webapp.Controllers
         // GET: Conflict
         public ActionResult Index()
         {
-            ConflictsHomeVM model = new ConflictsHomeVM();
-            model.CurrentUser = Globals.LOGGED_IN_USER;
+            if (!Globals.LOGIN_STATUS)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                ConflictsHomeVM model = new ConflictsHomeVM();
+                model.CurrentUser = Globals.LOGGED_IN_USER;
 
-            GetDAL get = new GetDAL();
-            get.OpenConnection();
+                GetDAL get = new GetDAL();
+                get.OpenConnection();
 
-            model.LstConflicts = get.GetConflictsByUser(model.CurrentUser);
+                model.LstConflicts = get.GetConflictsByUser(model.CurrentUser);
 
-            get.CloseConnection();
+                get.CloseConnection();
 
-            return View("ConflictsHome", model);
+                return View("ConflictsHome", model);
+            }
         }
 
         public ActionResult ConflictsHome()
@@ -32,12 +39,14 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult AddConflict(Conflict c)
+        public ActionResult AddConflict(ConflictsHomeVM vm)
         {
+            vm.ConflictToAdd.User = Globals.LOGGED_IN_USER;
+
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
 
-            insert.InsertConflict(c);
+            insert.InsertConflict(vm.ConflictToAdd);
 
             insert.CloseConnection();
 

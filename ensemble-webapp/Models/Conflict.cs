@@ -22,5 +22,7 @@ namespace ensemble_webapp.Models
         public DateTime DtmEndDateTime { get; set; }
 
         public Users User { get; set; }
+
+        public Conflict() { }
     }
 }

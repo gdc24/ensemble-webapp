@@ -87,7 +87,7 @@ namespace ensemble_webapp.Database
             // define a query
             string query = "INSERT INTO public.\"userEvents\"(" +
                 " \"intEventID\", \"intUserID\")" +
-                " VALUES(@intEventID, @intUserID); ";
+                " VALUES(@intEventID, @intUserID);";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             cmd.Parameters.AddWithValue("intEventID", e.IntEventID);
@@ -105,8 +105,24 @@ namespace ensemble_webapp.Database
 
         public bool InsertConflict(Conflict conflict)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            // define a query
+            string query = "INSERT INTO public.\"conflicts\"(" +
+                " \"dtmStartDateTime\", \"dtmEndDateTime\", \"intUserID\")" +
+                " VALUES(@dtmStartDateTime, @dtmEndDateTime, @intUserID);";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("dtmStartDateTime", conflict.DtmStartDateTime);
+            cmd.Parameters.AddWithValue("dtmEndDateTime", conflict.DtmEndDateTime);
+            cmd.Parameters.AddWithValue("intUserID", conflict.User.IntUserID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            conn.Close();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
 
         public bool InsertTask(Task task)
