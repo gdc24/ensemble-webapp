@@ -1296,6 +1296,51 @@ namespace ensemble_webapp.Database
 
             return retval;
         }
+        // get a list of tasks assigned to a user before a certain time
+        public List<Task> GetTasksDueBefore(Users user, DateTime dateTime)
+        {
+            List<Task> retval = new List<Task>();
+
+            // define a query
+            string query = "SELECT g.\"strName\" as \"groupName\"," +
+                " e.\"dtmDate\" as \"eventDate\"," +
+                " e.\"strLocation\" as \"eventLocation\"," +
+                " e.\"intGroupID\"," +
+                " s.\"intEventID\"," +
+                " e.\"strName\" as \"eventName\"," +
+                " s.\"intAssignedToUserID\"," +
+                " s.\"assignedToUserName\"," +
+                " s.\"intTaskID\"," +
+                " s.\"dtmDue\"," +
+                " s.\"strName\"," +
+                " s.\"strAttachment\"," +
+                " u.\"strName\" as \"strAssignedByName\"," +
+                " u.\"intUserID\" as \"intAssignedByUserID\" from (" +
+                " select t.*, u.\"strName\" as \"assignedToUserName\"" +
+                " from \"tasks\" t, \"users\" u" +
+                " where u.\"intUserID\" = t.\"intAssignedToUserID\"" +
+                " ) s, \"users\" u, \"events\" e, \"groups\" g" +
+                " WHERE u.\"intUserID\" = s.\"intAssignedByUserID\"" +
+                " and e.\"intEventID\" = s.\"intEventID\"" +
+                " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and s.\"intAssignedToUserID\" = " + user.IntUserID +
+                " and s.\"dtmDue\" <'" + dateTime + "'"; // YYYY-MM-DD HH:MM:SS.MMM
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Task tasks = GetTaskFromDR(dr);
+                retval.Add(tasks);
+            }
+
+            dr.Close();
+
+            return retval;
+        }
 
         public List<Task> GetTasksByEventAndUser(Users user, Event paramEvent)
         {

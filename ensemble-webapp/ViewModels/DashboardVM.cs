@@ -15,5 +15,10 @@ namespace ensemble_webapp.ViewModels
         public List<Event> LstEvents { get; set; }
 
         public List<Rehearsal> LstUpcomingRehearsals { get; set; }
+
+        public DashboardVM()
+        {
+            LstUpcomingRehearsals = new List<Rehearsal>();
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace ensemble_webapp.Controllers
 {
     public class HomeController : Controller
     {
+        static readonly double DAYS_TO_SHOW_TASKS = 2;
         public ActionResult Index()
         {
             if (!Globals.LOGIN_STATUS)
@@ -67,21 +68,8 @@ namespace ensemble_webapp.Controllers
         public ActionResult LoginUser(LoginVM vm)
         {
             if (Database.Login.VerifyUser(vm.logInUser)) {
-                return RedirectToAction("ProfileHome", "Profile");
+                return RedirectToAction("Dashboard");
             }
-
-            //ProfileHomeVM model = new ProfileHomeVM();
-
-            //GetDAL get = new GetDAL();
-            //get.OpenConnection();
-
-            //Globals.LOGGED_IN_USER = get.GetUserByName(vm.logInUser.StrName);
-            //model.LstAllEvents = get.GetAllEvents();
-
-            //get.CloseConnection();
-
-            //model.CurrentUser = Globals.LOGGED_IN_USER;
-            //model.EditedUserProfile = model.CurrentUser;
 
             return RedirectToAction("Login");
         }
@@ -90,10 +78,49 @@ namespace ensemble_webapp.Controllers
         public ActionResult NewUser(Users newUser)
         {
             if (Database.Login.CreateUser(newUser)) {
-                return RedirectToAction("Index");
+                return RedirectToAction("Dashboard");
             }
 
             return RedirectToAction("Login");
+        }
+
+        public ActionResult Dashboard()
+        {
+            if (!Globals.LOGIN_STATUS)
+            {
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                DashboardVM model = new DashboardVM();
+                model.CurrentUser = Globals.LOGGED_IN_USER;
+                model.LstEvents = model.CurrentUser.LstEvents;
+
+                GetDAL get = new GetDAL();
+                get.OpenConnection();
+
+                var taskEqualityComparer = new TaskEqualityComparer();
+                model.LstUpcomingTasks = get.GetTasksDueAfter(model.CurrentUser, DateTime.Now).Except(get.GetTasksDueBefore(model.CurrentUser, DateTime.Now.AddDays(DAYS_TO_SHOW_TASKS)), taskEqualityComparer).ToList();
+
+
+                foreach (Event e in model.LstEvents)
+                {
+                    List<Rehearsal> rehearsals = get.GetRehearsalsByEvent(e);
+                    if (rehearsals.Any())
+                    { 
+                        model.LstUpcomingRehearsals = rehearsals;
+                    }
+                }
+
+                get.CloseConnection();
+
+                return View("Dashboard", model);
+            }
+        }
+
+        public ActionResult DashboardHome()
+        {
+            return RedirectToAction("Dashboard");
         }
 
         public ActionResult Logout()
