@@ -17,49 +17,12 @@
                 <p>Name: @Model.CurrentUser.StrName</p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <p>
-                    Tasks to do
-                </p>
-            </div>
-        </div>
-
-        @using (Html.BeginForm("AddTask", "Tasks", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @if (Model.TasksUnfinishedNotYetDueForUser.Any())
         {
-            <div class="row">
-                <div class="col-12">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Task</th>
-                                <th>Note</th>
-                                <th>Due Date</th>
-                                <th>Event</th>
-                                <th>Assigned by</th>
-                                <th>Mark As Done</th>
-                            </tr>
-                        </thead>
-                        @foreach (var t in Model.TasksUnfinishedNotYetDueForUser)
-                        {
-                            <tr>
-                                <td>@t.StrName</td>
-                                <td>@t.StrAttachment</td>
-                                <td>@t.DtmDue</td>
-                                <td>@t.Event.StrName</td>
-                                <td>@t.UserAssignedBy.StrName</td>
-                                <td><input type="button" value="Done!" class="btn btn-success" onclick="location.href='@Url.Action("MarkTaskFinished", "Tasks")?intTaskID=' + @t.IntTaskID" /></td>
-                            </tr>
-                        }
-                    </table>
-                </div>
-            </div>
-
-            if (Model.TasksOverDueForUser.Any())
+            using (Html.BeginForm("AddTask", "Tasks", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="row">
                     <div class="col-12">
-                        <p>Over Due Tasks</p>
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -71,7 +34,7 @@
                                     <th>Mark As Done</th>
                                 </tr>
                             </thead>
-                            @foreach (var t in Model.TasksOverDueForUser)
+                            @foreach (var t in Model.TasksUnfinishedNotYetDueForUser)
                             {
                                 <tr>
                                     <td>@t.StrName</td>
@@ -86,38 +49,90 @@
                     </div>
                 </div>
             }
-            else
-            {
-                <p>You have no over due tasks!</p>
-            }
         }
-        <div class="row">
-            <div class="col-12">
-                <p>Completed Tasks</p>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Task</th>
-                            <th>Note</th>
-                            <th>Due Date</th>
-                            <th>Event</th>
-                            <th>Assigned by</th>
-                        </tr>
-                    </thead>
-                    @foreach (var t in Model.FinishedTasks)
-                    {
-                        <tr>
-                            <td>@t.StrName</td>
-                            <td>@t.StrAttachment</td>
-                            <td>@t.DtmDue</td>
-                            <td>@t.Event.StrName</td>
-                            <td>@t.UserAssignedBy.StrName</td>
-                        </tr>
-                    }
-                </table>
+        else
+        {
+            <div class="row">
+                <div class="col-12">
+                    <p>you have no tasks due</p>
+                </div>
             </div>
-        </div>
-
+        }
+        @if (Model.TasksOverDueForUser.Any())
+        {
+            <div class="row">
+                <div class="col-12">
+                    <p>overdue tasks</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Note</th>
+                                <th>Due Date</th>
+                                <th>Event</th>
+                                <th>Assigned by</th>
+                                <th>Mark As Done</th>
+                            </tr>
+                        </thead>
+                        @foreach (var t in Model.TasksOverDueForUser)
+                        {
+                            <tr>
+                                <td>@t.StrName</td>
+                                <td>@t.StrAttachment</td>
+                                <td>@t.DtmDue</td>
+                                <td>@t.Event.StrName</td>
+                                <td>@t.UserAssignedBy.StrName</td>
+                                <td><input type="button" value="Done!" class="btn btn-success" onclick="location.href='@Url.Action("MarkTaskFinished", "Tasks")?intTaskID=' + @t.IntTaskID" /></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-12">
+                    <p>you have no over due tasks!</p>
+                </div>
+            </div>
+        }
+        @if (Model.FinishedTasks.Any())
+        {
+            <div class="row">
+                <div class="col-12">
+                    <p>Completed Tasks</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Note</th>
+                                <th>Due Date</th>
+                                <th>Event</th>
+                                <th>Assigned by</th>
+                            </tr>
+                        </thead>
+                        @foreach (var t in Model.FinishedTasks)
+                        {
+                            <tr>
+                                <td>@t.StrName</td>
+                                <td>@t.StrAttachment</td>
+                                <td>@t.DtmDue</td>
+                                <td>@t.Event.StrName</td>
+                                <td>@t.UserAssignedBy.StrName</td>
+                            </tr>
+                        }
+                    </table>
+                    </div>
+                </div>
+         } else
+         {
+            <div class="row">
+                <div class="col-12">
+                    <p>no tasks completed yet</p>
+                </div>
+            </div>
+         }
         @if (Globals.IS_ADMIN)
         {
             if (Model.TasksAssignedByUser.Any())
@@ -153,46 +168,46 @@
                 </div>
             }
 
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="display-2">
-                        Add A Task
-                    </h1>
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="display-2">
+                            Add A Task
+                        </h1>
+                    </div>
                 </div>
-            </div>
 
-            using (Html.BeginForm("AddTask", "Tasks", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="row row-new-task">
-                    <div class="col-3">
-                        <label for="NewTask.DtmDue">due date</label>
-                        @Html.EditorFor(m => m.NewTask.DtmDue, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                    <div class="col-4">
-                        <label for="NewTask.StrName">name</label>
-                        @Html.EditorFor(m => m.NewTask.StrName, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                    <div class="col-3">
-                        <label for="NewTask.StrAttachment">description</label>
-                        @Html.TextAreaFor(m => m.NewTask.StrAttachment, new { @class = "form-control" })
-                    </div>
-                    <div class="col-4">
-                        <label for="NewTask.UserAssignedTo.IntUserID">assign to user</label>
-                        @Html.DropDownListFor(m => m.NewTask.UserAssignedTo.IntUserID, new SelectList(Model.LstAllUsers, "intUserID", "strName"), new { @class = "form-control" })
-                    </div>
-                    <div class="col-4">
-                        <label for="NewTask.Event.IntEventID">event</label>
-                        @Html.DropDownListFor(m => m.NewTask.Event.IntEventID, new SelectList(Model.LstAllEvents, "intEventID", "strName"), new { @class = "form-control" })
-                    </div>
-                    <div class="col-2">
-                        <br />
-                        <input type="submit" value="create task" class="form-control btn-primary" />
-                    </div>
+                using (Html.BeginForm("AddTask", "Tasks", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="row row-new-task">
+                        <div class="col-3">
+                            <label for="NewTask.DtmDue">due date</label>
+                            @Html.EditorFor(m => m.NewTask.DtmDue, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-4">
+                            <label for="NewTask.StrName">name</label>
+                            @Html.EditorFor(m => m.NewTask.StrName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-3">
+                            <label for="NewTask.StrAttachment">description</label>
+                            @Html.TextAreaFor(m => m.NewTask.StrAttachment, new { @class = "form-control" })
+                        </div>
+                        <div class="col-4">
+                            <label for="NewTask.UserAssignedTo.IntUserID">assign to user</label>
+                            @Html.DropDownListFor(m => m.NewTask.UserAssignedTo.IntUserID, new SelectList(Model.LstAllUsers, "intUserID", "strName"), new { @class = "form-control" })
+                        </div>
+                        <div class="col-4">
+                            <label for="NewTask.Event.IntEventID">event</label>
+                            @Html.DropDownListFor(m => m.NewTask.Event.IntEventID, new SelectList(Model.LstAllEvents, "intEventID", "strName"), new { @class = "form-control" })
+                        </div>
+                        <div class="col-2">
+                            <br />
+                            <input type="submit" value="create task" class="form-control btn-primary" />
+                        </div>
 
-                </div>
+                    </div>
+                }
+
             }
 
-        }
 
-
-    </div>
+        </div>
