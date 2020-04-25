@@ -40,13 +40,13 @@
         <div class="row edit-pass">
             @using (Html.BeginForm("ChangePass", "Profile", FormMethod.Post, new { enctype = "nultipart/form-data" }))
             {
-                <label for="user.StrNewPass">New Password</label>
+                <label for="changePass.StrNewPass">New Password</label>
                 @Html.EditorFor(m => m.NewPass, new { htmlAttributes = new { @class = "form-control" } })
                 <br />
-                <label for="user.StrOldPass1">Old Password</label>
+                <label for="changePass.StrOldPass1">Old Password</label>
                 @Html.EditorFor(m => m.OldPass1, new { htmlAttributes = new { @class = "form-control" } })
                 <br />
-                <label for="user.StrOldPass2">Reenter Old Password</label>
+                <label for="changePass.StrOldPass2">Reenter Old Password</label>
                 @Html.EditorFor(m => m.OldPass2, new { htmlAttributes = new { @class = "form-control" } })
                 <input type="submit" value="change password" class="form-control btn-primary" />
             }
