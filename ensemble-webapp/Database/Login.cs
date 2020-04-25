@@ -123,7 +123,7 @@ namespace ensemble_webapp.Database
                 InsertDAL insertDAL = new InsertDAL();
                 insertDAL.OpenConnection();
 
-                insertDAL.InsertNewHash(ComputeSHA256Hash(newPassword, user.BytSalt));
+                insertDAL.UpdateUserKey(user.IntUserID, ComputeSHA256Hash(newPassword, user.BytSalt));
                 
                 insertDAL.CloseConnection();
                     

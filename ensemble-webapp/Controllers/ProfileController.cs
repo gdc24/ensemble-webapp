@@ -45,24 +45,48 @@ namespace ensemble_webapp.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddUserToEvent(ProfileHomeVM vm)
+        public ActionResult EditUser(ProfileHomeVM vm)
         {
-            // add user to group
-            InsertDAL insertDAL = new InsertDAL();
-            insertDAL.OpenConnection();
+            Users currentUser = Globals.LOGGED_IN_USER;
 
-            insertDAL.InsertToUserEvents(vm.NewEvent, vm.CurrentUser);
+            currentUser.StrEmail = vm.EditedUserProfile.StrEmail;
+            currentUser.StrPhone = vm.EditedUserProfile.StrPhone;
 
-            insertDAL.CloseConnection();
+            InsertDAL insert = new InsertDAL();
+            insert.OpenConnection();
+
+            insert.ChangeEmailAndPhone(currentUser);
+
+            insert.CloseConnection();
 
             return RedirectToAction("Index");
         }
 
-        public ActionResult ChangePassword(ProfileHomeVM vm)
+        [HttpPost]
+        public ActionResult AddUserToEvent(ProfileHomeVM vm)
+        {
+            Users currentUser = Globals.LOGGED_IN_USER;
+            // add user to group
+            InsertDAL insertDAL = new InsertDAL();
+            insertDAL.OpenConnection();
+
+            insertDAL.InsertToUserEvents(vm.NewEvent, currentUser);
+
+            insertDAL.CloseConnection();
+
+            GetDAL get = new GetDAL();
+            get.OpenConnection();
+            Globals.LOGGED_IN_USER.LstEvents = get.GetEventsByUser(currentUser.IntUserID);
+            get.CloseConnection();
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ChangePass(ProfileHomeVM vm)
         {
             if (vm.OldPass1.Equals(vm.OldPass2))
             {
-                Login.ChangePass(vm.CurrentUser, vm.OldPass1, vm.NewPass);
+                Login.ChangePass(Globals.LOGGED_IN_USER, vm.OldPass1, vm.NewPass);
             }
 
             return RedirectToAction("Index");
