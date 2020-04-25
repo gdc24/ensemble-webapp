@@ -188,9 +188,16 @@
                 {
                     <div class="row row-new-task">
                         <div class="col-3">
-                            <label for="NewTaskDtm.DtmDue">due date</label>
-                            @Html.EditorFor(m => m.NewTaskDtmDue, new { htmlAttributes = new { @class = "datepicker" } })
+                            <label for="NewTaskDtm.DateDue">due date</label>
+                            <br />
+                            @Html.EditorFor(m => m.NewTaskDateDue, new { htmlAttributes = new { @class = "datepicker" } })
                         </div>
+                        <!--<div class="col-3">
+                            <label for="NewTaskDtm.TimeDue">due time</label>
+                            <br />
+                            @Html.EditorFor(m => m.NewTaskTimeDue)
+                        </div>-->
+                        
                         <div class="col-4">
                             <label for="NewTask.StrName">name</label>
                             @Html.EditorFor(m => m.NewTask.StrName, new { htmlAttributes = new { @class = "form-control" } })
@@ -211,7 +218,7 @@
                             <br />
                             <input type="submit" value="create task" class="form-control btn-primary" />
                         </div>
-
+                        
                     </div>
                 }
 
