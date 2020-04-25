@@ -63,19 +63,6 @@
                 <li>
                     <a class="scroll-link" href="@Url.Action("Index", "Reports")"><i class="fas fa-envelope"></i> Reports</a>
                 </li>
-                <li>
-                    <a href="#otherSections" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" role="button" aria-controls="otherSections">
-                        <i class="fas fa-sync"></i>Other sections
-                    </a>
-                    <ul class="collapse list-unstyled" id="otherSections">
-                        <li>
-                            <a class="scroll-link" href="#section-3">Our projects</a>
-                        </li>
-                        <li>
-                            <a class="scroll-link" href="#section-4">We think that...</a>
-                        </li>
-                    </ul>
-                </li>
             </ul>
 
             @if (Globals.LOGIN_STATUS)
@@ -172,4 +159,20 @@
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)
     </body>
-    </html>*@
+    </html>
+
+
+    <li>
+                    <a href="#otherSections" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" role="button" aria-controls="otherSections">
+                        <i class="fas fa-sync"></i>Other sections
+                    </a>
+                    <ul class="collapse list-unstyled" id="otherSections">
+                        <li>
+                            <a class="scroll-link" href="#section-3">Our projects</a>
+                        </li>
+                        <li>
+                            <a class="scroll-link" href="#section-4">We think that...</a>
+                        </li>
+                    </ul>
+                </li>
+    *@
