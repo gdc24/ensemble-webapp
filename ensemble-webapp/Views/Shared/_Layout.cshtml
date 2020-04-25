@@ -24,7 +24,6 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/bundles/sidebar-styles")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 
 <body>
@@ -41,7 +40,7 @@
             </div>
 
             <div class="logo">
-                <h3><a href="@Url.Action("Index", "Home")">Bootstrap 4 Template with Sidebar Menu</a></h3>
+                <h3><a href="#"><img src="~/Content/assets/img/logo.png" /></a></h3>
             </div>
 
             <ul class="list-unstyled menu-elements">
@@ -49,29 +48,19 @@
                     <a class="scroll-link" href="#top-content"><i class="fas fa-home"></i> Home</a>
                 </li>
                 <li>
-                    <a class="scroll-link" href="#section-1"><i class="fas fa-cog"></i> What we do</a>
+                    <a class="scroll-link" href="@Url.Action("Index", "Profile")"><i class="fas fa-user"></i> Profile</a>
                 </li>
                 <li>
-                    <a class="scroll-link" href="@Url.Action("About", "Home")"><i class="fas fa-user"></i> About us</a>
+                    <a class="scroll-link" href="@Url.Action("Index", "Callboard")"><i class="fas fa-envelope"></i> Callboard</a>
                 </li>
                 <li>
-                    <a class="scroll-link" href="#section-5"><i class="fas fa-pencil-alt"></i> Portfolio</a>
+                    <a class="scroll-link" href="@Url.Action("Index", "Tasks")"><i class="fas fa-pencil-alt"></i> Tasks</a>
                 </li>
                 <li>
-                    <a class="scroll-link" href="#section-6"><i class="fas fa-envelope"></i> Contact us</a>
+                    <a class="scroll-link" href="@Url.Action("Index", "Conflict")"><i class="fas fa-cog"></i> Conflicts</a>
                 </li>
                 <li>
-                    <a href="#otherSections" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" role="button" aria-controls="otherSections">
-                        <i class="fas fa-sync"></i>Other sections
-                    </a>
-                    <ul class="collapse list-unstyled" id="otherSections">
-                        <li>
-                            <a class="scroll-link" href="#section-3">Our projects</a>
-                        </li>
-                        <li>
-                            <a class="scroll-link" href="#section-4">We think that...</a>
-                        </li>
-                    </ul>
+                    <a class="scroll-link" href="@Url.Action("Index", "Reports")"><i class="fas fa-envelope"></i> Reports</a>
                 </li>
             </ul>
 
@@ -169,4 +158,20 @@
         @Scripts.Render("~/bundles/bootstrap")
         @RenderSection("scripts", required: false)
     </body>
-    </html>*@
+    </html>
+
+
+    <li>
+                    <a href="#otherSections" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" role="button" aria-controls="otherSections">
+                        <i class="fas fa-sync"></i>Other sections
+                    </a>
+                    <ul class="collapse list-unstyled" id="otherSections">
+                        <li>
+                            <a class="scroll-link" href="#section-3">Our projects</a>
+                        </li>
+                        <li>
+                            <a class="scroll-link" href="#section-4">We think that...</a>
+                        </li>
+                    </ul>
+                </li>
+    *@
