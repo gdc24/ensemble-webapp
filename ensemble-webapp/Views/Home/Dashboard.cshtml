@@ -46,7 +46,7 @@
                 <ul>
                     @foreach (var t in Model.LstUpcomingTasks)
                     {
-                        @if (!@t.YsnIsFinished)
+                        if (!@t.YsnIsFinished)
                         {
                             <li>
                                 <p>@t.StrName due @t.DtmDue</p>
