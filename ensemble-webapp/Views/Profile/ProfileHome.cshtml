@@ -73,18 +73,27 @@
         </div>
         <br />
         <br />
+        @if (Model.IsInvalidPasswordAttempt)
+        {
+            <span style="color:#ff0000">
+                Your old password was incorrect or they did not match. Please try to reset your password again.
+            </span>
+            @*<script>
+                isInvalidPassword = true;
+            </script>*@
+        }
         <button onclick="showDiv('edit-pass-row')" class="btn btn-info">Toggle Change Password Form</button>
         <div id="edit-pass-row" class="row edit-pass" style="display: none;">
             @using (Html.BeginForm("ChangePass", "Profile", FormMethod.Post, new { enctype = "nultipart/form-data" }))
             {
                 <label for="changePass.StrOldPass1">Old Password</label>
-                @Html.PasswordFor(m => m.OldPass1, new { @class = "form-control" } )
+                @Html.PasswordFor(m => m.OldPass1, new { @class = "form-control" })
                 <br />
                 <label for="changePass.StrOldPass2">Reenter Old Password</label>
-                @Html.PasswordFor(m => m.OldPass2, new { @class = "form-control" } )
+                @Html.PasswordFor(m => m.OldPass2, new { @class = "form-control" })
                 <br />
                 <label for="changePass.StrNewPass">New Password</label>
-                @Html.PasswordFor(m => m.NewPass, new { @class = "form-control" } )
+                @Html.PasswordFor(m => m.NewPass, new { @class = "form-control" })
                 <br />
                 <input type="submit" value="change password" class="form-control btn-primary" />
             }

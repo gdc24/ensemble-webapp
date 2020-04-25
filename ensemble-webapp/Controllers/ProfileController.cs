@@ -12,7 +12,7 @@ namespace ensemble_webapp.Controllers
     public class ProfileController : Controller
     {
         // GET: Profile
-        public ActionResult Index()
+        public ActionResult Index(bool IsInvalidAttempt = false)
         {
             if (!Globals.LOGIN_STATUS)
             {
@@ -23,6 +23,7 @@ namespace ensemble_webapp.Controllers
                 ProfileHomeVM model = new ProfileHomeVM();
                 model.CurrentUser = Globals.LOGGED_IN_USER;
                 model.EditedUserProfile = model.CurrentUser;
+                model.IsInvalidPasswordAttempt = IsInvalidAttempt;
 
                 GetDAL get = new GetDAL();
                 get.OpenConnection();
@@ -84,12 +85,10 @@ namespace ensemble_webapp.Controllers
 
         public ActionResult ChangePass(ProfileHomeVM vm)
         {
-            if (vm.OldPass1.Equals(vm.OldPass2))
-            {
-                Login.ChangePass(Globals.LOGGED_IN_USER, vm.OldPass1, vm.NewPass);
-            }
-
-            return RedirectToAction("Index");
+            if (vm.OldPass1.Equals(vm.OldPass2) && Login.ChangePass(Globals.LOGGED_IN_USER, vm.OldPass1, vm.NewPass))
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("Index", new { IsInvalidAttempt = true });
         }
     }
 }

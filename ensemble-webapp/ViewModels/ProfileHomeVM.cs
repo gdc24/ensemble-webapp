@@ -8,6 +8,8 @@ namespace ensemble_webapp.ViewModels
 {
     public class ProfileHomeVM
     {
+        public bool IsInvalidPasswordAttempt { get; set; }
+
         public Users EditedUserProfile { get; set; }
 
         public Users CurrentUser { get; set; }
@@ -23,6 +25,7 @@ namespace ensemble_webapp.ViewModels
         public List<Event> LstEventsToJoin { get; set; }
 
         public Event NewEvent { get; set; }
+
 
     }
 }

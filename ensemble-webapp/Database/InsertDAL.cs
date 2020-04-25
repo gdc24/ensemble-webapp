@@ -272,9 +272,12 @@ namespace ensemble_webapp.Database
         public bool UpdateUserKey(int intUserID, byte[] newKey)
         {
             // define a query
-            string query = "UPDATE \"users\" SET \"bytKey\" = " + newKey + 
-                " WHERE \"intUserID\" = " + intUserID;
+            string query = "UPDATE \"users\" SET \"bytKey\" = @newKey" +
+                " WHERE \"intUserID\" = @intUserID";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("newKey", newKey);
+            cmd.Parameters.AddWithValue("intUserID", intUserID);
 
             int result = cmd.ExecuteNonQuery();
 
