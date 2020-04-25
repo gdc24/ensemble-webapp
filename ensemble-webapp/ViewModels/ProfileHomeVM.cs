@@ -12,6 +12,12 @@ namespace ensemble_webapp.ViewModels
 
         public Users CurrentUser { get; set; }
 
+        public string NewPass { get; set; }
+
+        public string OldPass1 { get; set; }
+
+        public string OldPass2 { get; set; }
+
         public List<Event> LstAllEvents { get; set; }
 
         public List<Event> LstEventsToJoin { get; set; }

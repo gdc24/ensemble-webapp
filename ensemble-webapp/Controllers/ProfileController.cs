@@ -58,10 +58,14 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        //public ActionResult EditUserName(Users editedUserProfile)
-        //{
-        //    editedUserProfile.setName(editedUserProfile.StrName); //???THIS DOESN'T SEEM RIGHT???//
-        //    return View();
-        //}
+        public ActionResult ChangePassword(ProfileHomeVM vm)
+        {
+            if (vm.OldPass1.Equals(vm.OldPass2))
+            {
+                Login.ChangePass(vm.CurrentUser, vm.OldPass1, vm.NewPass);
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }
