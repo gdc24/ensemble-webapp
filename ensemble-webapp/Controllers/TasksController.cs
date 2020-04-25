@@ -30,7 +30,6 @@ namespace ensemble_webapp.Controllers
                 get.OpenConnection();
 
                 model.TasksUnfinishedNotYetDueForUser = get.GetUnfinishedTasksDueAfter(model.CurrentUser, DateTime.Now);
-                model.LstAllUsers = get.GetAllUsers();
 
                 model.FinishedTasks = get.GetFinishedTasks(model.CurrentUser);
 
@@ -42,6 +41,8 @@ namespace ensemble_webapp.Controllers
 
                 model.LstAllEvents = get.GetAllEvents();
                 model.LstAdminEvents = get.GetAdminEventsByUser(model.CurrentUser.IntUserID);
+
+                model.LstAllUsersForAdminEvents = get.GetAllUsersForAdminEvents(model.LstAdminEvents);
 
                 get.CloseConnection();
 

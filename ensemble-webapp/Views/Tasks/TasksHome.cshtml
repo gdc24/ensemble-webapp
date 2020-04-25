@@ -202,7 +202,7 @@
                         </div>
                         <div class="col-4">
                             <label for="NewTask.UserAssignedTo.IntUserID">assign to user</label>
-                            @Html.DropDownListFor(m => m.NewTask.UserAssignedTo.IntUserID, new SelectList(Model.LstAllUsers, "intUserID", "strName"), new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.NewTask.UserAssignedTo.IntUserID, new SelectList(Model.LstAllUsersForAdminEvents, "intUserID", "strName"), new { @class = "form-control" })
                         </div>
                         <div class="col-4">
                             <label for="NewTask.Event.IntEventID">event</label>

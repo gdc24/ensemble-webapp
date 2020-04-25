@@ -738,6 +738,43 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
+        public List<Users> GetAllUsersForAdminEvents(List<Event> LstAdminEvents)
+        {
+            List<Users> retval = new List<Users>();
+            List<int> lstEventIDs = new List<int>();
+
+            foreach(var e in LstAdminEvents)
+            {
+                lstEventIDs.Add(e.IntEventID);
+            }
+
+            string strList = "(";
+
+            strList += string.Join(",", lstEventIDs);
+
+            strList += ")";
+
+            // define a query
+            string query = "SELECT DISTINCT u.* FROM \"users\" u, \"userEvents\" ue" +
+                " WHERE ue.\"intEventID\" in " + strList + "" +
+                " AND ue.\"intUserID\" = u.\"intUserID\";";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Users tmpUser = GetUserFromDR(dr);
+                retval.Add(tmpUser);
+            }
+
+            dr.Close();
+
+            return retval;
+        }
+
         public List<Event> GetAllEvents()
         {
             List<Event> retval = new List<Event>();

@@ -30,7 +30,7 @@ namespace ensemble_webapp.ViewModels
 
         public Task NewTask { get; set; }
 
-        public List<Users> LstAllUsers { get; set; }
+        public List<Users> LstAllUsersForAdminEvents { get; set; }
 
         public List<Event> LstAllEvents { get; set; }
 
