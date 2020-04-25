@@ -6,6 +6,7 @@ using System.Text;
 using System.Collections;
 using ensemble_webapp.Models;
 using System.Collections.Generic;
+using Microsoft.Ajax.Utilities;
 
 namespace ensemble_webapp.Database
 {
@@ -48,7 +49,14 @@ namespace ensemble_webapp.Database
             {
                 byte[] userSalt = usr.BytSalt;
                 byte[] userKey = usr.BytKey;
-                byte[] actual = ComputeSHA256Hash(users.StrPassword, userSalt);
+                byte[] actual;
+                try
+                {
+                    actual = ComputeSHA256Hash(users.StrPassword, userSalt);
+                } catch (ArgumentNullException)
+                {
+                    return false;
+                }
 
                 if (StructuralComparisons.StructuralEqualityComparer.Equals(userKey, actual))
                 {
@@ -93,7 +101,14 @@ namespace ensemble_webapp.Database
 
                 // generate random number for salt and convert it to a byte array for key
                 byte[] salt = BitConverter.GetBytes(new Random().Next());
-                byte[] key = ComputeSHA256Hash(newUser.StrPassword, salt);
+                byte[] key;
+                try
+                {
+                    key = ComputeSHA256Hash(newUser.StrPassword, salt);
+                } catch (ArgumentNullException)
+                {
+                    return false;
+                }
 
                 int intNewUserID = insertDAL.InsertUser(new Users(newUser.StrName, salt, key, email, phone));
 
@@ -124,8 +139,17 @@ namespace ensemble_webapp.Database
                 InsertDAL insertDAL = new InsertDAL();
                 insertDAL.OpenConnection();
 
-                insertDAL.UpdateUserKey(user.IntUserID, ComputeSHA256Hash(newPassword, user.BytSalt));
-                
+                byte[] newKey;
+                try
+                {
+                    newKey = ComputeSHA256Hash(newPassword, user.BytSalt);
+                } catch (ArgumentNullException)
+                {
+                    return false;
+                }
+
+                insertDAL.UpdateUserKey(user.IntUserID, newKey);
+
                 insertDAL.CloseConnection();
                     
                 return true;
@@ -148,19 +172,19 @@ namespace ensemble_webapp.Database
         // Compute hash of a string using SHA 256
         private static byte[] ComputeSHA256Hash(string toHash, byte[] salt)
         {
-            using (SHA256 hash = SHA256.Create())
-            {
-                // Computer hash in byte form
-                byte[] b = hash.ComputeHash(Encoding.UTF8.GetBytes(toHash));
+            if (string.IsNullOrEmpty(toHash))
+                throw new ArgumentNullException(nameof(toHash));
 
-                // Concatenate toHash and salt byte arrays
-                byte[] key = new byte[b.Length + salt.Length];
+            // Computer hash in byte form
+            byte[] b = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(toHash));
 
-                Buffer.BlockCopy(b, 0, key, 0, b.Length);
-                Buffer.BlockCopy(salt, 0, key, b.Length, salt.Length);
+            // Concatenate toHash and salt byte arrays
+            byte[] key = new byte[b.Length + salt.Length];
 
-                return key;
-            }
+            Buffer.BlockCopy(b, 0, key, 0, b.Length);
+            Buffer.BlockCopy(salt, 0, key, b.Length, salt.Length);
+
+            return key;
         }
 
         // check for valid email
