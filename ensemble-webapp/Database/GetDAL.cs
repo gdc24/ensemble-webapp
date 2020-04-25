@@ -59,8 +59,24 @@ namespace ensemble_webapp.Database
             string strSubject = dr["strSubject"].ToString();
             string strNote = dr["strNote"].ToString();
             DateTime dtmDateTime = Convert.ToDateTime(dr["dtmDateTime"]);
-            Users postedByUser = GetUserByID(Convert.ToInt32(dr["intPostedByUserID"]));
-            Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
+
+            int intPostedByUserID = Convert.ToInt32(dr["intPostedByUserID"]);
+            string strName = dr["strName"].ToString();
+            string strEmail = dr["strEmail"].ToString();
+            string strPhone = dr["strPhone"].ToString();
+            byte[] bytSalt = (byte[])dr["bytSalt"];
+            byte[] bytKey = (byte[])dr["bytKey"];
+
+            int intEventID = Convert.ToInt32(dr["intEventID"]);
+            string eventName = dr["eventName"].ToString();
+            DateTime dtmDate = Convert.ToDateTime(dr["dtmDate"]);
+            string strLocation = dr["strLocation"].ToString();
+            int intGroupID = Convert.ToInt32(dr["intGroupID"]);
+            string strGroupName = dr["groupName"].ToString();
+            Group group = new Group(intGroupID, strGroupName);
+            Event paramEvent = new Event(intEventID, eventName, dtmDate, strLocation, group);
+
+            Users postedByUser = new Users(intPostedByUserID, strName, bytSalt, bytKey, strEmail, strPhone);
 
             return new Callboard(intCallboardID, strSubject, strNote, dtmDateTime, postedByUser, paramEvent);
         }
@@ -106,7 +122,16 @@ namespace ensemble_webapp.Database
             int intConflictID = Convert.ToInt32(dr["intConflictID"]);
             DateTime dtmStartDateTime = Convert.ToDateTime(dr["dtmStartDateTime"]);
             DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
-            Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
+
+            int intUserID = Convert.ToInt32(dr["intUserID"]);
+            string strName = dr["strName"].ToString();
+            string strEmail = dr["strEmail"].ToString();
+            string strPhone = dr["strPhone"].ToString();
+            byte[] bytSalt = (byte[])dr["bytSalt"];
+            byte[] bytKey = (byte[])dr["bytKey"];
+
+
+            Users user = new Users(intUserID, strName, bytSalt, bytKey, strEmail, strPhone);
 
             return new Conflict(intConflictID, dtmStartDateTime, dtmEndDateTime, user);
         }
@@ -255,27 +280,27 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        public Callboard GetCallboardByID(int intCallboardID)
-        {
-            Callboard retval = null;
+        //public Callboard GetCallboardByID(int intCallboardID)
+        //{
+        //    Callboard retval = null;
 
-            // define a query
-            string query = "SELECT * FROM \"callboard\" WHERE \"intCallboardID\" = " + intCallboardID;
-            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+        //    // define a query
+        //    string query = "SELECT * FROM \"callboard\" WHERE \"intCallboardID\" = " + intCallboardID;
+        //    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-            // execute query
-            NpgsqlDataReader dr = cmd.ExecuteReader();
+        //    // execute query
+        //    NpgsqlDataReader dr = cmd.ExecuteReader();
 
-            // read all rows and output the first column in each row
-            while (dr.Read())
-            {
-                retval = GetCallboardFromDR(dr);
-            }
+        //    // read all rows and output the first column in each row
+        //    while (dr.Read())
+        //    {
+        //        retval = GetCallboardFromDR(dr);
+        //    }
 
-            dr.Close();
+        //    dr.Close();
 
-            return retval;
-        }
+        //    return retval;
+        //}
 
         //public Member GetMemberByID(int intMemberID)
         //{
@@ -553,7 +578,7 @@ namespace ensemble_webapp.Database
             string query = "SELECT e.*, u.\"intUserID\", g.\"strName\" as \"groupName\"" +
                 " FROM events e, \"userEvents\" ue, \"users\" u, \"groups\" g" +
                 " WHERE u.\"intUserID\" = ue.\"intUserID\"" +
-                " AND u.\"intUserID\" = ue.\"intUserID\"" +
+                " AND e.\"intEventID\" = ue.\"intEventID\"" +
                 " AND g.\"intGroupID\" = e.\"intGroupID\"" +
                 " AND u.\"intUserID\" = " + intUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
@@ -604,7 +629,13 @@ namespace ensemble_webapp.Database
             List<Callboard> retval = new List<Callboard>();
 
             // define a query
-            string query = "SELECT * FROM \"callboard\" WHERE \"intEventID\" = " + paramEvent.IntEventID;
+            //string query = "SELECT * FROM \"callboard\" WHERE \"intEventID\" = " + paramEvent.IntEventID;
+            string query = "SELECT c.*, u.*, e.\"strName\" as \"eventName\", e.\"dtmDate\", e.\"strLocation\", g.\"strName\" as \"groupName\", g.\"intGroupID\"" +
+                " from \"callboard\" c, \"users\" u, \"events\" e, \"groups\" g" +
+                " where c.\"intEventID\" = e.\"intEventID\"" +
+                " and c.\"intPostedByUserID\" = u.\"intUserID\"" +
+                " and e.\"intGroupID\" = g.\"intGroupID\"" +
+                " and e.\"intEventID\" = " + paramEvent.IntEventID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -627,7 +658,13 @@ namespace ensemble_webapp.Database
             List<Callboard> retval = new List<Callboard>();
 
             // define a query
-            string query = "SELECT * FROM \"callboard\" WHERE \"intPostedByUserID\" = " + user.IntUserID;
+            //string query = "SELECT * FROM \"callboard\" WHERE \"intPostedByUserID\" = " + user.IntUserID;
+            string query = "SELECT c.*, u.*, e.\"strName\" as \"eventName\", e.\"dtmDate\", e.\"strLocation\", g.\"strName\" as \"groupName\", g.\"intGroupID\"" +
+                " from \"callboard\" c, \"users\" u, \"events\" e, \"groups\" g" +
+                " where c.\"intEventID\" = e.\"intEventID\"" +
+                " and c.\"intPostedByUserID\" = u.\"intUserID\"" +
+                " and e.\"intGroupID\" = g.\"intGroupID\"" +
+                " and u.\"intUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -1011,7 +1048,10 @@ namespace ensemble_webapp.Database
             List<Conflict> retval = new List<Conflict>();
 
             // define a query
-            string query = "SELECT * FROM \"conflicts\" WHERE \"intUserID\" = " + user.IntUserID;
+            string query = "SELECT u.*, c.*" +
+                " FROM \"conflicts\" c, \"users\" u" +
+                " WHERE u.\"intUserID\" = c.\"intUserID\"" +
+                " AND u.\"intUserID\" = " + user.IntUserID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
