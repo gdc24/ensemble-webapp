@@ -1,6 +1,7 @@
 ﻿using ensemble_webapp.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -18,6 +19,10 @@ namespace ensemble_webapp.ViewModels
         public List<Task> TasksAssignedByUser { get; set; }
 
         public List<Task> FinishedTasks { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm}")]
+        public DateTime NewTaskDtmDue { get; set; }
 
         public Task NewTask { get; set; }
 
