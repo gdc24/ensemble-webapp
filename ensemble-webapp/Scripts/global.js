@@ -15,9 +15,15 @@
 //}
 
 
-//// on ready
-//document.addEventListener("DOMContentLoaded", function (event) {
-//    if (isInvalidPassword) {
-//        passwordError();
-//    }
-//});
+// on ready
+document.addEventListener("DOMContentLoaded", function (event) {
+
+    jQuery('.datetimepicker').datetimepicker({
+        minDate: 0,
+        format: 'm/d/Y H:i'
+    });
+
+    //if (isInvalidPassword) {
+    //    passwordError();
+    //}
+});

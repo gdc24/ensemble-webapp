@@ -188,16 +188,10 @@
                 {
                     <div class="row row-new-task">
                         <div class="col-3">
-                            <label for="NewTaskDtm.DateDue">due date</label>
+                            <label for="NewTaskDtm.DtmDue">due date</label>
                             <br />
-                            @Html.EditorFor(m => m.NewTaskDateDue, new { htmlAttributes = new { @class = "datepicker" } })
+                            @Html.EditorFor(m => m.NewTask.DtmDue, new { htmlAttributes = new { @class = "datetimepicker form-control" } })
                         </div>
-                        <!--<div class="col-3">
-                            <label for="NewTaskDtm.TimeDue">due time</label>
-                            <br />
-                            @Html.EditorFor(m => m.NewTaskTimeDue)
-                        </div>-->
-                        
                         <div class="col-4">
                             <label for="NewTask.StrName">name</label>
                             @Html.EditorFor(m => m.NewTask.StrName, new { htmlAttributes = new { @class = "form-control" } })

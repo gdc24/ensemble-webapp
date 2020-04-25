@@ -39,10 +39,10 @@
                 @using (Html.BeginForm("AddConflict", "Conflict", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
                     <label for="newConflict.dtmStartDateTime">Start Time</label>
-                    @Html.EditorFor(m => m.ConflictToAdd.DtmStartDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(m => m.ConflictToAdd.DtmStartDateTime, new { htmlAttributes = new { @class = "datetimepicker form-control" } })
                     <br />
                     <label for="newConflict.dtmStartDateTime">End Time</label>
-                    @Html.EditorFor(m => m.ConflictToAdd.DtmEndDateTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(m => m.ConflictToAdd.DtmEndDateTime, new { htmlAttributes = new { @class = "datetimepicker form-control" } })
                     <br />
                     <input type="submit" value="add conflict" class="form-control btn-primary" />
                 }
