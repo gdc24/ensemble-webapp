@@ -27,5 +27,7 @@ namespace ensemble_webapp.Models
         public string StrLocation { get; set; }
 
         public Group Group { get; set; }
+
+        public Event() { }
     }
 }

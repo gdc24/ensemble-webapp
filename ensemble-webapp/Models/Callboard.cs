@@ -33,5 +33,9 @@ namespace ensemble_webapp.Models
         {
             return this.DtmDateTime.CompareTo(other.DtmDateTime);
         }
+
+        public Callboard()
+        {
+        }
     }
 }
