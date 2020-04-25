@@ -16,5 +16,7 @@ namespace ensemble_webapp.ViewModels
 
         public List<Event> LstEventsToJoin { get; set; }
 
+        public Event NewEvent { get; set; }
+
     }
 }

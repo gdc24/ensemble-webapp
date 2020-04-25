@@ -42,9 +42,7 @@
             @using (Html.BeginForm("AddUserToEvent", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <label>Join Event</label>
-                <p>
-                    @Html.ListBoxFor(m => m.EditedUserProfile.LstEvents, new SelectList(Model.LstAllEvents, "intEventID", "strName"))
-                </p>
+                @Html.DropDownListFor(m => m.NewEvent.IntEventID, new SelectList(Model.LstEventsToJoin, "intEventID", "strName"), new { @class = "form-control" })
                 <input type="submit" value="join event" class="form-control btn-primary" />
             }
         </div>

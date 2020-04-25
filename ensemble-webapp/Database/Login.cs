@@ -53,6 +53,7 @@ namespace ensemble_webapp.Database
                 if (StructuralComparisons.StructuralEqualityComparer.Equals(userKey, actual))
                 {
                     LoginUser(usr);
+                    return true;
                 }
             }
 

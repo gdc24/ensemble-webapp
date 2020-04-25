@@ -13,7 +13,14 @@ namespace ensemble_webapp.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if (Globals.LOGIN_STATUS)
+            {
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult About()
@@ -37,7 +44,6 @@ namespace ensemble_webapp.Controllers
             GetDAL get = new GetDAL();
             get.OpenConnection();
             model.LstAllEvents = get.GetAllEvents();
-
             get.CloseConnection();
 
             return View("Login", model);
