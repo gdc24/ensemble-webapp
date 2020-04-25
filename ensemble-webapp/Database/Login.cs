@@ -178,7 +178,7 @@ namespace ensemble_webapp.Database
         // Compute hash of a string using SHA 256
         private static byte[] ComputeSHA256Hash(string toHash, byte[] salt)
         {
-            if (String.IsNullOrEmpty(toHash)) 
+            if (String.IsNullOrEmpty(toHash))
                 throw new ArgumentNullException(nameof(toHash));
 
             // Computer hash in byte form
