@@ -14,6 +14,11 @@ namespace ensemble_webapp.Controllers
         {
             return View();
         }
+
+        public ActionResult ReportsHome()
+        {
+            return RedirectToAction("Index");
+        }
         
         //add text to GenerateReport.cshtml
         public ActionResult MakeReport(int rehearsalID){
