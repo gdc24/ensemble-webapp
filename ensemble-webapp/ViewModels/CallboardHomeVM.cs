@@ -11,5 +11,9 @@ namespace ensemble_webapp.ViewModels
         public Users CurrentUser { get; set; }
 
         public List<Callboard> LstAllCallboards { get; set; }
+
+        public Callboard NewAnnouncement { get; set; }
+
+        public List<Event> LstAllEvents { get; set; }
     }
 }

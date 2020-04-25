@@ -31,6 +31,8 @@ namespace ensemble_webapp.Controllers
                 model.LstAllCallboards.Sort();
             }
 
+            model.LstAllEvents = get.GetAllEvents();
+
 
             get.CloseConnection();
 
@@ -40,6 +42,22 @@ namespace ensemble_webapp.Controllers
         public ActionResult CallboardHome()
         {
             return RedirectToAction("Index");
+        }
+
+        public ActionResult AddAnnouncement(CallboardHomeVM vm)
+        {
+            Callboard newCallboard = vm.NewAnnouncement;
+
+            InsertDAL insert = new InsertDAL();
+            insert.OpenConnection();
+
+            insert.InsertCallboard(newCallboard);
+
+            insert.CloseConnection();
+
+            return RedirectToAction("Index");
+
+
         }
     }
 }

@@ -50,5 +50,12 @@ namespace ensemble_webapp.Models
             IntUserID = intUserID;
             StrName = strName;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Users users &&
+                   IntUserID == users.IntUserID &&
+                   StrName == users.StrName;
+        }
     }
 }

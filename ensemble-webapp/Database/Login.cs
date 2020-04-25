@@ -11,7 +11,27 @@ namespace ensemble_webapp.Database
 {
 
     public class Login
-    { 
+    {
+
+        private static bool LoginUser(Users usr)
+        {
+            GetDAL getDAL = new GetDAL();
+            getDAL.OpenConnection();
+
+            usr.LstEvents = getDAL.GetEventsByUser(usr.IntUserID);
+            Globals.LOGIN_STATUS = true;
+            Globals.LOGGED_IN_USER = usr;
+
+            if (Globals.ADMINS.Contains(usr))
+            {
+                Globals.IS_ADMIN = true;
+            }
+
+            getDAL.CloseConnection();
+
+            return true;
+        }
+
         // returns true for successful login
         public static bool VerifyUser(Users users)
         {
@@ -20,6 +40,8 @@ namespace ensemble_webapp.Database
 
             // find enteredUser in database
             Users usr = getDAL.GetUserByName(users.StrName);
+
+            getDAL.CloseConnection();
 
             // if username is found
             if (usr != null)
@@ -30,14 +52,10 @@ namespace ensemble_webapp.Database
 
                 if (StructuralComparisons.StructuralEqualityComparer.Equals(userKey, actual))
                 {
-                    usr.LstEvents = getDAL.GetEventsByUser(usr.IntUserID);
-                    Globals.LOGIN_STATUS = true;
-                    Globals.LOGGED_IN_USER = usr;
-                    return true;
+                    LoginUser(usr);
                 }
             }
 
-            getDAL.CloseConnection();
 
             // did not find username
             return false;
@@ -85,14 +103,10 @@ namespace ensemble_webapp.Database
                 get.OpenConnection();
 
                 Users completeUser = get.GetUserByID(intNewUserID);
-                completeUser.LstEvents = get.GetEventsByUser(intNewUserID);
 
                 get.CloseConnection();
 
-                Globals.LOGGED_IN_USER = completeUser;
-                Globals.LOGIN_STATUS = true;
-
-                return true;
+                return LoginUser(usr);
             }
 
             getDAL.CloseConnection();

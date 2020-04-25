@@ -17,13 +17,14 @@ namespace ensemble_webapp.Controllers
         
         //add text to GenerateReport.cshtml
         public ActionResult MakeReport(int rehearsalID){
-            
+            return null;
         }
         
         //turn GenerateReport.cshtml into pdf
         public ActionResult GenerateReport(){
             var Renderer = new IronPdf.HtmlToPdf();
             Renderer.RenderHtmlAsPdf("ensemble-webapp/ensemble-webapp/Views/Reports/GenerateReport.cshtml").SaveAs("Report.pdf");
+            return null;
         }
     }
 }

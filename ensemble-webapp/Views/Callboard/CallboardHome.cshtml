@@ -1,4 +1,6 @@
-﻿@model ensemble_webapp.ViewModels.CallboardHomeVM
+﻿@using ensemble_webapp.Database
+
+@model ensemble_webapp.ViewModels.CallboardHomeVM
 @{
     ViewBag.Title = "CallboardHome";
 }
@@ -10,25 +12,42 @@
         </div>
         <div class="col-12">
             <p>callboard notifications</p>
-                @if (Model.LstAllCallboards != null)
+            @if (Model.LstAllCallboards != null)
+            {
+                foreach (var c in Model.LstAllCallboards)
                 {
-                    foreach (var c in Model.LstAllCallboards)
-                    {
-                        <ul>
-                            <li>
-                                <p>@c.StrSubject in @c.Event.StrName from @c.PostedByUser.StrName at @c.DtmDateTime:</p>
-                                <p>@c.StrNote</p>
-                            </li>
-                        </ul>
-                    }
+                    <ul>
+                        <li>
+                            <p>@c.StrSubject in @c.Event.StrName from @c.PostedByUser.StrName at @c.DtmDateTime:</p>
+                            <p>@c.StrNote</p>
+                        </li>
+                    </ul>
                 }
-                else
+            }
+            else
+            {
+                <p>You do not have any current annoucements.</p>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            @if (Globals.IS_ADMIN)
+            {
+                using (Html.BeginForm("AddAnnouncement", "Callboard", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    <p>You do not have any current annoucements.</p>
+                    <label for="NewAnnouncement.StrSubject">Subject</label>
+                    @Html.EditorFor(m => m.NewAnnouncement.StrSubject, new { htmlAttributes = new { @class = "form-control" } })
+                    <label for="NewAnnouncement.StrSubject">Note</label>
+                    @Html.EditorFor(m => m.NewAnnouncement.StrNote, new { htmlAttributes = new { @class = "form-control" } })
+                    <label for="NewAnnouncement.Event">Event</label>
+                    @Html.ListBoxFor(m => m.NewAnnouncement.Event, new SelectList(Model.LstAllEvents, "intEventID", "strName"), new { @class = "form-control" })
+                    <br/>
+                    <input type="submit" value="add callboard announcement" class="form-control btn-primary" />
                 }
-            </ul>
+            }
+
         </div>
     </div>
 </div>
-
-@*        place for admin to add callboard annoucements*@
