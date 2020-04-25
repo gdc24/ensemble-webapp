@@ -45,6 +45,24 @@ namespace ensemble_webapp.Controllers
         }
 
         [HttpPost]
+        public ActionResult EditUser(ProfileHomeVM vm)
+        {
+            Users currentUser = Globals.LOGGED_IN_USER;
+
+            currentUser.StrEmail = vm.EditedUserProfile.StrEmail;
+            currentUser.StrPhone = vm.EditedUserProfile.StrPhone;
+
+            InsertDAL insert = new InsertDAL();
+            insert.OpenConnection();
+
+            insert.ChangeEmailAndPhone(currentUser);
+
+            insert.CloseConnection();
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
         public ActionResult AddUserToEvent(ProfileHomeVM vm)
         {
             Users currentUser = Globals.LOGGED_IN_USER;
@@ -64,11 +82,11 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ChangePassword(ProfileHomeVM vm)
+        public ActionResult ChangePass(ProfileHomeVM vm)
         {
             if (vm.OldPass1.Equals(vm.OldPass2))
             {
-                Login.ChangePass(vm.CurrentUser, vm.OldPass1, vm.NewPass);
+                Login.ChangePass(Globals.LOGGED_IN_USER, vm.OldPass1, vm.NewPass);
             }
 
             return RedirectToAction("Index");

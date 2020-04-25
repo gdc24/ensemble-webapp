@@ -78,13 +78,13 @@
             @using (Html.BeginForm("ChangePass", "Profile", FormMethod.Post, new { enctype = "nultipart/form-data" }))
             {
                 <label for="changePass.StrOldPass1">Old Password</label>
-                @Html.EditorFor(m => m.OldPass1, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.PasswordFor(m => m.OldPass1, new { @class = "form-control" } )
                 <br />
                 <label for="changePass.StrOldPass2">Reenter Old Password</label>
-                @Html.EditorFor(m => m.OldPass2, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.PasswordFor(m => m.OldPass2, new { @class = "form-control" } )
                 <br />
                 <label for="changePass.StrNewPass">New Password</label>
-                @Html.EditorFor(m => m.NewPass, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.PasswordFor(m => m.NewPass, new { @class = "form-control" } )
                 <br />
                 <input type="submit" value="change password" class="form-control btn-primary" />
             }

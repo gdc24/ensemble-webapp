@@ -68,6 +68,27 @@ namespace ensemble_webapp.Database
                 return false;
         }
 
+        public bool ChangeEmailAndPhone(Users currentUser)
+        {
+            // define a query
+            string query = "UPDATE \"users\" SET" +
+                " \"strEmail\" = @strEmail," +
+                " \"strPhone\" = @strPhone" +
+                " WHERE \"intUserID\" = @intUserID";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("strEmail", currentUser.StrEmail);
+            cmd.Parameters.AddWithValue("strPhone", currentUser.StrPhone);
+            cmd.Parameters.AddWithValue("intUserID", currentUser.IntUserID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
+        }
+
         public bool InsertCallboard(Callboard callboard)
         {
             // define a query
@@ -248,10 +269,19 @@ namespace ensemble_webapp.Database
             throw new NotImplementedException("todo");
         }
 
-        public bool InsertNewHash(byte[] newHash)
+        public bool UpdateUserKey(int intUserID, byte[] newKey)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            // define a query
+            string query = "UPDATE \"users\" SET \"bytKey\" = " + newKey + 
+                " WHERE \"intUserID\" = " + intUserID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            int result = cmd.ExecuteNonQuery();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
     }
 }
