@@ -1,0 +1,82 @@
+﻿@model ensemble_webapp.ViewModels.AdminHomeVM
+
+
+@{
+    ViewBag.Title = "AdminHome";
+}
+
+
+<div class="container">
+    <div class="row text-center">
+        <div class="col-12">
+            <h1 class="display-2">
+                Admin Settings
+            </h1>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <h1>
+                Add A Group
+            </h1>
+        </div>
+        <div class="col-12">
+            @using (Html.BeginForm("AddGroup", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="NewGroup.strName">Group Name</label>
+                @Html.EditorFor(m => m.NewGroup.StrName, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+                <input type="submit" value="add Group" class="form-control btn-primary" />
+            }
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <h1>
+                Add An Event
+            </h1>
+        </div>
+        <div class="col-12">
+            @using (Html.BeginForm("AddEvent", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="NewEvent.StrName">Event Name</label>
+                @Html.EditorFor(m => m.NewEvent.StrName, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEvent.strName">Date</label>
+                @Html.EditorFor(m => m.NewEvent.DtmDate, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEvent.StrLocation">Location</label>
+                @Html.EditorFor(m => m.NewEvent.StrLocation, new { htmlAttributes = new { @class = "form-control" } })
+                <label for="NewEvent.Group.IntGroupID">Group</label>
+                @Html.DropDownListFor(m => m.NewEvent.Group.IntGroupID, new SelectList(Model.LstAllGroups, "intGroupID", "strName"), new { @class = "form-control" })
+                <br />
+                <input type="submit" value="add Group" class="form-control btn-primary" />
+
+            }
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <h1>
+                Add An Event Schedule
+            </h1>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <h1>
+                Add A Type of Rehearsal
+            </h1>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-12">
+            <h1>
+                Add Rehearsal Parts
+            </h1>
+        </div>
+    </div>
+</div>

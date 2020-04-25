@@ -16,5 +16,7 @@ namespace ensemble_webapp.Models
         public int IntGroupID { get; set; }
 
         public string StrName { get; set; }
+
+        public Group() { }
     }
 }

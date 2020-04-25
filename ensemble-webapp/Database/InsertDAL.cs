@@ -31,14 +31,41 @@ namespace ensemble_webapp.Database
 
         public bool InsertGroup(Group group)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            // define a query
+            string query = "INSERT INTO public.groups(" +
+                "\"strName\")" +
+                " VALUES(@strName); ";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("strName", group.StrName);
+
+            int result = cmd.ExecuteNonQuery();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
 
         public bool InsertEvent(Event paramEvent)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            // define a query
+            string query = "INSERT INTO public.events(" +
+                "\"strName\", \"dtmDate\", \"strLocation\", \"intGroupID\")" +
+                " VALUES(@strName, @dtmDate, @strLocation, @intGroupID); ";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("strName", paramEvent.StrName);
+            cmd.Parameters.AddWithValue("dtmDate", paramEvent.DtmDate);
+            cmd.Parameters.AddWithValue("strLocation", paramEvent.StrLocation);
+            cmd.Parameters.AddWithValue("intGroupID", paramEvent.Group.IntGroupID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
 
         public bool InsertCallboard(Callboard callboard)
@@ -57,8 +84,6 @@ namespace ensemble_webapp.Database
 
             int result = cmd.ExecuteNonQuery();
 
-            conn.Close();
-
             if (result == 1)
                 return true;
             else
@@ -73,8 +98,6 @@ namespace ensemble_webapp.Database
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             int result = cmd.ExecuteNonQuery();
-
-            conn.Close();
 
             if (result == 1)
                 return true;
@@ -95,8 +118,6 @@ namespace ensemble_webapp.Database
 
             int result = cmd.ExecuteNonQuery();
 
-            conn.Close();
-
             if (result == 1)
                 return true;
             else
@@ -116,8 +137,6 @@ namespace ensemble_webapp.Database
             cmd.Parameters.AddWithValue("intUserID", conflict.User.IntUserID);
 
             int result = cmd.ExecuteNonQuery();
-
-            conn.Close();
 
             if (result == 1)
                 return true;
@@ -141,8 +160,6 @@ namespace ensemble_webapp.Database
             cmd.Parameters.AddWithValue("intEventID", task.Event.IntEventID);
 
             int result = cmd.ExecuteNonQuery();
-
-            conn.Close();
 
             if (result == 1)
                 return true;
@@ -193,10 +210,6 @@ namespace ensemble_webapp.Database
 
         public int InsertUser(Users user)
         {
-
-            NpgsqlConnection conn = DatabaseConnection.GetConnection();
-            conn.Open();
-
             // define a query
             string query = "INSERT INTO \"users\"" +
                 " (\"strName\", \"strEmail\", \"strPhone\", \"bytKey\", \"bytSalt\")" +
@@ -212,8 +225,6 @@ namespace ensemble_webapp.Database
             cmd.Parameters.AddWithValue("bytSalt", user.BytSalt);
 
             int result = (int)cmd.ExecuteScalar();
-
-            conn.Close();
 
             return result;
             // return new user id
