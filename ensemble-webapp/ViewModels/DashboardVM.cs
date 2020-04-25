@@ -16,6 +16,8 @@ namespace ensemble_webapp.ViewModels
 
         public List<Rehearsal> LstUpcomingRehearsals { get; set; }
 
+        public List<Task> LstOverdueTasks { get; set; }
+
         public DashboardVM()
         {
             LstUpcomingRehearsals = new List<Rehearsal>();

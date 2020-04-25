@@ -46,13 +46,16 @@
                 <ul>
                     @foreach (var t in Model.LstUpcomingTasks)
                     {
-                        <li>
-                            <p>@t.StrName due @t.DtmDue</p>
-                            <br />
-                            <p>@t.StrAttachment</p>
-                            <br />
-                            <p>in @t.Event.StrName from @t.UserAssignedBy.StrName</p>
-                        </li>
+                        @if (!@t.YsnIsFinished)
+                        {
+                            <li>
+                                <p>@t.StrName due @t.DtmDue</p>
+                                <br />
+                                <p>@t.StrAttachment</p>
+                                <br />
+                                <p>in @t.Event.StrName from @t.UserAssignedBy.StrName</p>
+                            </li>
+                        }
                     }
                 </ul>
             }
@@ -60,16 +63,40 @@
             {
                 <p>no tasks due in next two days</p>
             }
+            @if (Model.LstOverdueTasks.Any())
+            {
+                <p style="color:#ff0000">overdue tasks</p>
+                <ul>
+                    @foreach (var t in Model.LstOverdueTasks)
+                    {
+                        <li><span style="color:#ff0000">
+                            <p>@t.StrName was due @t.DtmDue</p>
+                            <br />
+                            <p>@t.StrAttachment</p>
+                            <br />
+                            <p>in @t.Event.StrName from @t.UserAssignedBy.StrName </p>
+                        </span></li>
+                    }
+                </ul>
+            }
         </div>
         <br />
         <div class="col-12">
-            <p>events you're a part of</p>
-            <ul>
-                @foreach (var e in Model.LstEvents)
-                {
-                    <li>@e.StrName</li>
-                }
-            </ul>
+            @if (Model.LstEvents.Any())
+            {
+                <p>events you're a part of</p>
+                <ul>
+                    @foreach (var e in Model.LstEvents)
+                    {
+                        <li>@e.StrName</li>
+                    }
+                </ul>
+            } else
+            {
+                <p>you're not a part of any events</p>
+                <br />
+                <p>go to the profile page to join an event!</p>
+            }
         </div>
     </div>  
 </div>

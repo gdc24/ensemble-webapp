@@ -101,7 +101,7 @@ namespace ensemble_webapp.Controllers
 
                 var taskEqualityComparer = new TaskEqualityComparer();
                 model.LstUpcomingTasks = get.GetUnfinishedTasksDueAfter(model.CurrentUser, DateTime.Now).Except(get.GetTasksDueBefore(model.CurrentUser, DateTime.Now.AddDays(DAYS_TO_SHOW_TASKS)), taskEqualityComparer).ToList();
-
+                model.LstOverdueTasks = get.GetTasksByAssignedToUser(model.CurrentUser).Except(get.GetUnfinishedTasksDueAfter(model.CurrentUser, DateTime.Now), taskEqualityComparer).ToList();
 
                 foreach (Event e in model.LstEvents)
                 {
