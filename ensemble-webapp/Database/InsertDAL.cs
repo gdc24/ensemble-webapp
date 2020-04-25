@@ -43,8 +43,26 @@ namespace ensemble_webapp.Database
 
         public bool InsertCallboard(Callboard callboard)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            // define a query
+            string query = "INSERT INTO public.callboard(" + 
+                "\"strSubject\", \"strNote\", \"dtmDateTime\", \"intPostedByUserID\", \"intEventID\")" +
+                " VALUES(@strSubject, @strNote, @dtmDateTime, @intPostedByUserID, @intEventID);";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("strSubject", callboard.StrSubject);
+            cmd.Parameters.AddWithValue("strNote", callboard.StrNote);
+            cmd.Parameters.AddWithValue("dtmDateTime", DateTime.Now);
+            cmd.Parameters.AddWithValue("intPostedByUserID", Globals.LOGGED_IN_USER.IntUserID);
+            cmd.Parameters.AddWithValue("intEventID", callboard.Event.IntEventID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            conn.Close();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
 
         public bool InsertToUserEvents(Event e, Users editedUserProfile)
@@ -66,8 +84,6 @@ namespace ensemble_webapp.Database
                 return true;
             else
                 return false;
-            //TODO
-            throw new NotImplementedException("todo");
         }
 
         public bool InsertConflict(Conflict conflict)

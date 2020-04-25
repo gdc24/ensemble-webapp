@@ -42,7 +42,7 @@
                     <label for="NewAnnouncement.StrSubject">Note</label>
                     @Html.EditorFor(m => m.NewAnnouncement.StrNote, new { htmlAttributes = new { @class = "form-control" } })
                     <label for="NewAnnouncement.Event">Event</label>
-                    @Html.ListBoxFor(m => m.NewAnnouncement.Event, new SelectList(Model.LstAllEvents, "intEventID", "strName"), new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.NewAnnouncement.Event.IntEventID, new SelectList(Model.LstAllEvents, "intEventID", "strName"), new { @class = "form-control" })
                     <br/>
                     <input type="submit" value="add callboard announcement" class="form-control btn-primary" />
                 }
