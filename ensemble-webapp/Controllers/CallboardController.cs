@@ -88,9 +88,9 @@ namespace ensemble_webapp.Controllers
             }
             get.CloseConnection();
 
-            mail.From = new MailAddress(c.PostedByUser.StrEmail);
+            mail.From = new MailAddress("ensemble395@gmail.com");
             mail.Subject = c.StrSubject;
-            mail.Body = c.StrNote;
+            mail.Body = "From: " + c.PostedByUser.StrName + " in " + c.Event.StrName+ "\n\n" + c.StrNote;
 
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
