@@ -28,6 +28,8 @@ namespace ensemble_webapp.Models
 
         public Group Group { get; set; }
 
+        public List<RehearsalPart> LstRehearsalParts { get; set; }
+
         public Event() { }
 
         public override bool Equals(object obj)

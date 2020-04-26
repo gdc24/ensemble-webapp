@@ -7,13 +7,15 @@ namespace ensemble_webapp.Models
 {
     public class RehearsalPart
     {
-        public RehearsalPart(int intRehearsalPartID, DateTime dtmStartDateTime, DateTime dtmEndDateTime, Rehearsal rehearsal, Types type)
+        public RehearsalPart(int intRehearsalPartID, DateTime dtmStartDateTime, DateTime dtmEndDateTime, string strDescription, Rehearsal rehearsal, Types type, Event @event)
         {
             IntRehearsalPartID = intRehearsalPartID;
             DtmStartDateTime = dtmStartDateTime;
             DtmEndDateTime = dtmEndDateTime;
+            StrDescription = strDescription;
             Rehearsal = rehearsal;
             Type = type;
+            Event = @event;
         }
 
         public int IntRehearsalPartID { get; set; }
@@ -22,8 +24,12 @@ namespace ensemble_webapp.Models
 
         public DateTime DtmEndDateTime { get; set; }
 
+        public string StrDescription { get; set; }
+
         public Rehearsal Rehearsal { get; set; }
 
         public Types Type { get; set; }
+
+        public Event Event { get; set; }
     }
 }

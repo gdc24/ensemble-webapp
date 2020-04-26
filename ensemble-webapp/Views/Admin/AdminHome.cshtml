@@ -142,9 +142,9 @@
                 <div class="col-6">
                     <h3>Current Rehearsal Types</h3>
                     <ul>
-                        @foreach (var e in Model.LstAllTypes)
+                        @foreach (var t in Model.LstAllTypes)
                         {
-                            <li>@e.StrName</li>
+                            <li>@t.StrName</li>
                         }
                     </ul>
                 </div>
@@ -157,6 +157,53 @@
             <h1>
                 Add Rehearsal Parts
             </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            form goes here
+        </div>
+        <div class="col-6">
+            @if (Model.LstAdminEvents.Any())
+            {
+                foreach (var e in Model.LstAdminEvents)
+                {
+                    <h3>Rehearsal Parts for @e.StrName</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Rehearsal Part ID
+                                </th>
+                                <th>
+                                    Start
+                                </th>
+                                <th>
+                                    End
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in e.LstRehearsalParts)
+                            {
+                                <tr>
+                                    <td>@r.IntRehearsalPartID</td>
+                                    <td>@r.DtmStartDateTime</td>
+                                    <td>@r.DtmEndDateTime</td>
+                                    <td>@r.StrDescription</td>
+                                    <td>@r.Type.StrName</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            }
         </div>
     </div>
 </div>
