@@ -12,7 +12,7 @@ namespace ensemble_webapp.Database
 
         List<RehearsalPart> UnscheduledRehearsalParts { get; set; }
 
-        List<RehearsalPart> FinalSchedule { get; set; }
+        FinalSchedule FinalSchedule { get; set; }
 
         EventSchedule EventSchedule { get; set; }
 
@@ -27,7 +27,7 @@ namespace ensemble_webapp.Database
             CreateSchedule(DateTime.Now, @event.DtmDate);
         }
 
-        public bool CreateSchedule(DateTime startDate, DateTime eventDate)
+        public FinalSchedule CreateSchedule(DateTime startDate, DateTime eventDate)
         {
             // starting at the rehearsal start date
             List<DateTime> rehearsalDates = Enumerable.Range(0, 1 + eventDate.Subtract(startDate).Days)
@@ -35,7 +35,7 @@ namespace ensemble_webapp.Database
                                                       .ToList();
 
             List<RehearsalPart> scheduledRehearsalParts = new List<RehearsalPart>();
-            
+
             foreach (var day in rehearsalDates)
             {
                 if (UnscheduledRehearsalParts.Any())
@@ -89,21 +89,14 @@ namespace ensemble_webapp.Database
                                                            EventSchedule.TmeSundayStart.Hour,
                                                            EventSchedule.TmeSundayStart.Minute,
                                                            EventSchedule.TmeSundayStart.Second);
-                            scheduledRehearsalParts.Concat(ScheduleDay(sunday, EventSchedule.PerWeekendDuration.ToDuration()));
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(sunday, EventSchedule.PerWeekendDuration.ToDuration())).ToList();
                             break;
                     }
                 }
             }
 
-            if (UnscheduledRehearsalParts.Any())
-            {
-                return false;
-            }
-            else
-            {
-                this.FinalSchedule = scheduledRehearsalParts;
-                return true;
-            }
+            FinalSchedule = new FinalSchedule(scheduledRehearsalParts, UnscheduledRehearsalParts);
+            return FinalSchedule;
         }
 
         private List<RehearsalPart> ScheduleDay(DateTime start, Duration length)
@@ -115,14 +108,15 @@ namespace ensemble_webapp.Database
             DateTime rehearsalPartStart = start;
             DateTime rehearsalPartEnd = rehearsalPartStart;
 
-            foreach (RehearsalPart rp in UnscheduledRehearsalParts)
+            foreach (RehearsalPart rp in UnscheduledRehearsalParts.ToArray())
             {
                 double minutesRehearsalPartLength = rp.DurLength.ToDuration().TotalMinutes;
                 rehearsalPartEnd = rehearsalPartEnd.AddMinutes(minutesRehearsalPartLength);
                 // if the list of needed members do not have conflicts between start and end
                 // AND the duration of the rehearsal part plus total time so far is less than the max length of the rehearsal
-                if (!HasConflicts(rp.LstMembers, rehearsalPartStart, rehearsalPartEnd) &&
-                    rp.DurLength.ToDuration().Plus(totalRehearsalTimeForDay) < length)
+                bool hasConflicts = HasConflicts(rp.LstMembers, rehearsalPartStart, rehearsalPartEnd);
+                bool rehearsalLengthFits = rp.DurLength.ToDuration().Plus(totalRehearsalTimeForDay) < length;
+                if (!hasConflicts && rehearsalLengthFits)
                 {
                     // start rehearsal part at given time
                     rp.DtmStartDateTime = rehearsalPartStart;
@@ -140,7 +134,7 @@ namespace ensemble_webapp.Database
                     UnscheduledRehearsalParts.Remove(rp);
 
                     // add this rehearsal part to the list of scheduled parts
-                    retval.Append(rp);
+                    retval.Add(rp);
                 }
             }
             return retval;
@@ -156,15 +150,16 @@ namespace ensemble_webapp.Database
         private bool HasConflicts(List<Users> LstMembers, DateTime start, DateTime end)
         {
             GetDAL get = new GetDAL();
-            foreach(Users m in LstMembers)
+            foreach (Users m in LstMembers)
             {
                 List<Conflict> conflicts = get.GetConflictsByUserAndDay(m, new LocalDate(start.Year, start.Month, start.Day));
                 // as soon as we find someone with a conflict, return true:/
                 if ((conflicts.Exists(c => c.DtmEndDateTime > start) &&
                      conflicts.Exists(c => c.DtmStartDateTime < end)) ||
                     (conflicts.Exists(c => c.DtmStartDateTime < end) &&
-                     conflicts.Exists(c => c.DtmEndDateTime > start))) {
-                    return true; 
+                     conflicts.Exists(c => c.DtmEndDateTime > start)))
+                {
+                    return true;
                 }
             }
             return false;

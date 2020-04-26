@@ -924,28 +924,28 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
-        //public List<Users> GetUsersByEvent(Event paramEvent)
-        //{
-        //    List<Users> retval = new List<Users>();
+        public List<Users> GetUsersByEvent(Event paramEvent)
+        {
+            List<Users> retval = new List<Users>();
 
-        //    // define a query
-        //    string query = "SELECT u.* FROM \"users\" u, \"members\" me" +
-        //        " WHERE me.\"intUserID\" = u.\"intUserID\"" +
-        //        " AND me.\"intEventID\" = " + paramEvent.IntEventID;
-        //    NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+            // define a query
+            string query = "SELECT u.* FROM \"users\" u, \"userEvents\" ue" +
+                " WHERE ue.\"intUserID\" = u.\"intUserID\"" +
+                " AND ue.\"intEventID\" = " + paramEvent.IntEventID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-        //    // execute query
-        //    NpgsqlDataReader dr = cmd.ExecuteReader();
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
 
-        //    // read all rows and output the first column in each row
-        //    while (dr.Read())
-        //    {
-        //        Users tmpUsers = GetUserFromDR(dr);
-        //        retval.Add(tmpUsers);
-        //    }
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Users tmpUsers = GetUserFromDR(dr);
+                retval.Add(tmpUsers);
+            }
 
-        //    return retval;
-        //}
+            return retval;
+        }
 
         public Users GetUserByName(string strName)
         {
@@ -1290,8 +1290,8 @@ namespace ensemble_webapp.Database
             string strDateOnly = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
             // define a query
-            string query = "SELECT * FROM \"conflicts\" WHERE \"intAssignedToUserID\" = " + user.IntUserID +
-                " AND DATE(\"dtmStartDateTime\") = " + strDateOnly;
+            string query = "SELECT * FROM \"conflicts\" WHERE \"intUserID\" = " + user.IntUserID +
+                " AND DATE(\"dtmStartDateTime\") = '" + strDateOnly + "';";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query

@@ -186,6 +186,7 @@
     <Compile Include="Models\Conflict.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventSchedule.cs" />
+    <Compile Include="Models\FinalSchedule.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Rehearsal.cs" />

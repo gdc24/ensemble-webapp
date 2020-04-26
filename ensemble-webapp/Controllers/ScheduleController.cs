@@ -52,7 +52,7 @@ namespace ensemble_webapp.Controllers
             Event e = get.GetEventByID(vm.SelectedEvent.IntEventID);
 
             List<RehearsalPart> rehearsalParts = get.GetRehearsalPartsByEvent(e);
-            foreach (RehearsalPart rp in e.LstRehearsalParts)
+            foreach (RehearsalPart rp in rehearsalParts)
             {
                 rp.LstMembers = get.GetUsersByRehearsalPart(rp);
             }
