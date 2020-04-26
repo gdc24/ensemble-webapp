@@ -176,6 +176,7 @@
     <Compile Include="Database\Globals.cs" />
     <Compile Include="Database\InsertDAL.cs" />
     <Compile Include="Database\Login.cs" />
+    <Compile Include="Database\Schedule.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -185,6 +186,7 @@
     <Compile Include="Models\Conflict.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventSchedule.cs" />
+    <Compile Include="Models\FinalSchedule.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Part.cs" />
     <Compile Include="Models\Rehearsal.cs" />

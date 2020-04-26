@@ -1,4 +1,6 @@
-﻿@model ensemble_webapp.ViewModels.ScheduleHomeVM
+﻿@using ensemble_webapp.Database
+
+@model ensemble_webapp.ViewModels.ScheduleHomeVM
 @{
     ViewBag.Title = "ScheduleHome";
 }
@@ -14,3 +16,57 @@
 <p>
     button to go to confilcts page down here somewhere
 </p>
+
+@if (Model.LstAllRehearsalParts != null)
+{
+    <h3>All Rehearsal Parts for your Admin Events</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Rehearsal Part ID</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Description</th>
+                <th>Length</th>
+                <th>Type</th>
+                <th>Who</th>
+                <th>Event</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model.LstAllRehearsalParts)
+            {
+                <tr>
+                    <td>@r.IntRehearsalPartID</td>
+                    <td>@r.DtmStartDateTime</td>
+                    <td>@r.DtmEndDateTime</td>
+                    <td>@r.StrDescription</td>
+                    <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
+                    <td>@r.Type.StrName</td>
+                    <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
+                    <td>@r.Event.StrName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@if (Globals.IS_ADMIN)
+{
+    using (Html.BeginForm("CreateNewSchedule", "Schedule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <h2>WARNING</h2>
+        <p>This will delete your previous schedule.</p>
+        <br />
+        <label for="SelectedEvent.IntEventID">Event</label>
+        @Html.DropDownListFor(m => m.SelectedEvent.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
+        for (int i = 0; i < Model.LstAllRehearsalParts.Count; i++)
+        {
+            Html.HiddenFor(model => Model.LstAllRehearsalParts[i]);
+        }
+        @*@Html.HiddenFor(m => m.LstAllRehearsalParts)*@
+        <br />
+        <input type="submit" value="generate new schedule" class="form-control btn-primary" />
+    }
+}
