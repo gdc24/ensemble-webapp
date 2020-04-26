@@ -72,19 +72,20 @@ namespace ensemble_webapp.Controllers
         }
 
         [HttpPost]
-        public ViewResult SendEmail()
+        public ViewResult SendEmail(CallboardHomeVM vm)
         {
+            Callboard newCallboard = vm.NewAnnouncement;
+
             MailMessage mail = new MailMessage();
             GetDAL get = new GetDAL();
             get.OpenConnection();
-            Event e = get.GetEventByID(model.Event.intEventID);
-            foreach (string t in get.GetAllUsersByEvent(e))
+            foreach (Users u in get.GetAllUsersByEvent(get.GetEventByID(newCallboard.Event.IntEventID)))
             {
-                mail.To.Add(t.StrEmail);
+                mail.To.Add(u.StrEmail);
             }
-            mail.From = new MailAddress(model.CurrentUser.StrEmail);
-            mail.Subject = model.StrSubject;
-            mail.Body = model.StrNote;
+            mail.From = new MailAddress(newCallboard.PostedByUser.StrEmail);
+            mail.Subject = newCallboard.StrSubject;
+            mail.Body = newCallboard.StrNote;
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";
