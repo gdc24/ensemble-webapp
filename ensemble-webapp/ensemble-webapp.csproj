@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\ProfileHomeVM.cs" />
     <Compile Include="ViewModels\ReportsHomeVM.cs" />
     <Compile Include="ViewModels\ScheduleHomeVM.cs" />
+    <Compile Include="ViewModels\ScheduleViewVM.cs" />
     <Compile Include="ViewModels\TasksHomeVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +288,7 @@
     <Content Include="Views\Conflict\ConflictsHome.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Admin\AdminHome.cshtml" />
+    <Content Include="Views\Schedule\ScheduleView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

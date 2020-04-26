@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace ensemble_webapp.Controllers
 {
@@ -61,7 +62,11 @@ namespace ensemble_webapp.Controllers
             //List<RehearsalPart> rehearsalParts = vm.LstAllRehearsalParts.Where(x => x.Event.Equals(e)).ToList();
 
             Schedule newSchedule = new Schedule(rehearsalParts, e);
-            return RedirectToAction("Index");
+
+            ScheduleViewVM model = new ScheduleViewVM();
+            model.Schedule = newSchedule.FinalSchedule;
+
+            return View("ScheduleView", model);
         }
 
         public ActionResult CheckUserIn(ScheduleHomeVM vm)

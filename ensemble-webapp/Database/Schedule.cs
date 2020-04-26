@@ -12,7 +12,7 @@ namespace ensemble_webapp.Database
 
         List<RehearsalPart> UnscheduledRehearsalParts { get; set; }
 
-        FinalSchedule FinalSchedule { get; set; }
+        public FinalSchedule FinalSchedule { get; set; }
 
         EventSchedule EventSchedule { get; set; }
 
@@ -24,7 +24,7 @@ namespace ensemble_webapp.Database
             EventSchedule = get.GetEventScheduleByEvent(@event.IntEventID);
             get.CloseConnection();
 
-            CreateSchedule(DateTime.Now, @event.DtmDate);
+            CreateSchedule(DateTime.Now.AddDays(1), @event.DtmDate);
         }
 
         public FinalSchedule CreateSchedule(DateTime startDate, DateTime eventDate)
@@ -47,42 +47,42 @@ namespace ensemble_webapp.Database
                                                            EventSchedule.TmeMondayStart.Hour,
                                                            EventSchedule.TmeMondayStart.Minute,
                                                            EventSchedule.TmeMondayStart.Second);
-                            scheduledRehearsalParts.Concat(ScheduleDay(monday, EventSchedule.PerWeekdayDuration.ToDuration()));
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(monday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
                             break;
                         case DayOfWeek.Tuesday:
                             DateTime tuesday = new DateTime(day.Year, day.Month, day.Day,
                                                             EventSchedule.TmeTuesdayStart.Hour,
                                                             EventSchedule.TmeTuesdayStart.Minute,
                                                             EventSchedule.TmeTuesdayStart.Second);
-                            scheduledRehearsalParts.Concat(ScheduleDay(tuesday, EventSchedule.PerWeekdayDuration.ToDuration()));
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(tuesday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
                             break;
                         case DayOfWeek.Wednesday:
                             DateTime wednesday = new DateTime(day.Year, day.Month, day.Day,
                                                               EventSchedule.TmeWednesdayStart.Hour,
                                                               EventSchedule.TmeWednesdayStart.Minute,
                                                               EventSchedule.TmeWednesdayStart.Second);
-                            scheduledRehearsalParts.Concat(ScheduleDay(wednesday, EventSchedule.PerWeekdayDuration.ToDuration()));
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(wednesday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
                             break;
                         case DayOfWeek.Thursday:
                             DateTime thursday = new DateTime(day.Year, day.Month, day.Day,
                                                              EventSchedule.TmeThursdayStart.Hour,
                                                              EventSchedule.TmeThursdayStart.Minute,
                                                              EventSchedule.TmeThursdayStart.Second);
-                            scheduledRehearsalParts.Concat(ScheduleDay(thursday, EventSchedule.PerWeekdayDuration.ToDuration()));
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(thursday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
                             break;
                         case DayOfWeek.Friday:
                             DateTime friday = new DateTime(day.Year, day.Month, day.Day,
                                                            EventSchedule.TmeFridayStart.Hour,
                                                            EventSchedule.TmeFridayStart.Minute,
                                                            EventSchedule.TmeFridayStart.Second);
-                            scheduledRehearsalParts.Concat(ScheduleDay(friday, EventSchedule.PerWeekdayDuration.ToDuration()));
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(friday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
                             break;
                         case DayOfWeek.Saturday:
                             DateTime saturday = new DateTime(day.Year, day.Month, day.Day,
                                                              EventSchedule.TmeSaturdayStart.Hour,
                                                              EventSchedule.TmeSaturdayStart.Minute,
                                                              EventSchedule.TmeSaturdayStart.Second);
-                            scheduledRehearsalParts.Concat(ScheduleDay(saturday, EventSchedule.PerWeekendDuration.ToDuration()));
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(saturday, EventSchedule.PerWeekendDuration.ToDuration())).ToList();
                             break;
                         case DayOfWeek.Sunday:
                             DateTime sunday = new DateTime(day.Year, day.Month, day.Day,
@@ -115,7 +115,7 @@ namespace ensemble_webapp.Database
                 // if the list of needed members do not have conflicts between start and end
                 // AND the duration of the rehearsal part plus total time so far is less than the max length of the rehearsal
                 bool hasConflicts = HasConflicts(rp.LstMembers, rehearsalPartStart, rehearsalPartEnd);
-                bool rehearsalLengthFits = rp.DurLength.ToDuration().Plus(totalRehearsalTimeForDay) < length;
+                bool rehearsalLengthFits = rp.DurLength.ToDuration().Plus(totalRehearsalTimeForDay) <= length;
                 if (!hasConflicts && rehearsalLengthFits)
                 {
                     // start rehearsal part at given time
