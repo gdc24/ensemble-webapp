@@ -16,6 +16,8 @@ namespace ensemble_webapp.ViewModels
 
         public Event SelectEvent { get; set; }
 
+        public bool IsInvalidPasswordAttempt { get; set; }
+
         public LoginVM()
         {
 

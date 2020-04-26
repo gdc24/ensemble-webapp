@@ -52,9 +52,10 @@ namespace ensemble_webapp.Controllers
             }
         }
 
-        public ActionResult Login()
+        public ActionResult Login(bool isInvalidPasswordAttempt = false)
         {
             LoginVM model = new LoginVM();
+            model.IsInvalidPasswordAttempt = isInvalidPasswordAttempt;
 
             GetDAL get = new GetDAL();
             get.OpenConnection();
@@ -70,8 +71,11 @@ namespace ensemble_webapp.Controllers
             if (Database.Login.VerifyUser(vm.logInUser)) {
                 return RedirectToAction("Dashboard");
             }
+            else
+            {
+                return RedirectToAction("Login", new { isInvalidPasswordAttempt = true });
+            }
 
-            return RedirectToAction("Login");
         }
 
         [HttpPost]

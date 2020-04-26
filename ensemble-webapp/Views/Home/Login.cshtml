@@ -17,18 +17,24 @@
 
 <div class="container">
     <div class="left">
+        @if (Model.IsInvalidPasswordAttempt)
+        {
+            <span style="color:#ff0000">
+                Incorrect password. Please try again.
+            </span>
+        }
         <h2><strong>Login</strong></h2>
         @using (Html.BeginForm("LoginUser", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <p>
                 <label for="logInUser.StrName">Name</label>
-                    @Html.EditorFor(m => m.logInUser.StrName, new { htmlAttributes = new { @class = "form-control" } })
-                    <br />
-                    <label for="logInUser.StrPassword">Password</label>
-                    @Html.PasswordFor(m => m.logInUser.StrPassword, new { @class = "form-control" })
-                </p>
-        <input type="submit" value="log in" class="form-control btn-primary" />
-         }
+                @Html.EditorFor(m => m.logInUser.StrName, new { htmlAttributes = new { @class = "form-control" } })
+                <br />
+                <label for="logInUser.StrPassword">Password</label>
+                @Html.PasswordFor(m => m.logInUser.StrPassword, new { @class = "form-control" })
+            </p>
+            <input type="submit" value="log in" class="form-control btn-primary" />
+        }
     </div>
     <div class="right">
         <h2><strong>New User</strong></h2>
