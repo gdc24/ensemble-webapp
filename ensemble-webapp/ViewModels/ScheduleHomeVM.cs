@@ -10,6 +10,12 @@ namespace ensemble_webapp.ViewModels
     {
         public List<Rehearsal> LstUpcomingRehearsals { get; set; }
 
+        public List<RehearsalPart> LstAllRehearsalParts { get; set; }
+
         public Users CurrentUser { get; set; }
+
+        public List<Event> LstAdminEvents { get; set; }
+
+        public Event SelectedEvent { get; set; }
     }
 }

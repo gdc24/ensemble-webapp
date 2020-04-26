@@ -217,23 +217,36 @@ namespace ensemble_webapp.Database
 
         private EventSchedule GetEventScheduleFromDR(NpgsqlDataReader dr)
         {
+            string groupName = dr["groupName"].ToString();
+            int intGroupID = Convert.ToInt32(dr["intGroupID"]);
+            Group group = new Group(intGroupID, groupName);
+
+            int intEventID = Convert.ToInt32(dr["intEventID"]);
+            string eventName = dr["strName"].ToString();
+            int ordinalDtmDate = dr.GetOrdinal("dtmDate");
+            Instant instantDate = dr.GetFieldValue<Instant>(ordinalDtmDate);
+            var timezone = DateTimeZoneProviders.Bcl.GetSystemDefault();
+            DateTime eventDate = instantDate.InZone(timezone).ToDateTimeUnspecified();
+            string eventLocation = dr["strLocation"].ToString();
+
+            Event paramEvent = new Event(intEventID, eventName, eventDate, eventLocation, group);
+
             int intEventScheduleID = Convert.ToInt32(dr["intEventScheduleID"]);
 
-            TimeSpan tmpTime;
-            tmpTime = (TimeSpan)dr["tmeMondayStart"];
-            LocalTime tmeMondayStart = LocalTime.FromTicksSinceMidnight(tmpTime.Ticks);
-            tmpTime = (TimeSpan)dr["tmeTuesdayStart"];
-            LocalTime tmeTuesdayStart = LocalTime.FromTicksSinceMidnight(tmpTime.Ticks);
-            tmpTime = (TimeSpan)dr["tmeWednesdayStart"];
-            LocalTime tmeWednesdayStart = LocalTime.FromTicksSinceMidnight(tmpTime.Ticks);
-            tmpTime = (TimeSpan)dr["tmeThursdayStart"];
-            LocalTime tmeThursdayStart = LocalTime.FromTicksSinceMidnight(tmpTime.Ticks);
-            tmpTime = (TimeSpan)dr["tmeFridayStart"];
-            LocalTime tmeFridayStart = LocalTime.FromTicksSinceMidnight(tmpTime.Ticks);
-            tmpTime = (TimeSpan)dr["tmeSaturdayStart"];
-            LocalTime tmeSaturdayStart = LocalTime.FromTicksSinceMidnight(tmpTime.Ticks);
-            tmpTime = (TimeSpan)dr["tmeSundayStart"];
-            LocalTime tmeSundayStart = LocalTime.FromTicksSinceMidnight(tmpTime.Ticks);
+            int ordinalMon = dr.GetOrdinal("tmeMondayStart");
+            LocalTime tmeMondayStart = dr.GetFieldValue<LocalTime>(ordinalMon);
+            int ordinalTue = dr.GetOrdinal("tmeTuesdayStart");
+            LocalTime tmeTuesdayStart = dr.GetFieldValue<LocalTime>(ordinalTue);
+            int ordinalWed = dr.GetOrdinal("tmeWednesdayStart");
+            LocalTime tmeWednesdayStart = dr.GetFieldValue<LocalTime>(ordinalWed);
+            int ordinalThu = dr.GetOrdinal("tmeThursdayStart");
+            LocalTime tmeThursdayStart = dr.GetFieldValue<LocalTime>(ordinalThu);
+            int ordinalFri = dr.GetOrdinal("tmeFridayStart");
+            LocalTime tmeFridayStart = dr.GetFieldValue<LocalTime>(ordinalFri);
+            int ordinalSat = dr.GetOrdinal("tmeSaturdayStart");
+            LocalTime tmeSaturdayStart = dr.GetFieldValue<LocalTime>(ordinalSat);
+            int ordinalSun = dr.GetOrdinal("tmeSundayStart");
+            LocalTime tmeSundayStart = dr.GetFieldValue<LocalTime>(ordinalSun);
 
             int ordinalWeekday = dr.GetOrdinal("durWeekdayDuration");
             int ordinalWeekend = dr.GetOrdinal("durWeekendDuration");
@@ -241,7 +254,6 @@ namespace ensemble_webapp.Database
             Period perWeekdayDuration = dr.GetFieldValue<Period>(ordinalWeekday);
             Period perWeekendDuration = dr.GetFieldValue<Period>(ordinalWeekend);
 
-            Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
 
             return new EventSchedule(intEventScheduleID, tmeMondayStart, tmeTuesdayStart, tmeWednesdayStart, tmeThursdayStart, tmeFridayStart, tmeSaturdayStart, tmeSundayStart, perWeekdayDuration, perWeekendDuration, paramEvent);
 
@@ -526,14 +538,22 @@ namespace ensemble_webapp.Database
         // gets only the most recent event schedule
         public EventSchedule GetEventScheduleByEvent(int intEventID)
         {
+            conn.TypeMapper.UseNodaTime();
+
             EventSchedule retval = null;
 
             // define a query
-            string query = "SELECT es.* FROM \"eventSchedule\" es" +
-                " INNER JOIN (" +
-                "   SELECT MAX(\"intEventScheduleID\") AS \"intEventScheduleID\" from \"eventSchedule\") s" +
-                " ON es.\"intEventScheduleID\" = s.\"intEventScheduleID\"" +
-                " AND es.\"intEventID\" = " + intEventID + ";";
+            //string query = "SELECT es.* FROM \"eventSchedule\" es" +
+            //    " INNER JOIN (" +
+            //    "   SELECT MAX(\"intEventScheduleID\") AS \"intEventScheduleID\" from \"eventSchedule\") s" +
+            //    " ON es.\"intEventScheduleID\" = s.\"intEventScheduleID\"" +
+            //    " AND es.\"intEventID\" = " + intEventID + ";";
+            string query = "SELECT es.*, e.*, g.\"intGroupID\", g.\"strName\" as \"groupName\"" +
+                " FROM \"groups\" g, \"eventSchedule\" es" +
+                " INNER JOIN(SELECT MAX(\"intEventScheduleID\") as \"intEventScheduleID\"" +
+                " FROM \"eventSchedule\") s on es.\"intEventScheduleID\" = s.\"intEventScheduleID\", events e where e.\"intEventID\" = es.\"intEventID\"" +
+                " AND e.\"intEventID\" = " + intEventID + "" +
+                " AND g.\"intGroupID\" = e.\"intGroupID\";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
@@ -597,6 +617,35 @@ namespace ensemble_webapp.Database
         #endregion
 
         #region GET LISTS
+
+
+        public List<RehearsalPart> GetAllRehearsalParts()
+        {
+            conn.TypeMapper.UseNodaTime();
+            List<RehearsalPart> retval = new List<RehearsalPart>();
+
+            // define a query
+            string query = "select rp.*, e.*, g.\"strName\" as \"groupName\", t.\"strName\" as \"typeName\", t.\"intTypeID\"" +
+                " from types t, \"rehearsalParts\" rp, events e, groups g" +
+                " WHERE rp.\"intEventID\" = e.\"intEventID\"" +
+                " AND g.\"intGroupID\" = e.\"intGroupID\"" +
+                " AND rp.\"intTypeID\" = t.\"intTypeID\"";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                RehearsalPart tmpRehearsalPart = GetRehearsalPartFromDR(dr);
+                retval.Add(tmpRehearsalPart);
+            }
+
+            dr.Close();
+
+            return retval;
+        }
 
         public List<Group> GetAllGroups()
         {

@@ -10,44 +10,44 @@ namespace ensemble_webapp
     public class SchedulingAlgorithm
     {
 
-        private int eventID;
+        //private int eventID;
 
 
-        public SchedulingAlgorithm(int ID)
-        {
-            eventID = ID;
-        }
+        //public SchedulingAlgorithm(int ID)
+        //{
+        //    eventID = ID;
+        //}
 
-        public bool Schedule()
-        {
-            //connect to schedule home view model
-            ScheduleHomeVM model = new ScheduleHomeVM();
-            model.CurrentUser = Globals.LOGGED_IN_USER;
+        //public bool Schedule()
+        //{
+        //    //connect to schedule home view model
+        //    ScheduleHomeVM model = new ScheduleHomeVM();
+        //    model.CurrentUser = Globals.LOGGED_IN_USER;
 
-            //connect to DAL
-            GetDAL dal = new GetDAL();
-            dal.OpenConnection();
-
-
-            //determine event
-            Event e = null;
-            e = dal.GetEventByID(eventID);
-
-            //make list of all rehearsal parts
-            List<RehearsalPart> rehearsalParts = new List<RehearsalPart>();
-            rehearsalParts = dal.GetRehearsalPartsByEvent(e);
+        //    //connect to DAL
+        //    GetDAL dal = new GetDAL();
+        //    dal.OpenConnection();
 
 
-            //make list of all rehearsals
-            List<Rehearsal> rehearsals = new List<Rehearsal>();
-            rehearsals = dal.GetRehearsalsByEvent(e);
+        //    //determine event
+        //    Event e = null;
+        //    e = dal.GetEventByID(eventID);
 
-            dal.CloseConnection();
+        //    //make list of all rehearsal parts
+        //    List<RehearsalPart> rehearsalParts = new List<RehearsalPart>();
+        //    rehearsalParts = dal.GetRehearsalPartsByEvent(e);
+
+
+        //    //make list of all rehearsals
+        //    List<Rehearsal> rehearsals = new List<Rehearsal>();
+        //    rehearsals = dal.GetRehearsalsByEvent(e);
+
+        //    dal.CloseConnection();
 
 
 
-            return false;
-        }
+        //    return false;
+        //}
 
 
 
