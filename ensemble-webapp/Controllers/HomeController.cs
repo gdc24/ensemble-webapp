@@ -79,8 +79,9 @@ namespace ensemble_webapp.Controllers
         }
 
         [HttpPost]
-        public ActionResult NewUser(Users newUser)
+        public ActionResult NewUser(LoginVM vm)
         {
+            Users newUser = vm.newUser;
             if (Database.Login.CreateUser(newUser)) {
                 return RedirectToAction("Dashboard");
             }
