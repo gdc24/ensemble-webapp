@@ -76,15 +76,16 @@ namespace ensemble_webapp.Controllers
         {
             Callboard newCallboard = vm.NewAnnouncement;
 
+            MailMessage mail = new MailMessage();
+
             GetDAL get = new GetDAL();
             get.OpenConnection();
-            foreach (Users u in get.GetAllUsersByEvent(get.GetEventByID(newCallboard.Event.IntEventID)))
+            foreach (Users u in get.GetUsersByEvent(get.GetEventByID(newCallboard.Event.IntEventID)))
             {
                 mail.To.Add(u.StrEmail);
             }
             get.CloseConnection();
 
-            MailMessage mail = new MailMessage();
             mail.From = new MailAddress(newCallboard.PostedByUser.StrEmail);
             mail.Subject = newCallboard.StrSubject;
             mail.Body = newCallboard.StrNote;
