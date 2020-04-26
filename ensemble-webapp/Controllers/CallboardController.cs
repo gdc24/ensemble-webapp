@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net.Mail;
 
 namespace ensemble_webapp.Controllers
 {
@@ -68,6 +69,33 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
 
 
+        }
+
+        [HttpPost]
+        public ViewResult SendEmail(CallboardHomeVM vm)
+        {
+            Callboard newCallboard = vm.NewAnnouncement;
+
+            MailMessage mail = new MailMessage();
+            GetDAL get = new GetDAL();
+            get.OpenConnection();
+            foreach (Users u in get.GetAllUsersByEvent(get.GetEventByID(newCallboard.Event.IntEventID)))
+            {
+                mail.To.Add(u.StrEmail);
+            }
+            mail.From = new MailAddress(newCallboard.PostedByUser.StrEmail);
+            mail.Subject = newCallboard.StrSubject;
+            mail.Body = newCallboard.StrNote;
+            mail.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new System.Net.NetworkCredential("username", "password"); // Enter seders User name and password   
+            smtp.EnableSsl = true;
+            smtp.Send(mail);
+            get.CloseConnection();
+            return View("Index");
         }
     }
 }
