@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace ensemble_webapp.Controllers
 {
@@ -61,7 +62,26 @@ namespace ensemble_webapp.Controllers
             //List<RehearsalPart> rehearsalParts = vm.LstAllRehearsalParts.Where(x => x.Event.Equals(e)).ToList();
 
             Schedule newSchedule = new Schedule(rehearsalParts, e);
-            return RedirectToAction("Index");
+
+            ScheduleViewVM model = new ScheduleViewVM();
+            model.Schedule = newSchedule.FinalSchedule;
+
+            return View("ScheduleView", model);
         }
+
+        //public ActionResult ViewSchedule(FinalSchedule schedule)
+        //{
+        //    if (!Globals.LOGIN_STATUS)
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+        //    else
+        //    {
+        //        ScheduleViewVM model = new ScheduleViewVM();
+        //        model.Schedule = schedule;
+
+        //        return View("ScheduleView", model);
+        //    }
+        //}
     }
 }

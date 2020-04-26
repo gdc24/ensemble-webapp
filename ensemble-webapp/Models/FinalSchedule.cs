@@ -14,8 +14,10 @@ namespace ensemble_webapp.Models
         }
         
 
-        List<RehearsalPart> LstScheduledRehearsalParts { get; set; }
+        public List<RehearsalPart> LstScheduledRehearsalParts { get; set; }
 
-        List<RehearsalPart> LstUnscheduledRehearsalParts { get; set; }
+        public List<RehearsalPart> LstUnscheduledRehearsalParts { get; set; }
+
+        public FinalSchedule() { }
     }
 }

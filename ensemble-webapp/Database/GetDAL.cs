@@ -1290,7 +1290,9 @@ namespace ensemble_webapp.Database
             string strDateOnly = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
             // define a query
-            string query = "SELECT * FROM \"conflicts\" WHERE \"intUserID\" = " + user.IntUserID +
+            string query = "SELECT c.*, u.* FROM \"conflicts\" c, \"users\" u" +
+                " WHERE u.\"intUserID\" = " + user.IntUserID +
+                " AND u.\"intUserID\" = c.\"intUserID\"" +
                 " AND DATE(\"dtmStartDateTime\") = '" + strDateOnly + "';";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 

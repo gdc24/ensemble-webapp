@@ -79,7 +79,7 @@ namespace ensemble_webapp.Controllers
             MailMessage mail = new MailMessage();
             GetDAL get = new GetDAL();
             get.OpenConnection();
-            foreach (Users u in get.GetAllUsersByEvent(get.GetEventByID(newCallboard.Event.IntEventID)))
+            foreach (Users u in get.GetUsersByEvent(get.GetEventByID(newCallboard.Event.IntEventID)))
             {
                 mail.To.Add(u.StrEmail);
             }
