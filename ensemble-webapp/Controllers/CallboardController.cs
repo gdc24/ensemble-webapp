@@ -97,7 +97,7 @@ namespace ensemble_webapp.Controllers
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new System.Net.NetworkCredential("username", "password"); // Enter seders User name and password   
+            smtp.Credentials = new System.Net.NetworkCredential("ensemble395", "7GStz.pPy.6AfX[t");
             smtp.EnableSsl = true;
             smtp.Send(mail);
 
