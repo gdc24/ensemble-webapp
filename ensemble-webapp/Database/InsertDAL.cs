@@ -259,8 +259,35 @@ namespace ensemble_webapp.Database
 
         public bool InsertEventSchedule(EventSchedule eventSchedule)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+
+            conn.TypeMapper.UseNodaTime();
+
+            // define a query
+            string query = "INSERT INTO public.\"eventSchedule\"(" +
+                "\"tmeMondayStart\", \"tmeTuesdayStart\", \"tmeWednesdayStart\"," +
+                " \"tmeThursdayStart\", \"tmeFridayStart\", \"tmeSaturdayStart\"," +
+                " \"tmeSundayStart\", \"durWeekdayDuration\", \"durWeekendDuration\"," +
+                " \"intEventID\")" +
+                " VALUES(@tmeMondayStart, @tmeTuesdayStart, @tmeWednesdayStart, @tmeThursdayStart, @tmeFridayStart, @tmeSaturdayStart, @tmeSundayStart, @durWeekdayDuration, @durWeekendDuration, @intEventID);";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("tmeMondayStart", eventSchedule.TmeMondayStart);
+            cmd.Parameters.AddWithValue("tmeTuesdayStart", eventSchedule.TmeTuesdayStart); ;
+            cmd.Parameters.AddWithValue("tmeWednesdayStart", eventSchedule.TmeWednesdayStart);
+            cmd.Parameters.AddWithValue("tmeThursdayStart", eventSchedule.TmeThursdayStart);
+            cmd.Parameters.AddWithValue("tmeFridayStart", eventSchedule.TmeFridayStart);
+            cmd.Parameters.AddWithValue("tmeSaturdayStart", eventSchedule.TmeSaturdayStart);
+            cmd.Parameters.AddWithValue("tmeSundayStart", eventSchedule.TmeSundayStart);
+            cmd.Parameters.AddWithValue("durWeekdayDuration", eventSchedule.PerWeekdayDuration);
+            cmd.Parameters.AddWithValue("durWeekendDuration", eventSchedule.PerWeekendDuration);
+            cmd.Parameters.AddWithValue("intEventID", eventSchedule.Event.IntEventID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
 
         public bool InsertPart(Part part)

@@ -214,12 +214,15 @@ namespace ensemble_webapp.Database
             tmpTime = (TimeSpan)dr["tmeSundayStart"];
             LocalTime tmeSundayStart = LocalTime.FromTicksSinceMidnight(tmpTime.Ticks);
 
-            Duration durWeekdayDuration = Duration.FromMinutes(Convert.ToInt32(dr["durWeekdayDuration"]));
-            Duration durWeekendDuration = Duration.FromMinutes(Convert.ToInt32(dr["durWeekendDuration"]));
+            int ordinalWeekday = dr.GetOrdinal("durWeekdayDuration");
+            int ordinalWeekend = dr.GetOrdinal("durWeekendDuration");
+
+            Period perWeekdayDuration = dr.GetFieldValue<Period>(ordinalWeekday);
+            Period perWeekendDuration = dr.GetFieldValue<Period>(ordinalWeekend);
 
             Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
 
-            return new EventSchedule(intEventScheduleID, tmeMondayStart, tmeTuesdayStart, tmeWednesdayStart, tmeThursdayStart, tmeFridayStart, tmeSaturdayStart, tmeSundayStart, durWeekdayDuration, durWeekendDuration, paramEvent);
+            return new EventSchedule(intEventScheduleID, tmeMondayStart, tmeTuesdayStart, tmeWednesdayStart, tmeThursdayStart, tmeFridayStart, tmeSaturdayStart, tmeSundayStart, perWeekdayDuration, perWeekendDuration, paramEvent);
 
         }
 
@@ -483,6 +486,33 @@ namespace ensemble_webapp.Database
 
             // define a query
             string query = "SELECT * FROM \"eventSchedule\" WHERE \"intEventScheduleID\" = " + intEventScheduleID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                retval = GetEventScheduleFromDR(dr);
+            }
+
+            dr.Close();
+
+            return retval;
+        }
+
+        // gets only the most recent event schedule
+        public EventSchedule GetEventScheduleByEvent(int intEventID)
+        {
+            EventSchedule retval = null;
+
+            // define a query
+            string query = "SELECT es.* FROM \"eventSchedule\" es" +
+                " INNER JOIN (" +
+                "   SELECT MAX(\"intEventScheduleID\") AS \"intEventScheduleID\" from \"eventSchedule\") s" +
+                " ON es.\"intEventScheduleID\" = s.\"intEventScheduleID\"" +
+                " AND es.\"intEventID\" = " + intEventID + ";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query

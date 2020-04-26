@@ -110,9 +110,9 @@
                 <label for="NewEventSchedule.StrSundayStart">Sunday Start Time</label>
                 @Html.EditorFor(m => m.NewEventSchedule.StrSundayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
                 <label for="NewEventSchedule.DurWeekdayDuration.TotalMinutes">Weekday Duration (Minutes)</label>
-                @Html.EditorFor(m => m.NewEventSchedule.DurWeekdayDuration.TotalMinutes, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.NewEventSchedule.IntWeekdayDuration, new { htmlAttributes = new { @class = "form-control" } })
                 <label for="NewEventSchedule.DurWeekendDuration.TotalMinutes">Weekend Duration (Minutes)</label>
-                @Html.EditorFor(m => m.NewEventSchedule.DurWeekendDuration.TotalMinutes, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.NewEventSchedule.IntWeekendDuration, new { htmlAttributes = new { @class = "form-control" } })
                 <br />
                 <input type="submit" value="add event schedule" class="form-control btn-primary" />
             }

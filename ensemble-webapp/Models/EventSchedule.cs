@@ -10,7 +10,7 @@ namespace ensemble_webapp.Models
 {
     public class EventSchedule
     {
-        public EventSchedule(int intEventScheduleID, LocalTime tmeMondayStart, LocalTime tmeTuesdayStart, LocalTime tmeWednesdayStart, LocalTime tmeThursdayStart, LocalTime tmeFridayStart, LocalTime tmeSaturdayStart, LocalTime tmeSundayStart, Duration durWeekdayDuration, Duration durWeekendDuration, Event paramEvent)
+        public EventSchedule(int intEventScheduleID, LocalTime tmeMondayStart, LocalTime tmeTuesdayStart, LocalTime tmeWednesdayStart, LocalTime tmeThursdayStart, LocalTime tmeFridayStart, LocalTime tmeSaturdayStart, LocalTime tmeSundayStart, Period durWeekdayDuration, Period durWeekendDuration, Event paramEvent)
         {
             IntEventScheduleID = intEventScheduleID;
             TmeMondayStart = tmeMondayStart;
@@ -20,8 +20,8 @@ namespace ensemble_webapp.Models
             TmeFridayStart = tmeFridayStart;
             TmeSaturdayStart = tmeSaturdayStart;
             TmeSundayStart = tmeSundayStart;
-            DurWeekdayDuration = durWeekdayDuration;
-            DurWeekendDuration = durWeekendDuration;
+            PerWeekdayDuration = durWeekdayDuration;
+            PerWeekendDuration = durWeekendDuration;
             Event = paramEvent;
         }
 
@@ -41,9 +41,13 @@ namespace ensemble_webapp.Models
 
         public LocalTime TmeSundayStart { get; set; }
 
-        public Duration DurWeekdayDuration { get; set; }
+        public Period PerWeekdayDuration { get; set; }
 
-        public Duration DurWeekendDuration { get; set; }
+        public Period PerWeekendDuration { get; set; }
+
+        public int IntWeekdayDuration { get; set; }
+
+        public int IntWeekendDuration { get; set; }
 
         public Event Event { get; set; }
 
@@ -65,10 +69,19 @@ namespace ensemble_webapp.Models
         public EventSchedule(Event @event, int intMinutesWeekday, int intMinutesWeekend, string strMondayStart, string strTuesdayStart, string strWednesdayStart, string strThursdayStart, string strFridayStart, string strSaturdayStart, string strSundayStart)
         {
             Event = @event;
-            DurWeekdayDuration = Duration.FromMinutes(intMinutesWeekday);
-            DurWeekendDuration = Duration.FromMinutes(intMinutesWeekend);
+            PeriodBuilder periodBuilderWeekday = new PeriodBuilder
+            {
+                Minutes = intMinutesWeekday
+            };
+            PeriodBuilder periodBuilderWeekend = new PeriodBuilder
+            {
+                Minutes = intMinutesWeekend
+            };
+
+            PerWeekdayDuration = periodBuilderWeekday.Build();
+            PerWeekendDuration = periodBuilderWeekend.Build();
             var culture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
-            var pattern = LocalTimePattern.Create("hh:mm tt", culture);
+            var pattern = LocalTimePattern.Create("h:mmtt", culture);
             TmeMondayStart = pattern.Parse(strMondayStart).Value;
             TmeTuesdayStart = pattern.Parse(strTuesdayStart).Value;
             TmeWednesdayStart = pattern.Parse(strWednesdayStart).Value;
@@ -77,5 +90,7 @@ namespace ensemble_webapp.Models
             TmeSaturdayStart = pattern.Parse(strSaturdayStart).Value;
             TmeSundayStart = pattern.Parse(strSundayStart).Value;
         }
+
+        public EventSchedule() { }
     }
 }

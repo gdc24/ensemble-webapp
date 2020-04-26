@@ -1,4 +1,5 @@
 ﻿using ensemble_webapp.Database;
+using ensemble_webapp.Models;
 using ensemble_webapp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -66,12 +67,27 @@ namespace ensemble_webapp.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddEvenSchedule(AdminHomeVM vm)
+        public ActionResult AddEventSchedule(AdminHomeVM vm)
         {
             InsertDAL insert = new InsertDAL();
+            //vm.NewEventSchedule.PerWeekdayDuration = NodaTime.Period.FromMinutes(vm.NewEventSchedule.PerWeekdayDuration.Minutes);
+            //vm.NewEventSchedule.PerWeekendDuration = NodaTime.Period.FromMinutes(vm.NewEventSchedule.PerWeekendDuration.Minutes);
+
+            EventSchedule newEventSchedule = new EventSchedule(
+                vm.NewEventSchedule.Event,
+                (int)vm.NewEventSchedule.IntWeekdayDuration,
+                (int)vm.NewEventSchedule.IntWeekendDuration,
+                vm.NewEventSchedule.StrMondayStart,
+                vm.NewEventSchedule.StrTuesdayStart,
+                vm.NewEventSchedule.StrWednesdayStart,
+                vm.NewEventSchedule.StrThursdayStart,
+                vm.NewEventSchedule.StrFridayStart,
+                vm.NewEventSchedule.StrSaturdayStart,
+                vm.NewEventSchedule.StrSundayStart);
+
             insert.OpenConnection();
 
-            insert.InsertEventSchedule(vm.NewEventSchedule);
+            insert.InsertEventSchedule(newEventSchedule);
 
             insert.CloseConnection();
 
