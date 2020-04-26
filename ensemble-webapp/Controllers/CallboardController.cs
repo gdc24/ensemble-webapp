@@ -55,10 +55,12 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public ActionResult AddAnnouncement(CallboardHomeVM vm)
         {
             Callboard newCallboard = vm.NewAnnouncement;
 
+            // insert announcement into database
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
 
@@ -66,29 +68,29 @@ namespace ensemble_webapp.Controllers
 
             insert.CloseConnection();
 
-            return RedirectToAction("Index");
+            // also send email
 
+            return SendEmail(newCallboard);
 
         }
 
         [HttpPost]
-        public ViewResult SendEmail(CallboardHomeVM vm)
+        private ActionResult SendEmail(Callboard c)
         {
-            Callboard newCallboard = vm.NewAnnouncement;
 
             MailMessage mail = new MailMessage();
 
             GetDAL get = new GetDAL();
             get.OpenConnection();
-            foreach (Users u in get.GetUsersByEvent(get.GetEventByID(newCallboard.Event.IntEventID)))
+            foreach (Users u in get.GetUsersByEvent(get.GetEventByID(c.Event.IntEventID)))
             {
                 mail.To.Add(u.StrEmail);
             }
             get.CloseConnection();
 
-            mail.From = new MailAddress(newCallboard.PostedByUser.StrEmail);
-            mail.Subject = newCallboard.StrSubject;
-            mail.Body = newCallboard.StrNote;
+            mail.From = new MailAddress(c.PostedByUser.StrEmail);
+            mail.Subject = c.StrSubject;
+            mail.Body = c.StrNote;
 
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();
@@ -98,7 +100,8 @@ namespace ensemble_webapp.Controllers
             smtp.Credentials = new System.Net.NetworkCredential("username", "password"); // Enter seders User name and password   
             smtp.EnableSsl = true;
             smtp.Send(mail);
-            return View("Index");
+
+            return RedirectToAction("Index");
         }
     }
 }
