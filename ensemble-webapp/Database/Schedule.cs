@@ -115,7 +115,7 @@ namespace ensemble_webapp.Database
                 // if the list of needed members do not have conflicts between start and end
                 // AND the duration of the rehearsal part plus total time so far is less than the max length of the rehearsal
                 bool hasConflicts = HasConflicts(rp.LstMembers, rehearsalPartStart, rehearsalPartEnd);
-                bool rehearsalLengthFits = rp.DurLength.ToDuration().Plus(totalRehearsalTimeForDay) < length;
+                bool rehearsalLengthFits = rp.DurLength.ToDuration().Plus(totalRehearsalTimeForDay) <= length;
                 if (!hasConflicts && rehearsalLengthFits)
                 {
                     // start rehearsal part at given time
