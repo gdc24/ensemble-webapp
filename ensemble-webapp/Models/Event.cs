@@ -32,6 +32,14 @@ namespace ensemble_webapp.Models
 
         public Event() { }
 
+        public Event(int intEventID, string eventName, string strLocation, Group group)
+        {
+            IntEventID = intEventID;
+            StrName = eventName;
+            StrLocation = strLocation;
+            Group = group;
+        }
+
         public override bool Equals(object obj)
         {
             return obj is Event @event &&

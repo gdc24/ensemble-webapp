@@ -160,10 +160,29 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
-            form goes here
+        <div class="col-3">
+            @using (Html.BeginForm("AddRehearsalPart", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="NewRehearsalPart.StrDescription">Rehearsal Part</label>
+                @Html.EditorFor(m => m.NewRehearsalPart.StrDescription, new { htmlAttributes = new { @class = "form-control" } })
+
+                <label>Members needed</label>
+                @*@Html.ListBoxFor(m => m.NewRehearsalPart.LstMembers, new SelectList(Model.LstAllUsersForAdminEvents, "intUserID", "strName", "select Members for this rehearsal part"), new { @class = "form-control" })*@
+                @Html.ListBoxFor(m => m.NewRehearsalPart.ArrMemberNeededIDs, new SelectList(Model.LstAllUsersForAdminEvents, "intUserID", "strName", "select Members for this rehearsal part"), new { @class = "form-control" })
+                
+                <label for="NewRehearsalPart.IntLengthMinutes">Time Needed in Minutes</label>
+                @Html.EditorFor(m => m.NewRehearsalPart.IntLengthMinutes, new { htmlAttributes = new { @class = "form-control" } })
+                
+                <label for="NewRehearsalPart.Event.IntEventID">Event</label>
+                @Html.DropDownListFor(m => m.NewRehearsalPart.Event.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
+
+                <label for="NewRehearsalPart.Type.IntTypeID">Type</label>
+                @Html.DropDownListFor(m => m.NewRehearsalPart.Type.IntTypeID, new SelectList(Model.LstAllTypes, "intTypeID", "strName"), new { @class = "form-control" })
+                <br />
+                <input type="submit" value="add rehearsal part" class="form-control btn-primary" />
+            }
         </div>
-        <div class="col-6">
+        <div class="col">
             @if (Model.LstAdminEvents.Any())
             {
                 foreach (var e in Model.LstAdminEvents)
@@ -172,32 +191,26 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>
-                                    Rehearsal Part ID
-                                </th>
-                                <th>
-                                    Start
-                                </th>
-                                <th>
-                                    End
-                                </th>
-                                <th>
-                                    Description
-                                </th>
-                                <th>
-                                    Type
-                                </th>
+                                @*<th>Rehearsal Part ID</th>*@
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Description</th>
+                                <th>Length</th>
+                                <th>Type</th>
+                                <th>Who</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var r in e.LstRehearsalParts)
                             {
                                 <tr>
-                                    <td>@r.IntRehearsalPartID</td>
+                                    @*<td>@r.IntRehearsalPartID</td>*@
                                     <td>@r.DtmStartDateTime</td>
                                     <td>@r.DtmEndDateTime</td>
                                     <td>@r.StrDescription</td>
+                                    <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
                                     <td>@r.Type.StrName</td>
+                                    <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
                                 </tr>
                             }
                         </tbody>

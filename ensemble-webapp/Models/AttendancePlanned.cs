@@ -7,6 +7,11 @@ namespace ensemble_webapp.Models
 {
     public class AttendancePlanned
     {
+        public AttendancePlanned(RehearsalPart rehearsalPart, Users user)
+        {
+            RehearsalPart = rehearsalPart;
+            User = user;
+        }
 
         public AttendancePlanned(int intAttendancePlannedID, RehearsalPart rehearsalPart, Users user)
         {

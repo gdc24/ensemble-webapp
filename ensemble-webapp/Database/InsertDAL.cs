@@ -194,16 +194,45 @@ namespace ensemble_webapp.Database
             throw new NotImplementedException("todo");
         }
 
-        public bool InsertRehearsalPart(RehearsalPart rehearsalPart)
+        // return new id
+        public int InsertRehearsalPart(RehearsalPart rehearsalPart)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            conn.TypeMapper.UseNodaTime();
+            string query = "INSERT INTO public.\"rehearsalParts\"(" +
+                "\"intTypeID\", \"strDescription\", \"intEventID\", \"durLength\")" +
+                " VALUES(@intTypeID, @strDescription, @intEventID, @durLength)" +
+                " RETURNING \"intRehearsalPartID\";";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            //cmd.Parameters.AddWithValue("dtmStartDateTime", rehearsalPart.DtmStartDateTime);
+            //cmd.Parameters.AddWithValue("dtmEndDateTime", rehearsalPart.DtmEndDateTime);
+            //cmd.Parameters.AddWithValue("intRehearsalID", rehearsalPart.IntRehearsalPartID);
+            cmd.Parameters.AddWithValue("intTypeID", rehearsalPart.Type.IntTypeID);
+            cmd.Parameters.AddWithValue("strDescription", rehearsalPart.StrDescription);
+            cmd.Parameters.AddWithValue("durLength", rehearsalPart.DurLength);
+            cmd.Parameters.AddWithValue("intEventID", rehearsalPart.Event.IntEventID);
+
+            int result = (int)cmd.ExecuteScalar();
+
+            return result;
         }
 
         public bool InsertAttendancePlanned(AttendancePlanned attendancePlanned)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            string query = "INSERT INTO public.\"attendancePlanned\"(" +
+                "\"intRehearsalPartID\", \"intUserID\")" +
+                " VALUES(@intRehearsalPartID, @intUserID); ";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("intRehearsalPartID", attendancePlanned.RehearsalPart.IntRehearsalPartID);
+            cmd.Parameters.AddWithValue("intUserID", attendancePlanned.User.IntUserID);
+
+            int result = (int)cmd.ExecuteNonQuery();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
 
         public bool InsertAttendanceActual(AttendanceActual attendanceActual)

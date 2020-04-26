@@ -1,6 +1,7 @@
 ﻿using ensemble_webapp.Database;
 using ensemble_webapp.Models;
 using ensemble_webapp.ViewModels;
+using NodaTime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +28,14 @@ namespace ensemble_webapp.Controllers
                 foreach (Event e in model.LstAdminEvents)
                 {
                     e.LstRehearsalParts = get.GetRehearsalPartsByEvent(e);
+                    foreach(RehearsalPart rp in e.LstRehearsalParts)
+                    {
+                        rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                    }
                 }
                 model.LstAllTypes = get.GetAllTypes();
+
+                model.LstAllUsersForAdminEvents = get.GetAllUsersForAdminEvents(model.LstAdminEvents);
 
                 get.CloseConnection();
 
@@ -112,6 +119,36 @@ namespace ensemble_webapp.Controllers
 
             return RedirectToAction("Index");
 
+        }
+
+        [HttpPost]
+        public ActionResult AddRehearsalPart(AdminHomeVM vm)
+        {
+            PeriodBuilder builder = new PeriodBuilder();
+            builder.Minutes = vm.NewRehearsalPart.IntLengthMinutes;            
+            vm.NewRehearsalPart.DurLength = builder.Build();
+
+            GetDAL get = new GetDAL();
+            get.OpenConnection();
+            foreach(var id in vm.NewRehearsalPart.ArrMemberNeededIDs)
+            {
+                Users tmpUser = get.GetUserByID(id);
+                vm.NewRehearsalPart.LstMembers.Add(tmpUser);
+            }
+            get.CloseConnection();
+
+            InsertDAL insert = new InsertDAL();
+            insert.OpenConnection();
+
+            int newRehearsalPartID = insert.InsertRehearsalPart(vm.NewRehearsalPart);
+            vm.NewRehearsalPart.IntRehearsalPartID = newRehearsalPartID;
+            foreach (var m in vm.NewRehearsalPart.LstMembers)
+            {
+                AttendancePlanned ap = new AttendancePlanned(vm.NewRehearsalPart, m);
+                insert.InsertAttendancePlanned(ap);
+            }
+            insert.CloseConnection();
+            return RedirectToAction("Index");
         }
     }
 }

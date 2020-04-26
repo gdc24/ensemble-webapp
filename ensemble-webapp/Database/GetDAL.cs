@@ -109,24 +109,33 @@ namespace ensemble_webapp.Database
         private RehearsalPart GetRehearsalPartFromDR(NpgsqlDataReader dr)
         {
             int intRehearsalPartID = Convert.ToInt32(dr["intRehearsalPartID"]);
-            DateTime dtmStartDateTime = Convert.ToDateTime(dr["dtmStartDateTime"]);
-            DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
+            //DateTime dtmStartDateTime = Convert.ToDateTime(dr["dtmStartDateTime"]);
+            //DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
             string strDescription = dr["strDescription"].ToString();
-            Rehearsal rehearsal = GetRehearsalByID(Convert.ToInt32(dr["intRehearsalID"]));
-            Types type = GetTypesByID(Convert.ToInt32(dr["intTypeID"]));
+            //Rehearsal rehearsal = GetRehearsalByID(Convert.ToInt32(dr["intRehearsalID"]));
+            //Types type = GetTypesByID(Convert.ToInt32(dr["intTypeID"]));
+
+            int ordinalLength = dr.GetOrdinal("durLength");
+            Period durLength = dr.GetFieldValue<Period>(ordinalLength);
+
+            Types type = new Types(
+                Convert.ToInt32(dr["intTypeID"]),
+                dr["typeName"].ToString()
+                );
 
             Group group = new Group(
                 Convert.ToInt32(dr["intGroupID"]), 
                 dr["groupName"].ToString());
-            Event @event = new Event(
-                Convert.ToInt32(dr["intEventID"]),
-                dr["strName"].ToString(),
-                Convert.ToDateTime(dr["dtmDate"]),
-                dr["strLocation"].ToString(),
-                group);
+            int intEventID = Convert.ToInt32(dr["intEventID"]);
+            string strEventName = dr["strName"].ToString();
 
+            //int ordinalDtmDate = dr.GetOrdinal("dtmDate");
+            //DateTime dtmDate = dr.GetFieldValue<DateTime>(ordinalDtmDate);
+            string strLocation = dr["strLocation"].ToString();
 
-            return new RehearsalPart(intRehearsalPartID, dtmStartDateTime, dtmEndDateTime, strDescription, rehearsal, type, @event);
+            Event @event = new Event(intEventID, strEventName, strLocation, group);
+
+            return new RehearsalPart(intRehearsalPartID, strDescription, type, @event, durLength);
         }
 
         private Conflict GetConflictFromDR(NpgsqlDataReader dr)
@@ -817,6 +826,32 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
+
+        public List<Users> GetUsersByRehearsalPart(RehearsalPart rp)
+        {
+            List<Users> retval = new List<Users>();
+
+            // define a query
+            string query = "SELECT u.* FROM \"users\" u, \"attendancePlanned\" ap" +
+                " WHERE u.\"intUserID\" = ap.\"intUserID\"" +
+                " AND ap.\"intRehearsalPartID\" = " + rp.IntRehearsalPartID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Users tmpUser = GetUserFromDR(dr);
+                retval.Add(tmpUser);
+            }
+
+            dr.Close();
+
+            return retval;
+        }
+
         public List<Event> GetAllEvents()
         {
             List<Event> retval = new List<Event>();
@@ -938,18 +973,17 @@ namespace ensemble_webapp.Database
 
         public List<RehearsalPart> GetRehearsalPartsByEvent(Event paramEvent)
         {
+            conn.TypeMapper.UseNodaTime();
+
             List<RehearsalPart> retval = new List<RehearsalPart>();
 
             // define a query
-            //string query = "SELECT * FROM \"rehearsalParts\" rp, \"rehearsals\" r" +
-            //    " WHERE r.\"intEventID\" = " + paramEvent.IntEventID +
-            //    " AND r.\"intRehearsalID\" = rp.\"intRehearsalID\"";
-            string query = "select r.*, e.*, g.\"strName\" as \"groupName\"" +
-                " from \"rehearsalParts\" r, events e, groups g, \"rehearsals\" re" +
-                " WHERE r.\"intEventID\" = e.\"intEventID\"" +
+            string query = "select rp.*, e.*, g.\"strName\" as \"groupName\", t.\"strName\" as \"typeName\", t.\"intTypeID\"" +
+                " from types t, \"rehearsalParts\" rp, events e, groups g" +
+                " WHERE rp.\"intEventID\" = e.\"intEventID\"" +
                 " AND g.\"intGroupID\" = e.\"intGroupID\"" +
-                " AND re.\"intEventID\" = " + paramEvent.IntEventID +
-                " AND re.\"intRehearsalID\" = r.\"intRehearsalID\"";
+                " AND rp.\"intEventID\" = " + paramEvent.IntEventID + 
+                " AND rp.\"intTypeID\" = t.\"intTypeID\";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
