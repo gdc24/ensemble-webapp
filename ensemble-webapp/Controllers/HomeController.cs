@@ -104,8 +104,13 @@ namespace ensemble_webapp.Controllers
                 get.OpenConnection();
 
                 var taskEqualityComparer = new TaskEqualityComparer();
-                model.LstUpcomingTasks = get.GetUnfinishedTasksDueAfter(model.CurrentUser, DateTime.Now).Except(get.GetTasksDueBefore(model.CurrentUser, DateTime.Now.AddDays(DAYS_TO_SHOW_TASKS)), taskEqualityComparer).ToList();
-                model.LstOverdueTasks = get.GetTasksByAssignedToUser(model.CurrentUser).Except(get.GetUnfinishedTasksDueAfter(model.CurrentUser, DateTime.Now), taskEqualityComparer).ToList();
+
+                // upcoming tasks should be all tasks due before two days from now EXCEPT ones already completed EXCEPT ones overdue
+                // orrrr upcoming tasks should be all unfinished tasks due after today EXCEPT all tasks due after two days from now
+                model.LstUpcomingTasks = get.GetUnfinishedTasksDueAfter(model.CurrentUser, DateTime.Now).Except(get.GetUnfinishedTasksDueAfter(model.CurrentUser, DateTime.Now.AddDays(DAYS_TO_SHOW_TASKS)), taskEqualityComparer).ToList();
+
+                // overdue tasks should be all tasks that are unfinished that are due before today
+                model.LstOverdueTasks = get.GetUnfinishedTasksDueBefore(model.CurrentUser, DateTime.Now);
 
                 foreach (Event e in model.LstEvents)
                 {
