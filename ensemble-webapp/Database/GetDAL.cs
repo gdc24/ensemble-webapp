@@ -160,9 +160,9 @@ namespace ensemble_webapp.Database
         {
             int intTypeID = Convert.ToInt32(dr["intTypeID"]);
             string strName = dr["strName"].ToString();
-            Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
+            //Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
 
-            return new Types(intTypeID, strName, paramEvent);
+            return new Types(intTypeID, strName);
         }
 
         private Task GetTaskFromDR(NpgsqlDataReader dr)

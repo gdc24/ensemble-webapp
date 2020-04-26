@@ -7,17 +7,21 @@ namespace ensemble_webapp.Models
 {
     public class Types
     {
-        public Types(int intTypeID, string strName, Event paramEvent)
+        public Types(string strName)
+        {
+            StrName = strName;
+        }
+
+        public Types(int intTypeID, string strName)
         {
             IntTypeID = intTypeID;
             StrName = strName;
-            Event = paramEvent;
         }
 
         public int IntTypeID { get; set; }
 
         public string StrName { get; set; }
 
-        public Event Event { get; set; }
+        public Types() { }
     }
 }

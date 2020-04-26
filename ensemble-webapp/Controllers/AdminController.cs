@@ -24,6 +24,7 @@ namespace ensemble_webapp.Controllers
                 model.LstAllGroups = get.GetAllGroups();
                 model.LstAllEvents = get.GetAllEvents();
                 model.LstAdminEvents = get.GetAdminEventsByUser(Globals.LOGGED_IN_USER.IntUserID);
+                model.LstAllTypes = get.GetAllTypes();
 
                 get.CloseConnection();
 
@@ -92,6 +93,21 @@ namespace ensemble_webapp.Controllers
             insert.CloseConnection();
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult AddTypes(AdminHomeVM vm)
+        {
+            InsertDAL insert = new InsertDAL();
+
+            insert.OpenConnection();
+
+            insert.InsertType(vm.NewType);
+
+            insert.CloseConnection();
+
+            return RedirectToAction("Index");
+
         }
     }
 }

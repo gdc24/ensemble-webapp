@@ -20,6 +20,8 @@ namespace ensemble_webapp.ViewModels
 
         public Types NewType { get; set; }
 
+        public List<Types> LstAllTypes { get; set; }
+
         public RehearsalPart NewRehearsalPart { get; set; }
 
         public List<Event> LstAdminEvents { get; set; }

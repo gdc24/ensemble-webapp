@@ -251,10 +251,22 @@ namespace ensemble_webapp.Database
             // return new user id
         }
 
-        public bool InsertType(Type type)
+        public bool InsertType(Types type)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            // define a query
+            string query = "INSERT INTO public.types(" +
+                "\"strName\")" +
+                " VALUES(@strName); ";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("strName", type.StrName);
+
+            int result = cmd.ExecuteNonQuery();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
 
         public bool InsertEventSchedule(EventSchedule eventSchedule)
