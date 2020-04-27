@@ -72,16 +72,15 @@
                         <a class="scroll-link" href="@Url.Action("Index", "Admin")"><i class="fas fa-cog"></i> Admin Dashboard</a>
                     </li>
                 }
-                <li>
-                    <a class="scroll-link" href="@Url.Action("Index", "Profile")"><i class="fas fa-user"></i> Profile</a>
-                </li>
             </ul>
 
             @if (Globals.LOGIN_STATUS)
             {
-                <div class="text-center">
-                    <p> @Globals.LOGGED_IN_USER.StrName</p>
-                </div>
+                <a href="@Url.Action("Index", "Profile")">
+                    <div class="text-center">
+                        <p><i class="fas fa-user"></i> @Globals.LOGGED_IN_USER.StrName</p>
+                    </div>
+                </a>
             }
 
         </nav>
