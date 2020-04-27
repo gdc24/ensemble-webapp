@@ -41,7 +41,7 @@ namespace ensemble_webapp.Controllers
                 }
                 get.CloseConnection();
 
-                return View("CheckInMembers", model);
+                return View("Index", model);
             }
         }
 
@@ -72,7 +72,7 @@ namespace ensemble_webapp.Controllers
 
             insert.CloseConnection();
             get.CloseConnection();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", vm);
         }
 
         //public ActionResult CheckUserOut(CheckInMembersVM vm)
@@ -97,7 +97,7 @@ namespace ensemble_webapp.Controllers
 
             //insert.CloseConnection();
             //get.CloseConnection();
-            //return RedirectToAction("Index");
+            //return RedirectToAction("Index", vm);
         //}
 
         private List<Users> LstAllMembersForRehearsalParts(Event e, GetDAL connection)
