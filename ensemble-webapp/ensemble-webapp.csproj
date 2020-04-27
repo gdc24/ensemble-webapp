@@ -292,6 +292,7 @@
     <Content Include="Views\Admin\AdminHome.cshtml" />
     <Content Include="Views\Schedule\ScheduleView.cshtml" />
     <Content Include="Views\CheckInOut\CheckInOutHome.cshtml" />
+    <Content Include="Views\Shared\_PartialLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

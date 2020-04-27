@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_PartialLayout.cshtml";
 }
 
 <style type="text/css">
@@ -17,12 +18,16 @@
 
 <div class="container">
     <div class="left">
+        <h3 class="mt-5 pt-4">
+            <a href="@Url.Action("Index", "Home")" style="border-bottom: none;"><img src="~/Content/assets/img/logo@2x.png" /></a>
+        </h3>
         @if (Model.IsInvalidPasswordAttempt)
         {
             <span style="color:#ff0000">
                 Incorrect password. Please try again.
             </span>
         }
+
         <h2><strong>Login</strong></h2>
         @using (Html.BeginForm("LoginUser", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
