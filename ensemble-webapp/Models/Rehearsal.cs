@@ -7,6 +7,14 @@ namespace ensemble_webapp.Models
 {
     public class Rehearsal
     {
+        public Rehearsal()
+        {
+        }
+
+        public Rehearsal(int? intRehearsalID)
+        {
+        }
+
         public Rehearsal(int intRehearsalID, DateTime dtmStartDateTime, DateTime dtmEndDateTime, string strLocation, string strNotes, Event paramEvent)
         {
             IntRehearsalID = intRehearsalID;
@@ -28,5 +36,7 @@ namespace ensemble_webapp.Models
         public string StrNotes { get; set; }
 
         public Event Event { get; set; }
+
+        public List<RehearsalPart> LstRehearsalParts { get; set; }
     }
 }

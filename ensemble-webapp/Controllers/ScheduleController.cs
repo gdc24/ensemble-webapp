@@ -26,12 +26,29 @@ namespace ensemble_webapp.Controllers
                 GetDAL get = new GetDAL();
                 get.OpenConnection();
 
-                model.LstAllRehearsalParts = get.GetAllRehearsalParts();
+                foreach (var e in get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID))
+                {
+                    model.LstUserRehearsalParts = model.LstUserRehearsalParts.Concat(get.GetRehearsalPartsByEvent(e)).ToList();
+                }
+
+                model.LstUpcomingRehearsalParts = get.GetUpcomingRehearsalPartsByUser(Globals.LOGGED_IN_USER);
+
+                model.LstUnscheduledRehearsalParts = model.LstUserRehearsalParts.Where(x => x.DtmStartDateTime.Equals(null)).ToList();
+
+                model.LstUpcomingRehearsalParts = model.LstUpcomingRehearsalParts.Except(model.LstUnscheduledRehearsalParts.ToList()).ToList();
+
+                model.LstUpcomingRehearsals = get.GetUpcomingRehearsalsByUser(Globals.LOGGED_IN_USER);
+
+                foreach (var r in model.LstUpcomingRehearsals)
+                {
+                    r.LstRehearsalParts = get.GetRehearsalPartsByRehearsal(r);
+                }
+
                 get.CloseConnection();
                 get.OpenConnection();
                 model.LstAdminEvents = get.GetAdminEventsByUser(Globals.LOGGED_IN_USER.IntUserID);
 
-                foreach (RehearsalPart rp in model.LstAllRehearsalParts)
+                foreach (RehearsalPart rp in model.LstUserRehearsalParts)
                 {
                     rp.LstMembers = get.GetUsersByRehearsalPart(rp);
                 }

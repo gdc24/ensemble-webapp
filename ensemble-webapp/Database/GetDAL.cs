@@ -101,7 +101,15 @@ namespace ensemble_webapp.Database
             DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
             string strLocation = dr["strLocation"].ToString();
             string strNotes = dr["strNotes"].ToString();
-            Event paramEvent = GetEventByID(Convert.ToInt32(dr["intEventID"]));
+
+            int intEventID = Convert.ToInt32(dr["intEventID"]);
+            string eventName = dr["eventName"].ToString();
+            DateTime dtmDate = Convert.ToDateTime(dr["dtmDate"]);
+            string strEventLocation = dr["eventLocation"].ToString();
+            int intGroupID = Convert.ToInt32(dr["intGroupID"]);
+            string strGroupName = dr["groupName"].ToString();
+            Group group = new Group(intGroupID, strGroupName);
+            Event paramEvent = new Event(intEventID, eventName, dtmDate, strEventLocation, group);
 
             return new Rehearsal(intRehearsalID, dtmStartDateTime, dtmEndDateTime, strLocation, strNotes, paramEvent);
         }
@@ -137,6 +145,58 @@ namespace ensemble_webapp.Database
             Event @event = new Event(intEventID, strEventName, strLocation, group);
 
             return new RehearsalPart(intRehearsalPartID, strDescription, intPriority, type, @event, durLength);
+        }
+
+        private static DateTime? SafeGetDateTime(NpgsqlDataReader dr, string colName)
+        {
+            int ordinal = dr.GetOrdinal(colName);
+            if (!dr.IsDBNull(ordinal))
+                return Convert.ToDateTime(dr[colName]);
+            else
+                return null;
+        }
+        private static int? SafeGetInt(NpgsqlDataReader dr, string colName)
+        {
+            int ordinal = dr.GetOrdinal(colName);
+            if (!dr.IsDBNull(ordinal))
+                return Convert.ToInt32(dr[colName]);
+            else
+                return null;
+        }
+
+        public RehearsalPart GetRehearsalPartsFromDR(NpgsqlDataReader dr)
+        {
+            int intRehearsalPartID = Convert.ToInt32(dr["intRehearsalPartID"]);
+            DateTime? dtmStartDateTime = SafeGetDateTime(dr, "dtmStartDateTime");
+            DateTime? dtmEndDateTime = SafeGetDateTime(dr, "dtmEndDateTime");
+            int? intRehearsalID = SafeGetInt(dr, "intRehearsalID");
+            int intTypeID = Convert.ToInt32(dr["intTypeID"]);
+            string strDescription = dr["strDescription"].ToString();
+            int intEventID = Convert.ToInt32(dr["intEventID"]);
+            int intPriority = Convert.ToInt32(dr["intPriority"]);
+            string strEventName = dr["strName"].ToString();
+            DateTime dtmEventDate = Convert.ToDateTime(dr["dtmDate"]);
+            string strLocation = dr["strLocation"].ToString();
+            int intGroupID = Convert.ToInt32(dr["intGroupID"]);
+            string strGroupName = dr["groupName"].ToString();
+            string strTypeName = dr["typeName"].ToString();
+
+            Group group = new Group(intGroupID, strGroupName);
+            Event @event = new Event(intEventID, strEventName, strLocation, group);
+            Types type = new Types(intTypeID, strTypeName);
+
+            RehearsalPart rp;
+
+            if (intRehearsalID == null)
+            {
+                rp = new RehearsalPart(intRehearsalPartID, dtmStartDateTime, dtmEndDateTime, strDescription, intPriority, null, type, @event);
+            }
+            else
+            {
+                rp = new RehearsalPart(intRehearsalPartID, dtmStartDateTime, dtmEndDateTime, strDescription, intPriority, GetRehearsalByID(intRehearsalID), type, @event);
+            }
+
+            return rp;
         }
 
         private Conflict GetConflictFromDR(NpgsqlDataReader dr)
@@ -360,7 +420,7 @@ namespace ensemble_webapp.Database
         //    return retval;
         //}
 
-        public Rehearsal GetRehearsalByID(int intRehearsalID)
+        public Rehearsal GetRehearsalByID(int? intRehearsalID)
         {
             Rehearsal retval = null;
 
@@ -970,6 +1030,40 @@ namespace ensemble_webapp.Database
             return retval;
         }
 
+
+        public List<RehearsalPart> GetUpcomingRehearsalPartsByUser(Users user)
+        {
+            List<RehearsalPart> retval = new List<RehearsalPart>();
+            string strDateOnly = DateTime.Now.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            // define a query
+            string query = "SELECT t.\"strName\" as \"typeName\", rp.*, e.*, g.\"strName\" as \"groupName\"" +
+                " from \"rehearsalParts\" rp, \"events\" e, \"groups\" g, \"attendancePlanned\" ap, \"users\" u, \"types\" t" +
+                " WHERE rp.\"intEventID\" = e.\"intEventID\"" +
+                " AND e.\"intGroupID\" = g.\"intGroupID\"" +
+                " AND ap.\"intRehearsalPartID\" = rp.\"intRehearsalPartID\"" +
+                " AND ap.\"intUserID\" = u.\"intUserID\"" +
+                " AND t.\"intTypeID\" = rp.\"intTypeID\"" +
+                " AND u.\"intUserID\" = " + user.IntUserID +
+                " AND DATE(rp.\"dtmStartDateTime\") > '" + strDateOnly + "'";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            Rehearsal tmpRehearsal = new Rehearsal();
+            while (dr.Read())
+            {
+                RehearsalPart rp = GetRehearsalPartsFromDR(dr);
+                retval.Add(rp);
+            }
+
+            dr.Close();
+
+            return retval;
+        }
+
         public List<Rehearsal> GetRehearsalsByEvent(Event paramEvent)
         {
             List<Rehearsal> retval = new List<Rehearsal>();
@@ -986,6 +1080,38 @@ namespace ensemble_webapp.Database
             {
                 Rehearsal tmpRehearsal = GetRehearsalFromDR(dr);
                 retval.Add(tmpRehearsal); 
+            }
+
+            dr.Close();
+
+            return retval;
+        }
+
+        //gets all rehearsal parts for an event that are happening today
+        public List<RehearsalPart> GetRehearsalPartsByDayAndEvent(Event @event)
+        {
+            List<RehearsalPart> retval = new List<RehearsalPart>();
+
+            string strDateOnly = DateTime.Now.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            // define a query
+            //string query = "SELECT * FROM \"rehearsalParts\" WHERE \"intRehearsalID\" = " + rehearsal.IntRehearsalID;
+            string query = "select r.*, e.*, g.\"strName\" as \"groupName\"" +
+                " from \"rehearsalParts\" r, \"events\" e, \"groups\" g" +
+                " where r.\"intEventID\" = e.\"intEventID\"" +
+                " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and DATE(rp.\"dtmStartDateTime\") = '" + strDateOnly  + "'" +
+                " and r.\"intEventID\" = " + @event.IntEventID;
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                RehearsalPart tmpRehearsalPart = GetRehearsalPartFromDR(dr);
+                retval.Add(tmpRehearsalPart);
             }
 
             dr.Close();
@@ -1084,6 +1210,40 @@ namespace ensemble_webapp.Database
             dr.Close();
 
             return retval;
+        }
+
+        public List<Rehearsal> GetUpcomingRehearsalsByUser(Users user)
+        {
+            List<Rehearsal> retval = new List<Rehearsal>();
+            string strDateOnly = DateTime.Now.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+            string query = "select r.*," +
+                " e.\"strName\", e.\"dtmDate\", e.\"strLocation\" as \"eventLocation\", e.\"intGroupID\"," +
+                " g.\"strName\" as \"groupName\"" +
+                " from \"rehearsals\" r, \"attendancePlanned\" ap, \"rehearsalParts\" rp, \"events\" e, \"groups\" g" +
+                " where ap.\"intRehearsalPartID\" = rp.\"intRehearsalPartID\"" +
+                " and r.\"intRehearsalID\" = rp.\"intRehearsalID\"" +
+                " and e.\"intGroupID\" = g.\"intGroupID\"" +
+                " and r.\"intEventID\" = e.\"intEventID\"" +
+                " and ap.\"intUserID\" = " + user.IntUserID +
+                " and DATE(r.\"dtmStartDateTime\") > '" + strDateOnly +"';";
+
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                Rehearsal tmpRehearsal = GetRehearsalFromDR(dr);
+                retval.Add(tmpRehearsal);
+            }
+
+            dr.Close();
+
+            return retval;
+
         }
 
         public List<AttendancePlanned> GetAttendancePlannedByUser(Users user)
