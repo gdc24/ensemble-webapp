@@ -109,27 +109,27 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult CheckUserOut(ScheduleHomeVM vm)
-        {
-            GetDAL get = new GetDAL();
-            get.OpenConnection();
+        //public ActionResult CheckUserOut(ScheduleHomeVM vm)
+        //{
+        //    GetDAL get = new GetDAL();
+        //    get.OpenConnection();
 
-            InsertDAL insert = new InsertDAL();
-            insert.OpenConnection();
+        //    InsertDAL insert = new InsertDAL();
+        //    insert.OpenConnection();
 
-            foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
-            {
-                if (p.User.Equals(vm.UsersToCheckInOut))
-                {
-                    AttendanceActual a = get.GetAttendanceActualByRehearsalPartAndUser(p.User, vm.CurrentRehearsalPart); // need to implement this method
-                    a.DtmOutTime = DateTime.Now;
-                    insert.InsertAttendanceActual(a);
-                }
-            }
+        //    foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
+        //    {
+        //        if (p.User.Equals(vm.UsersToCheckInOut))
+        //        {
+        //            AttendanceActual a = get.GetAttendanceActualByRehearsalPartAndUser(p.User, vm.CurrentRehearsalPart); // need to implement this method
+        //            a.DtmOutTime = DateTime.Now;
+        //            insert.InsertAttendanceActual(a);
+        //        }
+        //    }
 
-            insert.CloseConnection();
-            get.CloseConnection();
-            return RedirectToAction("Index");
-        }
+        //    insert.CloseConnection();
+        //    get.CloseConnection();
+        //    return RedirectToAction("Index");
+        //}
     }
 }
