@@ -266,7 +266,7 @@
                                         <td>@r.DtmStartDateTime</td>
                                         <td>@r.DtmEndDateTime</td>
                                         <td>@r.StrDescription</td>
-                                        <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
+                                        @*<td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>*@
                                         <td>@r.Type.StrName</td>
                                         <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
                                         <td>@r.IntPriority</td>
