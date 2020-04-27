@@ -15,10 +15,20 @@
             </div>
         </div>
         <hr />
-        <div class="text-center">
-            <button onclick="location.href='@Url.Action("CheckInMembers", "Admin")'" class="btn btn-info">
-                Check In Members for Today's Rehearsal
-            </button>
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Go to Check-In/Out Page
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                @using (Html.BeginForm("Index", "CheckInOut"))
+                {
+                    <input type="submit" class="form-control btn-primary" value="Check-In/Out" />
+                }
+            </div>
         </div>
         <hr />
         <div class="row">
@@ -256,7 +266,7 @@
                                         <td>@r.DtmStartDateTime</td>
                                         <td>@r.DtmEndDateTime</td>
                                         <td>@r.StrDescription</td>
-                                        <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
+                                        @*<td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>*@
                                         <td>@r.Type.StrName</td>
                                         <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
                                         <td>@r.IntPriority</td>

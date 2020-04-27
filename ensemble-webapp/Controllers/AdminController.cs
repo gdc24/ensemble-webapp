@@ -57,58 +57,6 @@ namespace ensemble_webapp.Controllers
             }
         }
 
-        public ActionResult CheckInMembers()
-        {
-            if (!Globals.IS_ADMIN)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else if (!Globals.LOGIN_STATUS)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            else
-            {
-                CheckInMembersVM model = new CheckInMembersVM();
-
-                GetDAL get = new GetDAL();
-                get.OpenConnection();
-
-                model.LstAdminEvents = get.GetAdminEventsByUser(Globals.LOGGED_IN_USER.IntUserID);
-                foreach (Event e in model.LstAdminEvents)
-                {
-                    e.LstRehearsalParts = get.GetRehearsalPartsByEvent(e);
-                    foreach (RehearsalPart rp in e.LstRehearsalParts)
-                    {
-                        rp.LstMembers = get.GetUsersByRehearsalPart(rp);
-                    }
-                    e.MembersForToday = LstAllMembersForRehearsalParts(e, get);
-                }
-                get.CloseConnection();
-
-                return View("CheckInMembers", model);
-            }
-        }
-
-        private List<Users> LstAllMembersForRehearsalParts(Event e, GetDAL connection)
-        {
-            List<Users> retval = new List<Users>();
-            // go through each rehearsal part's list of members
-            List<RehearsalPart> today = e.LstRehearsalParts.Where(x => x.DtmStartDateTime.GetValueOrDefault().Date.Equals(DateTime.Now.Date)).ToList();
-            foreach (RehearsalPart rp in today)
-            {
-                retval = retval.Concat(rp.LstMembers.Where(x => !retval.Any(y => y.Equals(x)))).ToList();
-            }
-            //GetDAL get = new GetDAL();
-            //get.OpenConnection();
-            foreach (Users m in retval)
-            {
-                m.TimeScheduled = connection.GetFirstTimeByDayAndUser(DateTime.Now.Date, m);
-            }
-            //get.CloseConnection();
-            return retval;
-        }
-
         public ActionResult AdminHome()
         {
             return RedirectToAction("Index");
