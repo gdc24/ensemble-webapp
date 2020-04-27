@@ -63,6 +63,24 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
+
+
+        [HttpPost]
+        public ActionResult ConfirmSchedule(ScheduleViewVM vm)
+        {
+            // insert start and end dates for each rehearsal part into db
+            InsertDAL insert = new InsertDAL();
+            insert.OpenConnection();
+            foreach (var rp in vm.Schedule.LstScheduledRehearsalParts)
+            {
+                insert.UpdateRPTimes(rp.IntRehearsalPartID, rp.DtmStartDateTime.GetValueOrDefault(), rp.DtmEndDateTime.GetValueOrDefault());
+            }
+
+            insert.CloseConnection();
+
+            return RedirectToAction("Index", "Schedule");
+        }
+
         [HttpPost]
         public ActionResult CreateNewSchedule(ScheduleHomeVM vm)
         {

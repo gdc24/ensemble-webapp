@@ -6,260 +6,266 @@
 }
 
 
-<div class="container">
-    <div class="row text-center">
-        <div class="col-12">
-            <h1 class="display-2">
-                Admin Settings
-            </h1>
-        </div>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-12">
-            <h1>
-                Add A Group
-            </h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @using (Html.BeginForm("AddGroup", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <label for="NewGroup.strName">Group Name</label>
-                @Html.EditorFor(m => m.NewGroup.StrName, new { htmlAttributes = new { @class = "form-control" } })
-                <br />
-                <input type="submit" value="add Group" class="form-control btn-primary" />
-            }
-        </div>
-        @if (Model.LstAllGroups.Any())
-        {
-            <div class="col-6">
-                <h3>Current Groups</h3>
-                <ul>
-                    @foreach (var g in Model.LstAllGroups)
-                    {
-                        <li>@g.StrName</li>
-                    }
-                </ul>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-12">
+                <h1 class="display-2">
+                    Admin Settings
+                </h1>
             </div>
-        }
-    </div>
-    <hr />
-    <div class="row">
-        <h1>
-            Add An Event
-        </h1>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @using (Html.BeginForm("AddEvent", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <label for="NewEvent.StrName">Event Name</label>
-                @Html.EditorFor(m => m.NewEvent.StrName, new { htmlAttributes = new { @class = "form-control" } })
-                <label for="NewEvent.strName">Date</label>
-                @Html.EditorFor(m => m.NewEvent.DtmDate, new { htmlAttributes = new { @class = "form-control" } })
-                <label for="NewEvent.StrLocation">Location</label>
-                @Html.EditorFor(m => m.NewEvent.StrLocation, new { htmlAttributes = new { @class = "form-control" } })
-                <label for="NewEvent.Group.IntGroupID">Group</label>
-                @Html.DropDownListFor(m => m.NewEvent.Group.IntGroupID, new SelectList(Model.LstAllGroups, "intGroupID", "strName"), new { @class = "form-control" })
-                <br />
-                <input type="submit" value="add Group" class="form-control btn-primary" />
-
-            }
         </div>
-        @if (Model.LstAllEvents.Any())
-        {
-            <div class="col-6">
-                <h3>Current Events</h3>
-                <ul>
-                    @foreach (var e in Model.LstAllEvents)
-                    {
-                        <li><i>@e.StrName</i> in @e.Group.StrName</li>
-                    }
-                </ul>
+        <hr />
+        <div class="text-center">
+            <button onclick="location.href='@Url.Action("CheckInMembers", "Admin")'" class="btn btn-info">
+                Check In Members for Today's Rehearsal
+            </button>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Add A Group
+                </h1>
             </div>
-        }
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-12">
-            <h1>
-                Add An Event Schedule
-            </h1>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @using (Html.BeginForm("AddEventSchedule", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <label for="NewEventSchedule.Event.IntEventID">Event</label>
-                @Html.DropDownListFor(m => m.NewEventSchedule.Event.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
-                <label for="NewEventSchedule.StrMondayStart">Monday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrMondayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
-                <label for="NewEventSchedule.StrTuesdayStart">Tuesday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrTuesdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
-                <label for="NewEventSchedule.StrWednesdayStart">Wednesday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrWednesdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
-                <label for="NewEventSchedule.StrThursdayStart">Thursday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrThursdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
-                <label for="NewEventSchedule.StrFridayStart">Friday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrFridayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
-                <label for="NewEventSchedule.StrSaturdayStart">Saturday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrSaturdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
-                <label for="NewEventSchedule.StrSundayStart">Sunday Start Time</label>
-                @Html.EditorFor(m => m.NewEventSchedule.StrSundayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
-                <label for="NewEventSchedule.DurWeekdayDuration.TotalMinutes">Weekday Duration (Minutes)</label>
-                @Html.EditorFor(m => m.NewEventSchedule.IntWeekdayDuration, new { htmlAttributes = new { @class = "form-control" } })
-                <label for="NewEventSchedule.DurWeekendDuration.TotalMinutes">Weekend Duration (Minutes)</label>
-                @Html.EditorFor(m => m.NewEventSchedule.IntWeekendDuration, new { htmlAttributes = new { @class = "form-control" } })
-                <br />
-                <input type="submit" value="add event schedule" class="form-control btn-primary" />
-            }
-        </div>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-12">
-            <h1>
-                Add A Type of Rehearsal
-            </h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-6">
-            @using (Html.BeginForm("AddTypes", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <label for="NewType.strName">Type Name</label>
-                @Html.EditorFor(m => m.NewType.StrName, new { htmlAttributes = new { @class = "form-control" } })
-                <br />
-                <input type="submit" value="add type" class="form-control btn-primary" />
-            }
-        </div>
-        <div class="col-6">
-            @if (Model.LstAllTypes.Any())
+        <div class="row">
+            <div class="col-6">
+                @using (Html.BeginForm("AddGroup", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <label for="NewGroup.strName">Group Name</label>
+                    @Html.EditorFor(m => m.NewGroup.StrName, new { htmlAttributes = new { @class = "form-control" } })
+                    <br />
+                    <input type="submit" value="add Group" class="form-control btn-primary" />
+                }
+            </div>
+            @if (Model.LstAllGroups.Any())
             {
                 <div class="col-6">
-                    <h3>Current Rehearsal Types</h3>
+                    <h3>Current Groups</h3>
                     <ul>
-                        @foreach (var t in Model.LstAllTypes)
+                        @foreach (var g in Model.LstAllGroups)
                         {
-                            <li>@t.StrName</li>
+                            <li>@g.StrName</li>
                         }
                     </ul>
                 </div>
             }
         </div>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-12">
+        <hr />
+        <div class="row">
             <h1>
-                Your Event Members
+                Add An Event
             </h1>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <td>Name</td>
-                        <td>Email</td>
-                        <td>Phone</td>
-                        <td>Conflicts</td>
-                    </tr>
-                </thead>
-                @foreach (var m in Model.LstAllUsersForAdminEvents)
+        <div class="row">
+            <div class="col-6">
+                @using (Html.BeginForm("AddEvent", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    <tr>
-                        <td>@m.StrName</td>
-                        <td>@m.StrEmail</td>
-                        <td>@m.StrPhone</td>
-                        <td>
-                            <ul>
-                                @foreach (var c in m.LstConflicts)
-                                {
-                                    <li>@c.ToString()</li>
-                                }
-                            </ul>
-                        </td>
-                    </tr>
+                    <label for="NewEvent.StrName">Event Name</label>
+                    @Html.EditorFor(m => m.NewEvent.StrName, new { htmlAttributes = new { @class = "form-control" } })
+                    <label for="NewEvent.strName">Date</label>
+                    @Html.EditorFor(m => m.NewEvent.DtmDate, new { htmlAttributes = new { @class = "form-control" } })
+                    <label for="NewEvent.StrLocation">Location</label>
+                    @Html.EditorFor(m => m.NewEvent.StrLocation, new { htmlAttributes = new { @class = "form-control" } })
+                    <label for="NewEvent.Group.IntGroupID">Group</label>
+                    @Html.DropDownListFor(m => m.NewEvent.Group.IntGroupID, new SelectList(Model.LstAllGroups, "intGroupID", "strName"), new { @class = "form-control" })
+                    <br />
+                    <input type="submit" value="add Group" class="form-control btn-primary" />
+
                 }
-            </table>
-        </div>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-12">
-            <h1>
-                Add Rehearsal Parts
-            </h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-3">
-            @using (Html.BeginForm("AddRehearsalPart", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            </div>
+            @if (Model.LstAllEvents.Any())
             {
-                <label for="NewRehearsalPart.StrDescription">Rehearsal Part</label>
-                @Html.EditorFor(m => m.NewRehearsalPart.StrDescription, new { htmlAttributes = new { @class = "form-control" } })
-
-                <label>Members needed</label>
-                @*@Html.ListBoxFor(m => m.NewRehearsalPart.LstMembers, new SelectList(Model.LstAllUsersForAdminEvents, "intUserID", "strName", "select Members for this rehearsal part"), new { @class = "form-control" })*@
-                @Html.ListBoxFor(m => m.NewRehearsalPart.ArrMemberNeededIDs, new SelectList(Model.LstAllUsersForAdminEvents, "intUserID", "strName", "select Members for this rehearsal part"), new { @class = "form-control" })
-                
-                <label for="NewRehearsalPart.IntLengthMinutes">Time Needed in Minutes</label>
-                @Html.EditorFor(m => m.NewRehearsalPart.IntLengthMinutes, new { htmlAttributes = new { @class = "form-control" } })
-                
-                <label for="NewRehearsalPart.IntPriority">Priority (1=highest)</label>
-                @Html.EditorFor(m => m.NewRehearsalPart.IntPriority, new { htmlAttributes = new { @class = "form-control" } })
-                
-                <label for="NewRehearsalPart.Event.IntEventID">Event</label>
-                @Html.DropDownListFor(m => m.NewRehearsalPart.Event.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
-
-                <label for="NewRehearsalPart.Type.IntTypeID">Type</label>
-                @Html.DropDownListFor(m => m.NewRehearsalPart.Type.IntTypeID, new SelectList(Model.LstAllTypes, "intTypeID", "strName"), new { @class = "form-control" })
-                <br />
-                <input type="submit" value="add rehearsal part" class="form-control btn-primary" />
+                <div class="col-6">
+                    <h3>Current Events</h3>
+                    <ul>
+                        @foreach (var e in Model.LstAllEvents)
+                        {
+                            <li><i>@e.StrName</i> in @e.Group.StrName</li>
+                        }
+                    </ul>
+                </div>
             }
         </div>
-        <div class="col">
-            @if (Model.LstAdminEvents.Any())
-            {
-                foreach (var e in Model.LstAdminEvents)
+        <hr />
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Add An Event Schedule
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                @using (Html.BeginForm("AddEventSchedule", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    <h3>Rehearsal Parts for @e.StrName</h3>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                @*<th>Rehearsal Part ID</th>*@
-                                <th>Start</th>
-                                <th>End</th>
-                                <th>Description</th>
-                                <th>Length</th>
-                                <th>Type</th>
-                                <th>Who</th>
-                                <th>Priority</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var r in e.LstRehearsalParts)
+                    <label for="NewEventSchedule.Event.IntEventID">Event</label>
+                    @Html.DropDownListFor(m => m.NewEventSchedule.Event.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
+                    <label for="NewEventSchedule.StrMondayStart">Monday Start Time</label>
+                    @Html.EditorFor(m => m.NewEventSchedule.StrMondayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
+                    <label for="NewEventSchedule.StrTuesdayStart">Tuesday Start Time</label>
+                    @Html.EditorFor(m => m.NewEventSchedule.StrTuesdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
+                    <label for="NewEventSchedule.StrWednesdayStart">Wednesday Start Time</label>
+                    @Html.EditorFor(m => m.NewEventSchedule.StrWednesdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
+                    <label for="NewEventSchedule.StrThursdayStart">Thursday Start Time</label>
+                    @Html.EditorFor(m => m.NewEventSchedule.StrThursdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
+                    <label for="NewEventSchedule.StrFridayStart">Friday Start Time</label>
+                    @Html.EditorFor(m => m.NewEventSchedule.StrFridayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
+                    <label for="NewEventSchedule.StrSaturdayStart">Saturday Start Time</label>
+                    @Html.EditorFor(m => m.NewEventSchedule.StrSaturdayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
+                    <label for="NewEventSchedule.StrSundayStart">Sunday Start Time</label>
+                    @Html.EditorFor(m => m.NewEventSchedule.StrSundayStart, new { htmlAttributes = new { @class = "timepicker form-control" } })
+                    <label for="NewEventSchedule.DurWeekdayDuration.TotalMinutes">Weekday Duration (Minutes)</label>
+                    @Html.EditorFor(m => m.NewEventSchedule.IntWeekdayDuration, new { htmlAttributes = new { @class = "form-control" } })
+                    <label for="NewEventSchedule.DurWeekendDuration.TotalMinutes">Weekend Duration (Minutes)</label>
+                    @Html.EditorFor(m => m.NewEventSchedule.IntWeekendDuration, new { htmlAttributes = new { @class = "form-control" } })
+                    <br />
+                    <input type="submit" value="add event schedule" class="form-control btn-primary" />
+                }
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Add A Type of Rehearsal
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                @using (Html.BeginForm("AddTypes", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <label for="NewType.strName">Type Name</label>
+                    @Html.EditorFor(m => m.NewType.StrName, new { htmlAttributes = new { @class = "form-control" } })
+                    <br />
+                    <input type="submit" value="add type" class="form-control btn-primary" />
+                }
+            </div>
+            <div class="col-6">
+                @if (Model.LstAllTypes.Any())
+                {
+                    <div class="col-6">
+                        <h3>Current Rehearsal Types</h3>
+                        <ul>
+                            @foreach (var t in Model.LstAllTypes)
                             {
-                                <tr>
-                                    @*<td>@r.IntRehearsalPartID</td>*@
-                                    <td>@r.DtmStartDateTime</td>
-                                    <td>@r.DtmEndDateTime</td>
-                                    <td>@r.StrDescription</td>
-                                    <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
-                                    <td>@r.Type.StrName</td>
-                                    <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
-                                    <td>@r.IntPriority</td>
-                                </tr>
+                                <li>@t.StrName</li>
                             }
-                        </tbody>
-                    </table>
+                        </ul>
+                    </div>
                 }
-            }
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Your Event Members
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Name</td>
+                            <td>Email</td>
+                            <td>Phone</td>
+                            <td>Conflicts</td>
+                        </tr>
+                    </thead>
+                    @foreach (var m in Model.LstAllUsersForAdminEvents)
+                    {
+                        <tr>
+                            <td>@m.StrName</td>
+                            <td>@m.StrEmail</td>
+                            <td>@m.StrPhone</td>
+                            <td>
+                                <ul>
+                                    @foreach (var c in m.LstConflicts)
+                                    {
+                                        <li>@c.ToString()</li>
+                                    }
+                                </ul>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-12">
+                <h1>
+                    Add Rehearsal Parts
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                @using (Html.BeginForm("AddRehearsalPart", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <label for="NewRehearsalPart.StrDescription">Rehearsal Part</label>
+                    @Html.EditorFor(m => m.NewRehearsalPart.StrDescription, new { htmlAttributes = new { @class = "form-control" } })
+
+                    <label>Members needed</label>
+                    @*@Html.ListBoxFor(m => m.NewRehearsalPart.LstMembers, new SelectList(Model.LstAllUsersForAdminEvents, "intUserID", "strName", "select Members for this rehearsal part"), new { @class = "form-control" })*@
+                    @Html.ListBoxFor(m => m.NewRehearsalPart.ArrMemberNeededIDs, new SelectList(Model.LstAllUsersForAdminEvents, "intUserID", "strName", "select Members for this rehearsal part"), new { @class = "form-control" })
+
+                    <label for="NewRehearsalPart.IntLengthMinutes">Time Needed in Minutes</label>
+                    @Html.EditorFor(m => m.NewRehearsalPart.IntLengthMinutes, new { htmlAttributes = new { @class = "form-control" } })
+
+                    <label for="NewRehearsalPart.IntPriority">Priority (1=highest)</label>
+                    @Html.EditorFor(m => m.NewRehearsalPart.IntPriority, new { htmlAttributes = new { @class = "form-control" } })
+
+                    <label for="NewRehearsalPart.Event.IntEventID">Event</label>
+                    @Html.DropDownListFor(m => m.NewRehearsalPart.Event.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
+
+                    <label for="NewRehearsalPart.Type.IntTypeID">Type</label>
+                    @Html.DropDownListFor(m => m.NewRehearsalPart.Type.IntTypeID, new SelectList(Model.LstAllTypes, "intTypeID", "strName"), new { @class = "form-control" })
+                    <br />
+                    <input type="submit" value="add rehearsal part" class="form-control btn-primary" />
+                }
+            </div>
+            <div class="col">
+                @if (Model.LstAdminEvents.Any())
+                {
+                    foreach (var e in Model.LstAdminEvents)
+                    {
+                        <h3>Rehearsal Parts for @e.StrName</h3>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    @*<th>Rehearsal Part ID</th>*@
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Description</th>
+                                    <th>Length</th>
+                                    <th>Type</th>
+                                    <th>Who</th>
+                                    <th>Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var r in e.LstRehearsalParts)
+                                {
+                                    <tr>
+                                        @*<td>@r.IntRehearsalPartID</td>*@
+                                        <td>@r.DtmStartDateTime</td>
+                                        <td>@r.DtmEndDateTime</td>
+                                        <td>@r.StrDescription</td>
+                                        <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
+                                        <td>@r.Type.StrName</td>
+                                        <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
+                                        <td>@r.IntPriority</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                }
+            </div>
         </div>
     </div>
-</div>

@@ -165,6 +165,27 @@ namespace ensemble_webapp.Database
                 return false;
         }
 
+        public bool UpdateRPTimes(int intRehearsalPartID, DateTime dtmStartDateTime, DateTime dtmEndDateTime)
+        {
+            // define a query
+            string query = "UPDATE \"users\"" +
+                " SET \"dtmStartDateTime\" = @dtmStartDateTime," +
+                "     \"dtmEndDateTime\" = @dtmEndDateTime" +
+                " WHERE \"intRehearsalPartID\" = @intRehearsalPartID";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("dtmStartDateTime", dtmStartDateTime);
+            cmd.Parameters.AddWithValue("dtmEndDateTime", dtmEndDateTime);
+            cmd.Parameters.AddWithValue("intRehearsalPartID", intRehearsalPartID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
+        }
+
         public bool InsertTask(Task task)
         {
             // define a query

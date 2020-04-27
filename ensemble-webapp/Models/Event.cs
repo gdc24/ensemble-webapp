@@ -30,6 +30,8 @@ namespace ensemble_webapp.Models
 
         public List<RehearsalPart> LstRehearsalParts { get; set; }
 
+        public List<Users> MembersForToday { get; set; }
+
         public Event() { }
 
         public Event(int intEventID, string eventName, string strLocation, Group group)

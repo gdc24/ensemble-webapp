@@ -1,0 +1,43 @@
+﻿@model ensemble_webapp.ViewModels.CheckInMembersVM
+
+
+@{
+    ViewBag.Title = "CheckInMembers";
+}
+
+<h2>Check In Members</h2>
+
+
+@foreach (var e in Model.LstAdminEvents)
+{
+    if (e.MembersForToday.Any())
+    {
+        <h1>Check in For: @e.StrName</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Member Name</th>
+                    <th>Phone</th>
+                    <th>Time Scheduled</th>
+                    <th>Check Them In</th>
+                </tr>
+            </thead>
+            @foreach (var m in e.MembersForToday)
+            {
+                <tr>
+                    <td>@m.StrName</td>
+                    <td>@m.StrPhone</td>
+                    <td>@m.TimeScheduled.ToString()</td>
+                    <td>
+                        <input type="button" value="Check In" class="btn btn-success" onclick="location.href='@Url.Action("CheckIn", "Admin")?intUserID=' + @m.IntUserID" />
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p><i>You have no rehearsals today for @e.StrName</i></p>
+    }
+    <br />
+}

@@ -11,79 +11,81 @@
             <h2>Schedule of Rehearsal Parts</h2>
         </div>
     </div>
-    @if (Model.Schedule.LstScheduledRehearsalParts.Any())
-    {
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Rehearsal Part ID</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Description</th>
-                    <th>Length</th>
-                    <th>Type</th>
-                    <th>Who</th>
-                    <th>Event</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var r in Model.Schedule.LstScheduledRehearsalParts)
-                {
-                    <tr>
-                        <td>@r.IntRehearsalPartID</td>
-                        <td>@r.DtmStartDateTime</td>
-                        <td>@r.DtmEndDateTime</td>
-                        <td>@r.StrDescription</td>
-                        <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
-                        <td>@r.Type.StrName</td>
-                        <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
-                        <td>@r.Event.StrName</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    <div class="row">
-        <div class="col">
-            <h2>The following rehearsals were unable to be scheduled</h2>
-        </div>
-    </div>
-    @if (Model.Schedule.LstUnscheduledRehearsalParts.Any())
-    {
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Rehearsal Part ID</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Description</th>
-                    <th>Length</th>
-                    <th>Type</th>
-                    <th>Who</th>
-                    <th>Event</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var r in Model.Schedule.LstUnscheduledRehearsalParts)
-                {
-                    <tr>
-                        <td>@r.IntRehearsalPartID</td>
-                        <td>@r.DtmStartDateTime</td>
-                        <td>@r.DtmEndDateTime</td>
-                        <td>@r.StrDescription</td>
-                        <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
-                        <td>@r.Type.StrName</td>
-                        <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
-                        <td>@r.Event.StrName</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
 
     @using (Html.BeginForm("ConfirmSchedule", "Schedule", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        if (Model.Schedule.LstScheduledRehearsalParts.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Rehearsal Part ID</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Description</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Who</th>
+                        <th>Event</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Schedule.LstScheduledRehearsalParts)
+                    {
+                        <tr>
+                            <td>@r.IntRehearsalPartID</td>
+                            <td>@r.DtmStartDateTime</td>
+                            <td>@r.DtmEndDateTime</td>
+                            <td>@r.StrDescription</td>
+                            <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
+                            <td>@r.Type.StrName</td>
+                            <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
+                            <td>@r.Event.StrName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        if (Model.Schedule.LstUnscheduledRehearsalParts.Any())
+        {
+            <div class="row">
+                <div class="col">
+                    <h2>The following rehearsals were unable to be scheduled</h2>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Rehearsal Part ID</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Description</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Who</th>
+                        <th>Event</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model.Schedule.LstUnscheduledRehearsalParts)
+                    {
+                        <tr>
+                            <td>@r.IntRehearsalPartID</td>
+                            <td>@r.DtmStartDateTime</td>
+                            <td>@r.DtmEndDateTime</td>
+                            <td>@r.StrDescription</td>
+                            <td>@r.DurLength.Hours.ToString()h @r.DurLength.Minutes.ToString()m </td>
+                            <td>@r.Type.StrName</td>
+                            <td>@String.Join(", ", r.LstMembers.Select(m => m.StrName).ToArray())</td>
+                            <td>@r.Event.StrName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
         <br />
-        <input type="submit" value="Confirm Schedule" class="form-control btn-primary" />
+        <div class="text-center">
+            <input type="submit" value="Confirm Schedule" class="form-control btn-success btn" />
+        </div>
     }
 </div>

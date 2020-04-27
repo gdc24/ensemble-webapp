@@ -40,7 +40,7 @@
             </div>
 
             <h3 class="mt-5 pt-4">
-                <a href="@Url.Action("Index", "Home")" style="border-bottom: none;"><img src="~/Content/assets/img/logo.png" /></a>
+                <a href="@Url.Action("Index", "Home")" style="border-bottom: none;"><img src="~/Content/assets/img/logo@2x.png" /></a>
             </h3>
 
             @*<div class="logo">
@@ -102,7 +102,9 @@
             <!-- Footer -->
             <hr />
             <footer class="text-center">
-                <p>&copy; @DateTime.Now.Year ensemble.</p>
+                <span><a href="@Url.Action("Index", "Home")" style="border-bottom: none;"><img style="width: 8rem;" src="~/Content/assets/img/croppedlogo.png" /></a></span>
+                <span> @Html.ActionLink("more info", "About", "Home")</span>
+                <p>&copy; @DateTime.Now.Year</p>
             </footer>
 
         </div>

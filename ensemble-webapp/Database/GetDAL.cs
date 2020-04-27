@@ -679,6 +679,42 @@ namespace ensemble_webapp.Database
 
         #region GET LISTS
 
+        public DateTime GetFirstTimeByDayAndUser(DateTime date, Users m)
+        {
+            conn.TypeMapper.UseNodaTime();
+            List<RehearsalPart> retval = new List<RehearsalPart>();
+
+            // define a query
+            string query = "select rp.*, e.*, g.\"strName\" as \"groupName\", t.\"strName\" as \"typeName\", t.\"intTypeID\"" +
+                " from types t, \"rehearsalParts\" rp, \"events\" e, \"groups\" g, \"users\" u, \"attendancePlanned\" ap" +
+                " WHERE rp.\"intEventID\" = e.\"intEventID\"" +
+                " AND g.\"intGroupID\" = e.\"intGroupID\"" +
+                " AND rp.\"intTypeID\" = t.\"intTypeID\"" +
+                " AND u.\"intUserID\" = " + m.IntUserID +
+                " AND DATE(rp.\"dtmStartDateTime\") = '" + date.Date.ToString("yyyy-MM-dd") + "'" +
+                " AND ap.\"intUserID\" = u.\"intUserID\"" +
+                " AND ap.\"intRehearsalPartID\" = u.\"intRehearsalPartID\"";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            // execute query
+            NpgsqlDataReader dr = cmd.ExecuteReader();
+
+            // read all rows and output the first column in each row
+            while (dr.Read())
+            {
+                RehearsalPart tmpRehearsalPart = GetRehearsalPartFromDR(dr);
+                retval.Add(tmpRehearsalPart);
+            }
+
+            dr.Close();
+
+            DateTime earliestTimeInList = retval.Min(x => x.DtmStartDateTime.Value);
+
+            return retval.Where(x => x.DtmStartDateTime.Equals(earliestTimeInList)).First().DtmStartDateTime.Value;
+
+            //return retval.OrderBy(d => d.DtmStartDateTime ?? DateTime.MaxValue).First().DtmStartDateTime.Value;
+        }
+
 
         public List<RehearsalPart> GetAllRehearsalParts()
         {
