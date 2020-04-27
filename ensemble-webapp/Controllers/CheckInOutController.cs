@@ -85,12 +85,12 @@ namespace ensemble_webapp.Controllers
 
             foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
             {
-                if (p.User.Equals(vm.UsersCurrentlyAtRehearsal))
-                {
-                    AttendanceActual a = get.GetAttendanceActualByRehearsalPartAndUser(p.User, vm.CurrentRehearsalPart); // need to implement this method
-                    a.DtmOutTime = DateTime.Now;
-                    insert.InsertAttendanceActual(a);
-                }
+                //if (p.User.Equals(vm.UsersCurrentlyAtRehearsal))
+                //{
+                    //AttendanceActual a = get.GetAttendanceActualByRehearsalPartAndUser(p.User, vm.CurrentRehearsalPart); // need to implement this method
+                    //a.DtmOutTime = DateTime.Now;
+                    //insert.InsertAttendanceActual(a);
+                //}
             }
             
             //update users to check in to users checked out
@@ -103,19 +103,19 @@ namespace ensemble_webapp.Controllers
         private List<Users> LstAllMembersForRehearsalParts(Event e, GetDAL connection)
         {
             List<Users> retval = new List<Users>();
+
             // go through each rehearsal part's list of members
             List<RehearsalPart> today = e.LstRehearsalParts.Where(x => x.DtmStartDateTime.GetValueOrDefault().Date.Equals(DateTime.Now.Date)).ToList();
             foreach (RehearsalPart rp in today)
             {
                 retval = retval.Concat(rp.LstMembers.Where(x => !retval.Any(y => y.Equals(x)))).ToList();
             }
-            //GetDAL get = new GetDAL();
-            //get.OpenConnection();
+
             foreach (Users m in retval)
             {
                 m.TimeScheduled = connection.GetFirstTimeByDayAndUser(DateTime.Now.Date, m);
             }
-            //get.CloseConnection();
+
             return retval;
         }
     }
