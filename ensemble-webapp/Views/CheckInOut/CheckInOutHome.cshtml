@@ -22,28 +22,45 @@
                 <p>Choose Members to Check In</p>
             </div>
             <div class="col-6">
-                @*
-                !if users to check in.Any()
+                @using (Html.BeginForm("CheckUserIn", "CheckInOut"))
                 {
-                    list checkboxes for members to check in
-                }
-                    <input type="submit" value="check users out" class="form-control btn-primary" />
-                *@
+                    foreach (var u in Model.UsersNotCurrentlyAtRehearsal)
+                    {
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="selected users" value="@u.StrName"
+                                       @if (Model.UsersCurrentlyAtRehearsal.Contains(u)) { 
+                                           <text> already checked in </text>  
+                                       } /> @u.StrName
+                                </label>
+                            </div>
+                        }
+                        <input type="submit" value="check users in" class="form-control btn-primary" />
+                    }
+
             </div>
         </div>
-        <hr />
         <div class="row">
             <div class="col-12">
-                <p>Choose Members to Check Out</p>
+                <p>Choose Members to Check In</p>
             </div>
             <div class="col-6">
-                @*
-                !if users to check out.Any()
+                @using (Html.BeginForm("CheckUserOut", "CheckInOut"))
                 {
-                    list checkboxes for members to check in
-                }
-                    <input type="submit" value="check users out" class="form-control btn-primary" />
-                *@
+                    foreach (var u in Model.UsersCurrentlyAtRehearsal)
+                    {
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="selected users" value="@u.StrName"
+                                       @if (Model.UsersNotCurrentlyAtRehearsal.Contains(u)) { 
+                                           <text> not yet checked in </text>  
+                                       } /> @u.StrName
+                                </label>
+                            </div>
+                        }
+                        <input type="submit" value="check users out" class="form-control btn-primary" />
+                    }
+
             </div>
         </div>
     </div>
