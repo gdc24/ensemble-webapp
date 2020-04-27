@@ -75,30 +75,30 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index", vm);
         }
 
-        //public ActionResult CheckUserOut(CheckInMembersVM vm)
-        //{
-            //GetDAL get = new GetDAL();
-            //get.OpenConnection();
+        public ActionResult CheckUserOut(CheckInMembersVM vm)
+        {
+            GetDAL get = new GetDAL();
+            get.OpenConnection();
 
-            //InsertDAL insert = new InsertDAL();
-            //insert.OpenConnection();
+            InsertDAL insert = new InsertDAL();
+            insert.OpenConnection();
 
-            //foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
-            //{
-                //if (p.User.Equals(vm..ChosenEvent.MembersForToday))
-                //{
-                    //AttendanceActual a = get.GetAttendanceActualByRehearsalPartAndUser(p.User, vm.CurrentRehearsalPart); // need to implement this method
-                    //a.DtmOutTime = DateTime.Now;
-                    //insert.InsertAttendanceActual(a);
-                //}
-            //}
+            foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
+            {
+                if (p.User.Equals(vm.UsersCurrentlyAtRehearsal))
+                {
+                    AttendanceActual a = get.GetAttendanceActualByRehearsalPartAndUser(p.User, vm.CurrentRehearsalPart); // need to implement this method
+                    a.DtmOutTime = DateTime.Now;
+                    insert.InsertAttendanceActual(a);
+                }
+            }
             
             //update users to check in to users checked out
 
-            //insert.CloseConnection();
-            //get.CloseConnection();
-            //return RedirectToAction("Index", vm);
-        //}
+            insert.CloseConnection();
+            get.CloseConnection();
+            return RedirectToAction("Index", vm);
+        }
 
         private List<Users> LstAllMembersForRehearsalParts(Event e, GetDAL connection)
         {
