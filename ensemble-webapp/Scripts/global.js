@@ -57,16 +57,20 @@ function confirmSingleRehearsal(id) {
     };
     console.log(data);
     AjaxCall('/Schedule/ConfirmSingleRehearsal', JSON.stringify(data), 'POST').done(function (response) {
-        // show confirmed row
-        showConfirmedRow(id, data);
-    }).fail(function (error) {
-        console.log(error);
+        if (response) {
+            // show confirmed row
+            showConfirmedRow(id, data);
+        } else {
+            alert("failed");
+        }
     });
 }
 
 function showConfirmedRow(id, data) {
     $('#' + id + '_hiddenConfirmLocation').text(data.strLocation);
     $('#' + id + '_hiddenConfirmLocation').css('color', 'green');
+    $('#' + id + '_strLocation').hide();
     $('#' + id + '_hiddenConfirmNotes').text(data.strNotes);
     $('#' + id + '_hiddenConfirmNotes').css('color', 'green');
+    $('#' + id + '_strNotes').hide();
 }

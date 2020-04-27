@@ -91,9 +91,9 @@ namespace ensemble_webapp.Controllers
             insert.OpenConnection();
 
             if (insert.InsertRehearsal(newRehearsal))
-                return RedirectToAction("Index");
+                return Json(new { success = true, responseTest = "confirmed!" }, JsonRequestBehavior.AllowGet);
             else
-                return RedirectToAction("Index", "Home");
+                return Json(new { success = false, responseTest = "error" }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

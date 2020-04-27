@@ -26,7 +26,7 @@ namespace ensemble_webapp.Database
 
         public void CloseConnection()
         {
-            conn.Close();
+            conn.Dispose();
         }
 
         #region GET FROM DATAREADERS
@@ -212,8 +212,8 @@ namespace ensemble_webapp.Database
         private Conflict GetConflictFromDR(NpgsqlDataReader dr)
         {
             int intConflictID = Convert.ToInt32(dr["intConflictID"]);
-            DateTime dtmStartDateTime = Convert.ToDateTime(dr["dtmStartDateTime"]);
-            DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
+            DateTime dtmStartDateTime = SafeGetDateTime(dr, "dtmStartDateTime").GetValueOrDefault();
+            DateTime dtmEndDateTime = SafeGetDateTime(dr, "dtmEndDateTime").GetValueOrDefault();
 
             int intUserID = Convert.ToInt32(dr["intUserID"]);
             string strName = dr["strName"].ToString();
@@ -1469,6 +1469,7 @@ namespace ensemble_webapp.Database
 
         public List<Conflict> GetConflictsByUser(Users user)
         {
+            conn.TypeMapper.UseNodaTime();
             List<Conflict> retval = new List<Conflict>();
 
             // define a query
@@ -1495,6 +1496,7 @@ namespace ensemble_webapp.Database
 
         public List<Conflict> GetConflictsByUserAndDay(Users user, LocalDate date)
         {
+            conn.TypeMapper.UseNodaTime();
             List<Conflict> retval = new List<Conflict>();
             string strDateOnly = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 

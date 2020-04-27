@@ -22,12 +22,11 @@ namespace ensemble_webapp.Database
             GetDAL get = new GetDAL();
             get.OpenConnection();
             EventSchedule = get.GetEventScheduleByEvent(@event.IntEventID);
-            get.CloseConnection();
 
-            CreateSchedule(DateTime.Now.AddDays(1), @event.DtmDate);
+            CreateSchedule(DateTime.Now.AddDays(1), @event.DtmDate, get);
         }
 
-        public FinalSchedule CreateSchedule(DateTime startDate, DateTime eventDate)
+        public FinalSchedule CreateSchedule(DateTime startDate, DateTime eventDate, GetDAL get)
         {
             // starting at the rehearsal start date
             List<DateTime> rehearsalDates = Enumerable.Range(0, 1 + eventDate.Subtract(startDate).Days)
@@ -47,59 +46,61 @@ namespace ensemble_webapp.Database
                                                            EventSchedule.TmeMondayStart.Hour,
                                                            EventSchedule.TmeMondayStart.Minute,
                                                            EventSchedule.TmeMondayStart.Second);
-                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(monday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(monday, EventSchedule.PerWeekdayDuration.ToDuration(), get)).ToList();
                             break;
                         case DayOfWeek.Tuesday:
                             DateTime tuesday = new DateTime(day.Year, day.Month, day.Day,
                                                             EventSchedule.TmeTuesdayStart.Hour,
                                                             EventSchedule.TmeTuesdayStart.Minute,
                                                             EventSchedule.TmeTuesdayStart.Second);
-                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(tuesday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(tuesday, EventSchedule.PerWeekdayDuration.ToDuration(), get)).ToList();
                             break;
                         case DayOfWeek.Wednesday:
                             DateTime wednesday = new DateTime(day.Year, day.Month, day.Day,
                                                               EventSchedule.TmeWednesdayStart.Hour,
                                                               EventSchedule.TmeWednesdayStart.Minute,
                                                               EventSchedule.TmeWednesdayStart.Second);
-                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(wednesday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(wednesday, EventSchedule.PerWeekdayDuration.ToDuration(), get)).ToList();
                             break;
                         case DayOfWeek.Thursday:
                             DateTime thursday = new DateTime(day.Year, day.Month, day.Day,
                                                              EventSchedule.TmeThursdayStart.Hour,
                                                              EventSchedule.TmeThursdayStart.Minute,
                                                              EventSchedule.TmeThursdayStart.Second);
-                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(thursday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(thursday, EventSchedule.PerWeekdayDuration.ToDuration(), get)).ToList();
                             break;
                         case DayOfWeek.Friday:
                             DateTime friday = new DateTime(day.Year, day.Month, day.Day,
                                                            EventSchedule.TmeFridayStart.Hour,
                                                            EventSchedule.TmeFridayStart.Minute,
                                                            EventSchedule.TmeFridayStart.Second);
-                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(friday, EventSchedule.PerWeekdayDuration.ToDuration())).ToList();
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(friday, EventSchedule.PerWeekdayDuration.ToDuration(), get)).ToList();
                             break;
                         case DayOfWeek.Saturday:
                             DateTime saturday = new DateTime(day.Year, day.Month, day.Day,
                                                              EventSchedule.TmeSaturdayStart.Hour,
                                                              EventSchedule.TmeSaturdayStart.Minute,
                                                              EventSchedule.TmeSaturdayStart.Second);
-                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(saturday, EventSchedule.PerWeekendDuration.ToDuration())).ToList();
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(saturday, EventSchedule.PerWeekendDuration.ToDuration(), get)).ToList();
                             break;
                         case DayOfWeek.Sunday:
                             DateTime sunday = new DateTime(day.Year, day.Month, day.Day,
                                                            EventSchedule.TmeSundayStart.Hour,
                                                            EventSchedule.TmeSundayStart.Minute,
                                                            EventSchedule.TmeSundayStart.Second);
-                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(sunday, EventSchedule.PerWeekendDuration.ToDuration())).ToList();
+                            scheduledRehearsalParts = scheduledRehearsalParts.Concat(ScheduleDay(sunday, EventSchedule.PerWeekendDuration.ToDuration(), get)).ToList();
                             break;
                     }
                 }
             }
 
             FinalSchedule = new FinalSchedule(scheduledRehearsalParts, UnscheduledRehearsalParts);
+            get.CloseConnection();
+
             return FinalSchedule;
         }
 
-        private List<RehearsalPart> ScheduleDay(DateTime start, Duration length)
+        private List<RehearsalPart> ScheduleDay(DateTime start, Duration length, GetDAL get)
         {
             List<RehearsalPart> retval = new List<RehearsalPart>();
             //DateTime end = start.AddMinutes(length.TotalMinutes);
@@ -114,7 +115,7 @@ namespace ensemble_webapp.Database
                 rehearsalPartEnd = rehearsalPartEnd.AddMinutes(minutesRehearsalPartLength);
                 // if the list of needed members do not have conflicts between start and end
                 // AND the duration of the rehearsal part plus total time so far is less than the max length of the rehearsal
-                bool hasConflicts = HasConflicts(rp.LstMembers, rehearsalPartStart, rehearsalPartEnd);
+                bool hasConflicts = HasConflicts(rp.LstMembers, rehearsalPartStart, rehearsalPartEnd, get);
                 bool rehearsalLengthFits = rp.DurLength.ToDuration().Plus(totalRehearsalTimeForDay) <= length;
                 if (!hasConflicts && rehearsalLengthFits)
                 {
@@ -147,9 +148,8 @@ namespace ensemble_webapp.Database
         /// <param name="start">start time of rehearsal part</param>
         /// <param name="end">end time of rehearsal part</param>
         /// <returns>True if at least one of the users has a conflict</returns>
-        private bool HasConflicts(List<Users> LstMembers, DateTime start, DateTime end)
+        private bool HasConflicts(List<Users> LstMembers, DateTime start, DateTime end, GetDAL get)
         {
-            GetDAL get = new GetDAL();
             foreach (Users m in LstMembers)
             {
                 List<Conflict> conflicts = get.GetConflictsByUserAndDay(m, new LocalDate(start.Year, start.Month, start.Day));
