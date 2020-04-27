@@ -11,10 +11,15 @@ namespace ensemble_webapp.ViewModels
 
         public FinalSchedule Schedule { get; set; }
 
+        public List<Rehearsal> LstTmpRehearsals { get; set; }
 
         public List<RehearsalPart> LstConfirmScheduledRehearsalParts { get; set; }
 
-        public ScheduleViewVM() { }
+        public Rehearsal SingleConfirmedRehearsal { get; set; }
+
+        public ScheduleViewVM() {
+            LstTmpRehearsals = new List<Rehearsal>();
+        }
 
     }
 }

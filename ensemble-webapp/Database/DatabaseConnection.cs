@@ -14,6 +14,7 @@ namespace ensemble_webapp.Database
         public static readonly string PASS = "876dfd50897a0f97872b0acb2353c92d28e72bf5908df03cbde4db116cee034c";
         public static readonly string SSL = "Require";
         public static readonly string TRUST = "true";
+        public static readonly string MAX_POOL_SIZE = "200";
 
         public static NpgsqlConnection GetConnection()
         {
@@ -23,6 +24,7 @@ namespace ensemble_webapp.Database
                 "Password=" + PASS + ";" +
                 "Database=" + DATABASE + ";" +
                 "Trust Server Certificate=" + TRUST + ";" +
+                "Maximum Pool Size=" + MAX_POOL_SIZE + ";" +
                 "SSL Mode=" + SSL + ";");
 
             return conn;

@@ -124,8 +124,8 @@ namespace ensemble_webapp.Database
             //Rehearsal rehearsal = GetRehearsalByID(Convert.ToInt32(dr["intRehearsalID"]));
             //Types type = GetTypesByID(Convert.ToInt32(dr["intTypeID"]));
 
-            //int ordinalLength = dr.GetOrdinal("durLength");
-            //Period durLength = dr.GetFieldValue<Period>(ordinalLength);
+            int ordinalLength = dr.GetOrdinal("durLength");
+            Period durLength = dr.GetFieldValue<Period>(ordinalLength);
 
             Types type = new Types(
                 Convert.ToInt32(dr["intTypeID"]),
@@ -144,17 +144,27 @@ namespace ensemble_webapp.Database
 
             Event @event = new Event(intEventID, strEventName, strLocation, group);
 
-            return new RehearsalPart(intRehearsalPartID, dtmStartDateTime.GetValueOrDefault(), dtmEndDateTime.GetValueOrDefault(), strDescription, intPriority, null, type, @event);
+            return new RehearsalPart(intRehearsalPartID, dtmStartDateTime.GetValueOrDefault(), dtmEndDateTime.GetValueOrDefault(), strDescription, intPriority, durLength, type, @event);
         }
 
         private static DateTime? SafeGetDateTime(NpgsqlDataReader dr, string colName)
         {
+
             int ordinal = dr.GetOrdinal(colName);
             if (!dr.IsDBNull(ordinal))
-                return Convert.ToDateTime(dr[colName]);
+            {
+                Instant instantDate = dr.GetFieldValue<Instant>(ordinal);
+                var timezone = DateTimeZoneProviders.Bcl.GetSystemDefault();
+                DateTime eventDate = instantDate.InZone(timezone).ToDateTimeUnspecified();
+                return eventDate;
+            }
             else
+            {
                 return null;
+            }
+
         }
+          
         private static int? SafeGetInt(NpgsqlDataReader dr, string colName)
         {
             int ordinal = dr.GetOrdinal(colName);
@@ -189,11 +199,11 @@ namespace ensemble_webapp.Database
 
             if (intRehearsalID == null)
             {
-                rp = new RehearsalPart(intRehearsalPartID, dtmStartDateTime, dtmEndDateTime, strDescription, intPriority, null, type, @event);
+                rp = new RehearsalPart(intRehearsalPartID, dtmStartDateTime.GetValueOrDefault(), dtmEndDateTime.GetValueOrDefault(), strDescription, intPriority, null, type, @event);
             }
             else
             {
-                rp = new RehearsalPart(intRehearsalPartID, dtmStartDateTime, dtmEndDateTime, strDescription, intPriority, GetRehearsalByID(intRehearsalID), type, @event);
+                rp = new RehearsalPart(intRehearsalPartID, dtmStartDateTime.GetValueOrDefault(), dtmEndDateTime.GetValueOrDefault(), strDescription, intPriority, GetRehearsalByID(intRehearsalID), type, @event);
             }
 
             return rp;
@@ -612,8 +622,8 @@ namespace ensemble_webapp.Database
             string query = "SELECT es.*, e.*, g.\"intGroupID\", g.\"strName\" as \"groupName\"" +
                 " FROM \"groups\" g, \"eventSchedule\" es" +
                 " INNER JOIN(SELECT MAX(\"intEventScheduleID\") as \"intEventScheduleID\"" +
-                " FROM \"eventSchedule\") s on es.\"intEventScheduleID\" = s.\"intEventScheduleID\", events e where e.\"intEventID\" = es.\"intEventID\"" +
-                " AND e.\"intEventID\" = " + intEventID + "" +
+                " FROM \"eventSchedule\") s on es.\"intEventScheduleID\" = s.\"intEventScheduleID\", events e " +
+                " WHERE e.\"intEventID\" = " + intEventID + "" +
                 " AND g.\"intGroupID\" = e.\"intGroupID\";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
@@ -1069,6 +1079,8 @@ namespace ensemble_webapp.Database
 
         public List<RehearsalPart> GetUpcomingRehearsalPartsByUser(Users user)
         {
+            conn.TypeMapper.UseNodaTime();
+
             List<RehearsalPart> retval = new List<RehearsalPart>();
             string strDateOnly = DateTime.Now.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
@@ -1185,7 +1197,7 @@ namespace ensemble_webapp.Database
 
         public List<RehearsalPart> GetRehearsalPartsByEvent(Event paramEvent)
         {
-            //conn.TypeMapper.UseNodaTime();
+            conn.TypeMapper.UseNodaTime();
 
             List<RehearsalPart> retval = new List<RehearsalPart>();
 

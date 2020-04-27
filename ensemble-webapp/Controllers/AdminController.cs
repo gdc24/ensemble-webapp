@@ -31,6 +31,10 @@ namespace ensemble_webapp.Controllers
                     foreach(RehearsalPart rp in e.LstRehearsalParts)
                     {
                         rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                        if (rp.DtmStartDateTime.Equals(DateTime.MinValue))
+                            rp.DtmStartDateTime = null;
+                        if (rp.DtmEndDateTime.Equals(DateTime.MinValue))
+                            rp.DtmEndDateTime = null;
                     }
                 }
                 model.LstAllTypes = get.GetAllTypes();

@@ -1,8 +1,10 @@
 ﻿using ensemble_webapp.Database;
 using ensemble_webapp.Models;
 using ensemble_webapp.ViewModels;
+using NodaTime;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -73,11 +75,32 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public ActionResult ConfirmSingleRehearsal(string strLocation, string strNotes, DateTime dtmStart, DateTime dtmEnd)
+        {
+            Rehearsal newRehearsal = new Rehearsal
+            {
+                DtmStartDateTime = dtmStart,
+                DtmEndDateTime = dtmEnd,
+                StrLocation = strLocation,
+                StrNotes = strNotes
+            };
+            newRehearsal.LstRehearsalParts = tmpRehearsalPartsSchedule.LstScheduledRehearsalParts.Where(x => x.DtmStartDateTime.GetValueOrDefault().Date.Equals(newRehearsal.DtmStartDateTime.Date)).ToList();
 
+            InsertDAL insert = new InsertDAL();
+            insert.OpenConnection();
+
+            if (insert.InsertRehearsal(newRehearsal))
+                return RedirectToAction("Index");
+            else
+                return RedirectToAction("Index", "Home");
+        }
 
         [HttpPost]
         public ActionResult ConfirmSchedule(ScheduleViewVM vm)
         {
+
+            // update rehearsal part times
             vm.LstConfirmScheduledRehearsalParts = tmpRehearsalPartsSchedule.LstScheduledRehearsalParts;
             // insert start and end dates for each rehearsal part into db
             InsertDAL insert = new InsertDAL();
@@ -115,7 +138,39 @@ namespace ensemble_webapp.Controllers
             model.Schedule = newSchedule.FinalSchedule;
             tmpRehearsalPartsSchedule = model.Schedule;
 
+            foreach (LocalDate d in uniqueDatesOfRehearsals(model.Schedule.LstScheduledRehearsalParts))
+            {
+                Rehearsal tmpRehearsal = new Rehearsal();
+                // get earliest rehearsal on any day
+                DateTime fromDateOnly = new DateTime(d.Year, d.Month, d.Day);
+                // get start of earliest rehearsal part on that day
+                RehearsalPart earliest = model.Schedule.LstScheduledRehearsalParts.Where(x => x.DtmStartDateTime.GetValueOrDefault().Date.Equals(fromDateOnly)).OrderBy(x => x.DtmStartDateTime.GetValueOrDefault()).FirstOrDefault();
+                tmpRehearsal.DtmStartDateTime = earliest.DtmStartDateTime.GetValueOrDefault();
+
+                // get end of latest rehearsal part on that day
+                RehearsalPart lastest = model.Schedule.LstScheduledRehearsalParts.Where(x => x.DtmEndDateTime.GetValueOrDefault().Date.Equals(fromDateOnly)).OrderByDescending(x => x.DtmEndDateTime.GetValueOrDefault()).FirstOrDefault();
+                tmpRehearsal.DtmEndDateTime = lastest.DtmEndDateTime.GetValueOrDefault();
+
+                tmpRehearsal.LstRehearsalParts = model.Schedule.LstScheduledRehearsalParts.Where(x => x.DtmStartDateTime.GetValueOrDefault().Date.Equals(fromDateOnly)).ToList();
+
+                model.LstTmpRehearsals.Add(tmpRehearsal);
+            }
+
             return View("ScheduleView", model);
+        }
+
+        private List<LocalDate> uniqueDatesOfRehearsals(List<RehearsalPart> rehearsalParts)
+        {
+            List<LocalDate> retval = new List<LocalDate>();
+            foreach (RehearsalPart rp in rehearsalParts)
+            {
+                LocalDate dateOnly = LocalDate.FromDateTime(rp.DtmStartDateTime.Value.Date);
+                if (!retval.Contains(dateOnly)) {
+                    retval.Add(dateOnly);
+                };
+            }
+
+            return retval;
         }
 
         public ActionResult ScheduleView()

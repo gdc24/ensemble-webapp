@@ -211,8 +211,47 @@ namespace ensemble_webapp.Database
 
         public bool InsertRehearsal(Rehearsal rehearsal)
         {
-            //TODO
-            throw new NotImplementedException("todo");
+            // insert into rehearsal table// define a query
+            string query = "INSERT INTO public.\"rehearsals\"(" +
+                " \"dtmStartDateTime\", \"dtmEndDateTime\", \"strLocation\", \"strNotes\", \"intEventID\")" +
+                " VALUES(@dtmStartDateTime, @dtmEndDateTime, @strLocation, @strNotes, @intEventID)" +
+                " RETURNING \"intRehearsalID\";";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("dtmStartDateTime", rehearsal.DtmStartDateTime);
+            cmd.Parameters.AddWithValue("dtmEndDateTime", rehearsal.DtmEndDateTime);
+            cmd.Parameters.AddWithValue("strLocation", rehearsal.StrLocation);
+            cmd.Parameters.AddWithValue("strNotes", rehearsal.StrNotes);
+            cmd.Parameters.AddWithValue("intEventID", rehearsal.LstRehearsalParts.FirstOrDefault().Event.IntEventID);
+
+            int intNewRehearsalID = (int)cmd.ExecuteScalar();
+
+            bool status = false;
+            // update each rehearsal part with the new rehearsal id
+            foreach (RehearsalPart rp in rehearsal.LstRehearsalParts)
+            {
+                status = UpdateRehearsalPartWithRehearsal(rp, intNewRehearsalID);
+            }
+
+            return status;
+        }
+
+        private bool UpdateRehearsalPartWithRehearsal(RehearsalPart rp, int intRehearsalID)
+        {
+            // define a query
+            string query = "UPDATE \"rehearsalParts\" SET \"intRehearsalID\" = @intRehearsalID" +
+                " WHERE \"intRehearsalPartID\" = @intRehearsalPartID";
+            NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("intRehearsalID", intRehearsalID);
+            cmd.Parameters.AddWithValue("intRehearsalPartID", rp.IntRehearsalPartID);
+
+            int result = cmd.ExecuteNonQuery();
+
+            if (result == 1)
+                return true;
+            else
+                return false;
         }
 
         // return new id

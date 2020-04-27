@@ -60,13 +60,15 @@ namespace ensemble_webapp.Models
             Event = @event;
         }
 
-        public RehearsalPart(int intRehearsalPartID, DateTime? dtmStartDateTime, DateTime? dtmEndDateTime, string strDescription, int intPriority, object p, Types types, Event @event)
+        public RehearsalPart(int intRehearsalPartID, DateTime? dtmStartDateTime, DateTime? dtmEndDateTime, string strDescription, int intPriority, Period durLength, Types types, Event @event)
         {
             IntRehearsalPartID = intRehearsalPartID;
             DtmStartDateTime = dtmStartDateTime;
             DtmEndDateTime = dtmEndDateTime;
             StrDescription = strDescription;
             IntPriority = intPriority;
+            DurLength = durLength;
+            Type = types;
             Event = @event;
         }
 

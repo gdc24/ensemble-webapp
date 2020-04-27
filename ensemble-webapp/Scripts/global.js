@@ -36,3 +36,37 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //    passwordError();
     //}
 });
+
+function AjaxCall(url, data, type) {
+    return $.ajax({
+        url: url,
+        type: type ? type : 'GET',
+        data: data,
+        contentType: 'application/json',
+        async: false
+    })
+}
+
+//id is actually start datetime's date in MMddyyyy format
+function confirmSingleRehearsal(id) {
+    var data = {
+        strLocation: $("#" + id + "_strLocation").val(),
+        strNotes: $("#" + id + "_strNotes").val(),
+        dtmStart: new Date($("#" + id + "_hiddenDateStart").text()),
+        dtmEnd: new Date($("#" + id + "_hiddenDateEnd").text())
+    };
+    console.log(data);
+    AjaxCall('/Schedule/ConfirmSingleRehearsal', JSON.stringify(data), 'POST').done(function (response) {
+        // show confirmed row
+        showConfirmedRow(id, data);
+    }).fail(function (error) {
+        console.log(error);
+    });
+}
+
+function showConfirmedRow(id, data) {
+    $('#' + id + '_hiddenConfirmLocation').text(data.strLocation);
+    $('#' + id + '_hiddenConfirmLocation').css('color', 'green');
+    $('#' + id + '_hiddenConfirmNotes').text(data.strNotes);
+    $('#' + id + '_hiddenConfirmNotes').css('color', 'green');
+}
