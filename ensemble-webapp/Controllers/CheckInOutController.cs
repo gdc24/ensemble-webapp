@@ -68,6 +68,8 @@ namespace ensemble_webapp.Controllers
                 }
             }
 
+            //update users to check out to users checked in
+
             insert.CloseConnection();
             get.CloseConnection();
             return RedirectToAction("Index");
@@ -90,6 +92,8 @@ namespace ensemble_webapp.Controllers
                     //insert.InsertAttendanceActual(a);
                 //}
             //}
+            
+            //update users to check in to users checked out
 
             //insert.CloseConnection();
             //get.CloseConnection();

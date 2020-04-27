@@ -14,5 +14,11 @@ namespace ensemble_webapp.ViewModels
         public List<Event> LstAdminEvents { get; set; }
 
         public RehearsalPart CurrentRehearsalPart { get; set; }
+
+        public List<Users> UsersFromForm { get; set; }
+
+        public List<Users> UsersNotCurrentlyAtRehearasl { get; set; }
+
+        public List<Users> UsersCurrentlyAtRehearasl { get; set; }
     }
 }
