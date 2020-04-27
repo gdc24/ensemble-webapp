@@ -47,6 +47,8 @@ namespace ensemble_webapp.Models
 
         public List<Event> LstEventsIsAdmin { get; set; }
 
+        public DateTime TimeScheduled { get; set; }
+
         public Users() { }
 
         public Users(int intUserID, string strName)

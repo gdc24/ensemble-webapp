@@ -8,9 +8,13 @@ namespace ensemble_webapp.ViewModels
 {
     public class ScheduleHomeVM
     {
+        public List<RehearsalPart> LstUpcomingRehearsalParts { get; set; }
+
+        public List<RehearsalPart> LstUserRehearsalParts { get; set; }
+
         public List<Rehearsal> LstUpcomingRehearsals { get; set; }
 
-        public List<RehearsalPart> LstAllRehearsalParts { get; set; }
+        public List<RehearsalPart> LstUnscheduledRehearsalParts { get; set; }
 
         public Users CurrentUser { get; set; }
 
@@ -23,5 +27,10 @@ namespace ensemble_webapp.ViewModels
 
         // from list of checkboxes on html form
         public List<Users> UsersToCheckInOut { get; set; }
+
+        public ScheduleHomeVM()
+        {
+            LstUserRehearsalParts = new List<RehearsalPart>();
+        }
     }
 }

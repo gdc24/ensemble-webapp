@@ -39,9 +39,13 @@
                 <i class="fas fa-arrow-left"></i>
             </div>
 
-            <div class="logo">
-                <h3><a href="#"><img src="~/Content/assets/img/logo.png" /></a></h3>
-            </div>
+            <h3 class="mt-5 pt-4">
+                <a href="@Url.Action("Index", "Home")" style="border-bottom: none;"><img src="~/Content/assets/img/logo@2x.png" /></a>
+            </h3>
+
+            @*<div class="logo">
+            <h3><a href="#"><img src="~/Content/assets/img/logo.png" /></a></h3>
+        </div>*@
 
             <ul class="list-unstyled menu-elements">
                 <li class="active">
@@ -68,16 +72,15 @@
                         <a class="scroll-link" href="@Url.Action("Index", "Admin")"><i class="fas fa-cog"></i> Admin Dashboard</a>
                     </li>
                 }
-                <li>
-                    <a class="scroll-link" href="@Url.Action("Index", "Profile")"><i class="fas fa-user"></i> Profile</a>
-                </li>
             </ul>
 
             @if (Globals.LOGIN_STATUS)
             {
-                <div class="text-center">
-                    <p> @Globals.LOGGED_IN_USER.StrName</p>
-                </div>
+                <a href="@Url.Action("Index", "Profile")">
+                    <div class="text-center">
+                        <p><i class="fas fa-user"></i> @Globals.LOGGED_IN_USER.StrName</p>
+                    </div>
+                </a>
             }
 
         </nav>
@@ -99,7 +102,9 @@
             <!-- Footer -->
             <hr />
             <footer class="text-center">
-                <p>&copy; @DateTime.Now.Year ensemble.</p>
+                <span><a href="@Url.Action("Index", "Home")" style="border-bottom: none;"><img style="width: 8rem;" src="~/Content/assets/img/croppedlogo.png" /></a></span>
+                <span> @Html.ActionLink("more info", "About", "Home")</span>
+                <p>&copy; @DateTime.Now.Year</p>
             </footer>
 
         </div>

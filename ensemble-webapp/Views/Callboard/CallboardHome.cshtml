@@ -16,15 +16,29 @@
             <p>callboard notifications</p>
             @if (Model.LstAllCallboards.Any())
             {
-                foreach (var c in Model.LstAllCallboards)
-                {
-                    <ul>
-                        <li>
-                            <p>@c.StrSubject in @c.Event.StrName from @c.PostedByUser.StrName at @c.DtmDateTime:</p>
-                            <p>@c.StrNote</p>
-                        </li>
-                    </ul>
-                }
+                <div class="card-deck">
+                    @foreach (var c in Model.LstAllCallboards)
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">@c.StrSubject</h5>
+                                <p class="card-text">@c.StrNote</p>
+                                <div class="card-footer">
+                                    <small class="text-muted">Posted at @c.DtmDateTime.ToString("MM/dd/yy hh:mmt").ToLower() by @c.PostedByUser.StrName in @c.Event.StrName</small>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @*foreach (var c in Model.LstAllCallboards)
+            {
+                <ul>
+                    <li>
+                        <p>@c.StrSubject in @c.Event.StrName from @c.PostedByUser.StrName at @c.DtmDateTime:</p>
+                        <p>@c.StrNote</p>
+                    </li>
+                </ul>
+            }*@
             }
             else
             {

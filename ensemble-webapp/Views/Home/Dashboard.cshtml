@@ -14,29 +14,40 @@
             <p><i>Hello, @Model.CurrentUser.StrName!</i></p>
         </div>
         <div class="col-12">
-            @if (Model.LstUpcomingRehearsals.Any())
+
+            @if (Model.LstUpcomingRehearsalParts.Any())
             {
-                <p><strong>Upcoming Rehearsals:</strong></p>
+                <h3>Your Upcoming Rehearsal Parts</h3>
                 <ul>
-                    @foreach (var r in Model.LstUpcomingRehearsals)
+                    @foreach (var r in Model.LstUpcomingRehearsalParts)
                     {
-                        <li>
-                            <p>@r.DtmStartDateTime to @r.DtmEndDateTime</p>
-                            <br />
-                            <p>at @r.StrLocation</p>
-                            @if (!@r.StrNotes.IsEmpty())
-                            {
-                                <br />
-                                <p>Notes: @r.StrNotes</p>
-                            }
-                        </li>
+                        <li>@r.ToString()</li>
                     }
                 </ul>
             }
-            else
-            {
-                <p><i>You have no upcoming rehearsals</i></p>
-            }
+            @*@if (Model.LstUpcomingRehearsals.Any())
+        {
+            <p><strong>Upcoming Rehearsals:</strong></p>
+            <ul>
+                @foreach (var r in Model.LstUpcomingRehearsals)
+                {
+                    <li>
+                        <p>@r.DtmStartDateTime to @r.DtmEndDateTime</p>
+                        <br />
+                        <p>at @r.StrLocation</p>
+                        @if (!@r.StrNotes.IsEmpty())
+                        {
+                            <br />
+                            <p>Notes: @r.StrNotes</p>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p><i>You have no upcoming rehearsals</i></p>
+        }*@
         </div>
         <br />
         <div class="col-12">

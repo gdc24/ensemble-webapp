@@ -99,14 +99,47 @@ namespace ensemble_webapp.Controllers
                 // overdue tasks should be all tasks that are unfinished that are due before today
                 model.LstOverdueTasks = get.GetUnfinishedTasksDueBefore(model.CurrentUser, DateTime.Now);
 
-                foreach (Event e in model.LstEvents)
+
+                /****************************** upcoming rehearsals stuff start *********/
+
+                foreach (var e in get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID))
                 {
-                    List<Rehearsal> rehearsals = get.GetRehearsalsByEvent(e);
-                    if (rehearsals.Any())
-                    { 
-                        model.LstUpcomingRehearsals = rehearsals;
-                    }
+                    get.CloseConnection();
+                    get.OpenConnection();
+                    model.LstUserRehearsalParts = model.LstUserRehearsalParts.Concat(get.GetRehearsalPartsByEvent(e)).ToList();
                 }
+                get.CloseConnection();
+                get.OpenConnection();
+                model.LstUpcomingRehearsalParts = get.GetUpcomingRehearsalPartsByUser(Globals.LOGGED_IN_USER);
+
+                model.LstUnscheduledRehearsalParts = model.LstUserRehearsalParts.Where(x => x.DtmStartDateTime.Equals(null)).ToList();
+
+                model.LstUpcomingRehearsalParts = model.LstUpcomingRehearsalParts.Except(model.LstUnscheduledRehearsalParts.ToList()).ToList();
+
+                model.LstUpcomingRehearsals = get.GetUpcomingRehearsalsByUser(Globals.LOGGED_IN_USER);
+
+                foreach (var r in model.LstUpcomingRehearsals)
+                {
+                    r.LstRehearsalParts = get.GetRehearsalPartsByRehearsal(r);
+                }
+
+                get.CloseConnection();
+                get.OpenConnection();
+                foreach (RehearsalPart rp in model.LstUpcomingRehearsalParts)
+                {
+                    rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                }
+                get.CloseConnection();
+                /****************************** upcoming rehearsals stuff end *********/
+
+                //foreach (Event e in model.LstEvents)
+                //{
+                //    List<Rehearsal> rehearsals = get.GetRehearsalsByEvent(e);
+                //    if (rehearsals.Any())
+                //    { 
+                //        model.LstUpcomingRehearsals = rehearsals;
+                //    }
+                //}
 
                 get.CloseConnection();
 

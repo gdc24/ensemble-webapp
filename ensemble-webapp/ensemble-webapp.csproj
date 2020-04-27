@@ -199,6 +199,7 @@
     <Compile Include="SchedulingAlgorithm.cs" />
     <Compile Include="ViewModels\AdminHomeVM.cs" />
     <Compile Include="ViewModels\CallboardHomeVM.cs" />
+    <Compile Include="ViewModels\CheckInMembersVM.cs" />
     <Compile Include="ViewModels\DashboardVM.cs" />
     <Compile Include="ViewModels\ConflictsHomeVM.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
@@ -221,6 +222,7 @@
     <Content Include="Content\assets\img\about-us.jpg" />
     <Content Include="Content\assets\img\backgrounds\1.jpg" />
     <Content Include="Content\assets\img\backgrounds\2.jpg" />
+    <Content Include="Content\assets\img\croppedlogo.png" />
     <Content Include="Content\assets\img\logo%402x.png" />
     <Content Include="Content\assets\img\logo-dark%402x.png" />
     <Content Include="Content\assets\img\logo-dark.png" />

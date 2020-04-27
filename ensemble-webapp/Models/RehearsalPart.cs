@@ -45,6 +45,7 @@ namespace ensemble_webapp.Models
         public Event Event { get; set; }
 
         public RehearsalPart() {
+            StrDescription = "";
             LstMembers = new List<Users>();
         }
 
@@ -57,6 +58,41 @@ namespace ensemble_webapp.Models
             IntPriority = intPriority;
             Type = type;
             Event = @event;
+        }
+
+        public RehearsalPart(int intRehearsalPartID, DateTime? dtmStartDateTime, DateTime? dtmEndDateTime, string strDescription, int intPriority, object p, Types types, Event @event)
+        {
+            IntRehearsalPartID = intRehearsalPartID;
+            DtmStartDateTime = dtmStartDateTime;
+            DtmEndDateTime = dtmEndDateTime;
+            StrDescription = strDescription;
+            IntPriority = intPriority;
+            Event = @event;
+        }
+
+        public override string ToString()
+        {
+            if (DtmStartDateTime.HasValue &&
+                DtmEndDateTime.HasValue)
+            {
+                if (DtmStartDateTime.Value.Date.Equals(DtmEndDateTime.Value.Date))
+                    return StrDescription + ", " +
+                        DtmStartDateTime.Value.ToString("ddd MM/dd/yy h:mmtt") + 
+                        " to " + DtmEndDateTime.Value.ToString("h:mmtt") +
+                        " with " + String.Join(", ", LstMembers.Select(x => x.StrName));
+                else
+                    return StrDescription + ", " + 
+                        DtmStartDateTime.Value.ToString("ddd MM/dd/yy h:mmtt") +
+                        " to " + DtmEndDateTime.Value.ToString("ddd MM/dd/yy h:mmtt") +
+                        " with " + String.Join(", ", LstMembers.Select(x => x.StrName));
+            }
+            else
+            {
+                return StrDescription + ", " +
+                       " with " + String.Join(", ", LstMembers.Select(x => x.StrName)) +
+                       " (unscheduled)";
+            }
+            
         }
     }
 }
