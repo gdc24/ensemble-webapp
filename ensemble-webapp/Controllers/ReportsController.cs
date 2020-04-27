@@ -73,8 +73,9 @@ namespace ensemble_webapp.Controllers
         //turn GenerateReport.cshtml into pdf
         public ActionResult GenerateReport(){
             var Renderer = new IronPdf.HtmlToPdf();
-            Renderer.RenderHtmlAsPdf("ensemble-webapp/ensemble-webapp/Views/Reports/ReportsHome.cshtml").SaveAs("Report.pdf");
-            return RedirectToAction("Index");
+            var PDF = Renderer.RenderHTMLFileAsPdf("ReportsHome.cshtml");
+            var OutputPath = "Report.pdf";
+            PDF.SaveAs(OutputPath);
         }
     }
 }
