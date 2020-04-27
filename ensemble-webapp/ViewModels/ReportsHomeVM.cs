@@ -17,9 +17,9 @@ namespace ensemble_webapp.ViewModels
         
         public String StartToEnd { get; set; }
 
-        public AttendancePlanned PlannedAttendance { get; set; }
+        public List<AttendancePlanned> PlannedAttendance { get; set; }
 
-        public AttendanceActual ActualAttendance { get; set; }
+        public List<AttendanceActual> ActualAttendance { get; set; }
         
         public String Notes { get; set; }
     }
