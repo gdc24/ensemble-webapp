@@ -86,50 +86,5 @@ namespace ensemble_webapp.Controllers
         //    {
         //        ScheduleViewVM model = new ScheduleViewVM();
         //        model.Schedule = schedule;
-        public ActionResult CheckUserIn(ScheduleHomeVM vm)
-        {
-            GetDAL get = new GetDAL();
-            get.OpenConnection();
- 
-            InsertDAL insert = new InsertDAL();
-            insert.OpenConnection();
-
-            foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
-            {
-                if (p.User.Equals(vm.UsersToCheckInOut))
-                {
-                    insert.InsertAttendanceActual(new AttendanceActual(1, DateTime.Now, DateTime.Now, true, p)); 
-                    // when first inserting, they're only there for that millisecond 
-                    // also idk how to do incrementing attendanceActualID
-                }
-            }
-
-            insert.CloseConnection();
-            get.CloseConnection();
-            return RedirectToAction("Index");
-        }
-
-        //public ActionResult CheckUserOut(ScheduleHomeVM vm)
-        //{
-        //    GetDAL get = new GetDAL();
-        //    get.OpenConnection();
-
-        //    InsertDAL insert = new InsertDAL();
-        //    insert.OpenConnection();
-
-        //    foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
-        //    {
-        //        if (p.User.Equals(vm.UsersToCheckInOut))
-        //        {
-        //            AttendanceActual a = get.GetAttendanceActualByRehearsalPartAndUser(p.User, vm.CurrentRehearsalPart); // need to implement this method
-        //            a.DtmOutTime = DateTime.Now;
-        //            insert.InsertAttendanceActual(a);
-        //        }
-        //    }
-
-        //    insert.CloseConnection();
-        //    get.CloseConnection();
-        //    return RedirectToAction("Index");
-        //}
     }
 }
