@@ -17,5 +17,11 @@ namespace ensemble_webapp.ViewModels
         public List<Event> LstAdminEvents { get; set; }
 
         public Event SelectedEvent { get; set; }
+
+        // have a drop down list
+        public RehearsalPart CurrentRehearsalPart { get; set; }
+
+        // from list of checkboxes on html form
+        public List<Users> UsersToCheckInOut { get; set; }
     }
 }
