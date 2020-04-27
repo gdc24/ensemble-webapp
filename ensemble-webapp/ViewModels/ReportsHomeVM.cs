@@ -15,7 +15,9 @@ namespace ensemble_webapp.ViewModels
         
         public String Location { get; set; }
         
-        public String StartToEnd { get; set; }
+        public String StartTime { get; set; }
+
+        public String EndTime { get; set; }
 
         public List<AttendancePlanned> PlannedAttendance { get; set; }
 
