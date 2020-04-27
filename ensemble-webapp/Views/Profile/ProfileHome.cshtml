@@ -29,7 +29,7 @@
                 <p>Phone: @Model.CurrentUser.StrPhone</p>
             </div>
             <div class="col-12">
-                <p>list of events you're part of</p>
+                <p>Your Events</p>
                 <ul>
                     @foreach (var e in Model.CurrentUser.LstEvents)
                     {
@@ -38,7 +38,7 @@
                 </ul>
             </div>
             <div class="col-12">
-                <p>list of events you're an admin for</p>
+                <p>Your Admin Events</p>
                 <ul>
                     @foreach (var e in Model.CurrentUser.LstEventsIsAdmin)
                     {
