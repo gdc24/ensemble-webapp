@@ -80,4 +80,10 @@
             </tbody>
         </table>
     }
+
+    @using (Html.BeginForm("ConfirmSchedule", "Schedule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <br />
+        <input type="submit" value="Confirm Schedule" class="form-control btn-primary" />
+    }
 </div>

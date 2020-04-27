@@ -18,7 +18,7 @@ namespace ensemble_webapp.Database
 
         public Schedule(List<RehearsalPart> allRehearsalParts, Event @event)
         {
-            UnscheduledRehearsalParts = allRehearsalParts;
+            UnscheduledRehearsalParts = allRehearsalParts.OrderBy(x => x.IntPriority).ToList();
             GetDAL get = new GetDAL();
             get.OpenConnection();
             EventSchedule = get.GetEventScheduleByEvent(@event.IntEventID);

@@ -36,6 +36,12 @@ namespace ensemble_webapp.Controllers
                 model.LstAllTypes = get.GetAllTypes();
 
                 model.LstAllUsersForAdminEvents = get.GetAllUsersForAdminEvents(model.LstAdminEvents);
+                get.CloseConnection();
+                get.OpenConnection();
+                foreach (Users u in model.LstAllUsersForAdminEvents)
+                {
+                    u.LstConflicts = get.GetConflictsByUser(u).OrderBy(x => x.DtmStartDateTime).ToList();
+                }
 
                 get.CloseConnection();
 

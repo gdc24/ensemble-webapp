@@ -45,39 +45,40 @@
 
             <ul class="list-unstyled menu-elements">
                 <li class="active">
-                    <a class="scroll-link" href="@Url.Action("Dashboard", "Home")"><i class="fas fa-home"></i> Dashboard</a>
+                    <a class="scroll-link" location.href="@Url.Action("Dashboard", "Home")"><i class="fas fa-home"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a class="scroll-link" href="@Url.Action("Index", "Profile")"><i class="fas fa-user"></i> Profile</a>
+                    <a class="scroll-link" href="@Url.Action("Index", "Schedule")"><i class="fas fa-calendar"></i> Schedule</a>
                 </li>
                 <li>
-                    <a class="scroll-link" href="@Url.Action("Index", "Callboard")"><i class="fas fa-envelope"></i> Callboard</a>
+                    <a class="scroll-link" href="@Url.Action("Index", "Callboard")"><i class="fas fa-bullhorn"></i> Callboard</a>
                 </li>
                 <li>
                     <a class="scroll-link" href="@Url.Action("Index", "Tasks")"><i class="fas fa-pencil-alt"></i> Tasks</a>
                 </li>
                 <li>
-                    <a class="scroll-link" href="@Url.Action("Index", "Conflict")"><i class="fas fa-cog"></i> Conflicts</a>
+                    <a class="scroll-link" href="@Url.Action("Index", "Conflict")"><i class="fas fa-calendar-times"></i> Conflicts</a>
                 </li>
                 <li>
-                    <a class="scroll-link" href="@Url.Action("Index", "Reports")"><i class="fas fa-envelope"></i> Reports</a>
+                    <a class="scroll-link" href="@Url.Action("Index", "Reports")"><i class="fas fa-folder-open"></i> Reports</a>
+                </li>
+                @if (Globals.IS_ADMIN)
+                {
+                    <li>
+                        <a class="scroll-link" href="@Url.Action("Index", "Admin")"><i class="fas fa-cog"></i> Admin Dashboard</a>
+                    </li>
+                }
+                <li>
+                    <a class="scroll-link" href="@Url.Action("Index", "Profile")"><i class="fas fa-user"></i> Profile</a>
                 </li>
             </ul>
 
             @if (Globals.LOGIN_STATUS)
             {
-                <div>
+                <div class="text-center">
                     <p>@Globals.LOGGED_IN_USER.StrName</p>
                 </div>
             }
-            <div>
-                <p></p>
-            </div>
-
-            <div class="dark-light-buttons">
-                <a class="btn btn-primary btn-customized-4 btn-customized-dark" href="#" role="button">Dark</a>
-                <a class="btn btn-primary btn-customized-4 btn-customized-light" href="#" role="button">Light</a>
-            </div>
 
         </nav>
         <!-- End sidebar -->

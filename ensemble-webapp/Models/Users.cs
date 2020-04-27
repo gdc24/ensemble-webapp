@@ -41,6 +41,8 @@ namespace ensemble_webapp.Models
 
         public string StrPhone { get; set; }
 
+        public List<Conflict> LstConflicts { get; set; }
+
         public List<Event> LstEvents { get; set; }
 
         public List<Event> LstEventsIsAdmin { get; set; }

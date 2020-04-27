@@ -8,12 +8,13 @@ namespace ensemble_webapp.Models
 {
     public class RehearsalPart
     {
-        public RehearsalPart(int intRehearsalPartID, DateTime dtmStartDateTime, DateTime dtmEndDateTime, string strDescription, Rehearsal rehearsal, Types type, Event @event)
+        public RehearsalPart(int intRehearsalPartID, DateTime dtmStartDateTime, DateTime dtmEndDateTime, string strDescription, int intPriority, Rehearsal rehearsal, Types type, Event @event)
         {
             IntRehearsalPartID = intRehearsalPartID;
             DtmStartDateTime = dtmStartDateTime;
             DtmEndDateTime = dtmEndDateTime;
             StrDescription = strDescription;
+            IntPriority = intPriority;
             Rehearsal = rehearsal;
             Type = type;
             Event = @event;
@@ -31,6 +32,8 @@ namespace ensemble_webapp.Models
 
         public string StrDescription { get; set; }
 
+        public int IntPriority { get; set; }
+
         public Period DurLength { get; set; }
 
         public int IntLengthMinutes { get; set; }
@@ -45,12 +48,13 @@ namespace ensemble_webapp.Models
             LstMembers = new List<Users>();
         }
 
-        public RehearsalPart(int intRehearsalPartID, string strDescription, Types type, Event @event, Period durLength)
+        public RehearsalPart(int intRehearsalPartID, string strDescription, int intPriority, Types type, Event @event, Period durLength)
         {
             Event = @event;
             DurLength = durLength;
             IntRehearsalPartID = intRehearsalPartID;
             StrDescription = strDescription;
+            IntPriority = intPriority;
             Type = type;
             Event = @event;
         }

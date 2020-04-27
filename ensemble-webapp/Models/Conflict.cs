@@ -24,5 +24,13 @@ namespace ensemble_webapp.Models
         public Users User { get; set; }
 
         public Conflict() { }
+
+        public override string ToString()
+        {
+            if (DtmStartDateTime.Date.Equals(DtmEndDateTime.Date))
+                return DtmStartDateTime.ToString("ddd MM/dd/yy h:mmtt") + " to " + DtmEndDateTime.ToString("h:mmtt");
+            else
+                return DtmStartDateTime.ToString("ddd MM/dd/yy h:mmtt") + " to " + DtmEndDateTime.ToString("ddd MM/dd/yy h:mmtt");
+        }
     }
 }

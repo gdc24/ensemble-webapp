@@ -199,14 +199,14 @@ namespace ensemble_webapp.Database
         {
             conn.TypeMapper.UseNodaTime();
             string query = "INSERT INTO public.\"rehearsalParts\"(" +
-                "\"intTypeID\", \"strDescription\", \"intEventID\", \"durLength\")" +
-                " VALUES(@intTypeID, @strDescription, @intEventID, @durLength)" +
+                "\"intTypeID\", \"strDescription\", \"intEventID\", \"durLength\", \"intPriority\")" +
+                " VALUES(@intTypeID, @strDescription, @intEventID, @durLength, @intPriority)" +
                 " RETURNING \"intRehearsalPartID\";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             //cmd.Parameters.AddWithValue("dtmStartDateTime", rehearsalPart.DtmStartDateTime);
             //cmd.Parameters.AddWithValue("dtmEndDateTime", rehearsalPart.DtmEndDateTime);
-            //cmd.Parameters.AddWithValue("intRehearsalID", rehearsalPart.IntRehearsalPartID);
+            cmd.Parameters.AddWithValue("intPriority", rehearsalPart.IntPriority);
             cmd.Parameters.AddWithValue("intTypeID", rehearsalPart.Type.IntTypeID);
             cmd.Parameters.AddWithValue("strDescription", rehearsalPart.StrDescription);
             cmd.Parameters.AddWithValue("durLength", rehearsalPart.DurLength);

@@ -20,7 +20,7 @@ namespace ensemble_webapp.Controllers
             }
             else
             {
-                return View();
+                return RedirectToAction("Dashboard");
             }
         }
 
@@ -33,20 +33,6 @@ namespace ensemble_webapp.Controllers
             else
             {
                 ViewBag.Message = "Your application description page.";
-
-                return View();
-            }
-        }
-
-        public ActionResult Contact()
-        {
-            if (!Globals.LOGIN_STATUS)
-            {
-                return RedirectToAction("Login");
-            }
-            else
-            {
-                ViewBag.Message = "Your contact page.";
 
                 return View();
             }

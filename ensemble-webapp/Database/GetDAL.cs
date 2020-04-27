@@ -112,6 +112,7 @@ namespace ensemble_webapp.Database
             //DateTime dtmStartDateTime = Convert.ToDateTime(dr["dtmStartDateTime"]);
             //DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
             string strDescription = dr["strDescription"].ToString();
+            int intPriority = Convert.ToInt32(dr["intPriority"]);
             //Rehearsal rehearsal = GetRehearsalByID(Convert.ToInt32(dr["intRehearsalID"]));
             //Types type = GetTypesByID(Convert.ToInt32(dr["intTypeID"]));
 
@@ -135,7 +136,7 @@ namespace ensemble_webapp.Database
 
             Event @event = new Event(intEventID, strEventName, strLocation, group);
 
-            return new RehearsalPart(intRehearsalPartID, strDescription, type, @event, durLength);
+            return new RehearsalPart(intRehearsalPartID, strDescription, intPriority, type, @event, durLength);
         }
 
         private Conflict GetConflictFromDR(NpgsqlDataReader dr)

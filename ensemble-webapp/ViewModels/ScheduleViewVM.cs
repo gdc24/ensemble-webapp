@@ -12,5 +12,6 @@ namespace ensemble_webapp.ViewModels
         public FinalSchedule Schedule { get; set; }
 
         public ScheduleViewVM() { }
+
     }
 }

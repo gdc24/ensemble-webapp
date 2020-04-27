@@ -69,6 +69,11 @@ namespace ensemble_webapp.Controllers
             return View("ScheduleView", model);
         }
 
+        public ActionResult ScheduleView()
+        {
+            return RedirectToAction("Index");
+        }
+
         //public ActionResult ViewSchedule(FinalSchedule schedule)
         //{
         //    if (!Globals.LOGIN_STATUS)
