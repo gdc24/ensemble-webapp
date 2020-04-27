@@ -168,7 +168,7 @@ namespace ensemble_webapp.Database
         public bool UpdateRPTimes(int intRehearsalPartID, DateTime dtmStartDateTime, DateTime dtmEndDateTime)
         {
             // define a query
-            string query = "UPDATE \"users\"" +
+            string query = "UPDATE \"rehearsalParts\"" +
                 " SET \"dtmStartDateTime\" = @dtmStartDateTime," +
                 "     \"dtmEndDateTime\" = @dtmEndDateTime" +
                 " WHERE \"intRehearsalPartID\" = @intRehearsalPartID";

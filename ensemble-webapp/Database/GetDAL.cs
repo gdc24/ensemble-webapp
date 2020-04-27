@@ -117,15 +117,15 @@ namespace ensemble_webapp.Database
         private RehearsalPart GetRehearsalPartFromDR(NpgsqlDataReader dr)
         {
             int intRehearsalPartID = Convert.ToInt32(dr["intRehearsalPartID"]);
-            //DateTime dtmStartDateTime = Convert.ToDateTime(dr["dtmStartDateTime"]);
-            //DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
+            DateTime? dtmStartDateTime = SafeGetDateTime(dr, "dtmStartDateTime");
+            DateTime? dtmEndDateTime = SafeGetDateTime(dr, "dtmEndDateTime");
             string strDescription = dr["strDescription"].ToString();
             int intPriority = Convert.ToInt32(dr["intPriority"]);
             //Rehearsal rehearsal = GetRehearsalByID(Convert.ToInt32(dr["intRehearsalID"]));
             //Types type = GetTypesByID(Convert.ToInt32(dr["intTypeID"]));
 
-            int ordinalLength = dr.GetOrdinal("durLength");
-            Period durLength = dr.GetFieldValue<Period>(ordinalLength);
+            //int ordinalLength = dr.GetOrdinal("durLength");
+            //Period durLength = dr.GetFieldValue<Period>(ordinalLength);
 
             Types type = new Types(
                 Convert.ToInt32(dr["intTypeID"]),
@@ -144,7 +144,7 @@ namespace ensemble_webapp.Database
 
             Event @event = new Event(intEventID, strEventName, strLocation, group);
 
-            return new RehearsalPart(intRehearsalPartID, strDescription, intPriority, type, @event, durLength);
+            return new RehearsalPart(intRehearsalPartID, dtmStartDateTime.GetValueOrDefault(), dtmEndDateTime.GetValueOrDefault(), strDescription, intPriority, null, type, @event);
         }
 
         private static DateTime? SafeGetDateTime(NpgsqlDataReader dr, string colName)
@@ -175,7 +175,7 @@ namespace ensemble_webapp.Database
             int intEventID = Convert.ToInt32(dr["intEventID"]);
             int intPriority = Convert.ToInt32(dr["intPriority"]);
             string strEventName = dr["strName"].ToString();
-            DateTime dtmEventDate = Convert.ToDateTime(dr["dtmDate"]);
+            //DateTime dtmEventDate = Convert.ToDateTime(dr["dtmDate"]);
             string strLocation = dr["strLocation"].ToString();
             int intGroupID = Convert.ToInt32(dr["intGroupID"]);
             string strGroupName = dr["groupName"].ToString();
@@ -1185,7 +1185,7 @@ namespace ensemble_webapp.Database
 
         public List<RehearsalPart> GetRehearsalPartsByEvent(Event paramEvent)
         {
-            conn.TypeMapper.UseNodaTime();
+            //conn.TypeMapper.UseNodaTime();
 
             List<RehearsalPart> retval = new List<RehearsalPart>();
 

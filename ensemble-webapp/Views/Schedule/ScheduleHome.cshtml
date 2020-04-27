@@ -9,6 +9,21 @@
     <div class="container">
         <h2><strong>Schedule</strong></h2>
 
+
+        @if (Model.LstUpcomingRehearsalParts.Any())
+        {
+            <h3>Your Upcoming Rehearsal Parts</h3>
+            <ul>
+                @foreach (var r in Model.LstUpcomingRehearsalParts)
+                {
+                    <li>@r.ToString()</li>
+                }
+            </ul>
+        }
+
+
+        <hr />
+
         @if (Model.LstUpcomingRehearsals.Any())
         {
             <h3>Your Upcoming Rehearsals</h3>

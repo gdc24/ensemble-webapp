@@ -45,6 +45,7 @@ namespace ensemble_webapp.Models
         public Event Event { get; set; }
 
         public RehearsalPart() {
+            StrDescription = "";
             LstMembers = new List<Users>();
         }
 
@@ -78,17 +79,17 @@ namespace ensemble_webapp.Models
                     return StrDescription + ", " +
                         DtmStartDateTime.Value.ToString("ddd MM/dd/yy h:mmtt") + 
                         " to " + DtmEndDateTime.Value.ToString("h:mmtt") +
-                        " with " + String.Join(", ", LstMembers);
+                        " with " + String.Join(", ", LstMembers.Select(x => x.StrName));
                 else
                     return StrDescription + ", " + 
                         DtmStartDateTime.Value.ToString("ddd MM/dd/yy h:mmtt") +
                         " to " + DtmEndDateTime.Value.ToString("ddd MM/dd/yy h:mmtt") +
-                        " with " + String.Join(", ", LstMembers);
+                        " with " + String.Join(", ", LstMembers.Select(x => x.StrName));
             }
             else
             {
                 return StrDescription + ", " +
-                       " with " + String.Join(", ", LstMembers) +
+                       " with " + String.Join(", ", LstMembers.Select(x => x.StrName)) +
                        " (unscheduled)";
             }
             

@@ -17,10 +17,16 @@ namespace ensemble_webapp.ViewModels
         public List<Rehearsal> LstUpcomingRehearsals { get; set; }
 
         public List<Task> LstOverdueTasks { get; set; }
+        public List<RehearsalPart> LstUserRehearsalParts { get; set; }
+        public List<RehearsalPart> LstUpcomingRehearsalParts { get; internal set; }
+        public List<RehearsalPart> LstUnscheduledRehearsalParts { get; internal set; }
 
         public DashboardVM()
         {
             LstUpcomingRehearsals = new List<Rehearsal>();
+            LstUserRehearsalParts = new List<RehearsalPart>();
+            LstUpcomingRehearsalParts = new List<RehearsalPart>();
+            LstUnscheduledRehearsalParts = new List<RehearsalPart>();
         }
     }
 }

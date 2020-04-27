@@ -13,6 +13,9 @@ namespace ensemble_webapp.Controllers
 {
     public class ScheduleController : Controller
     {
+
+        public static FinalSchedule tmpRehearsalPartsSchedule = new FinalSchedule();
+
         // GET: Schedule
         public ActionResult Index()
         {
@@ -28,9 +31,12 @@ namespace ensemble_webapp.Controllers
 
                 foreach (var e in get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID))
                 {
+                    get.CloseConnection();
+                    get.OpenConnection();
                     model.LstUserRehearsalParts = model.LstUserRehearsalParts.Concat(get.GetRehearsalPartsByEvent(e)).ToList();
                 }
-
+                get.CloseConnection();
+                get.OpenConnection();
                 model.LstUpcomingRehearsalParts = get.GetUpcomingRehearsalPartsByUser(Globals.LOGGED_IN_USER);
 
                 model.LstUnscheduledRehearsalParts = model.LstUserRehearsalParts.Where(x => x.DtmStartDateTime.Equals(null)).ToList();
@@ -52,6 +58,10 @@ namespace ensemble_webapp.Controllers
                 {
                     rp.LstMembers = get.GetUsersByRehearsalPart(rp);
                 }
+                foreach (RehearsalPart rp in model.LstUpcomingRehearsalParts)
+                {
+                    rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                }
                 get.CloseConnection();
 
                 return View("ScheduleHome", model);
@@ -68,10 +78,11 @@ namespace ensemble_webapp.Controllers
         [HttpPost]
         public ActionResult ConfirmSchedule(ScheduleViewVM vm)
         {
+            vm.LstConfirmScheduledRehearsalParts = tmpRehearsalPartsSchedule.LstScheduledRehearsalParts;
             // insert start and end dates for each rehearsal part into db
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
-            foreach (var rp in vm.Schedule.LstScheduledRehearsalParts)
+            foreach (var rp in vm.LstConfirmScheduledRehearsalParts)
             {
                 insert.UpdateRPTimes(rp.IntRehearsalPartID, rp.DtmStartDateTime.GetValueOrDefault(), rp.DtmEndDateTime.GetValueOrDefault());
             }
@@ -102,6 +113,7 @@ namespace ensemble_webapp.Controllers
 
             ScheduleViewVM model = new ScheduleViewVM();
             model.Schedule = newSchedule.FinalSchedule;
+            tmpRehearsalPartsSchedule = model.Schedule;
 
             return View("ScheduleView", model);
         }
