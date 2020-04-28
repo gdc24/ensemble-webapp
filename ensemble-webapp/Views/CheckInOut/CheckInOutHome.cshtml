@@ -15,6 +15,11 @@
                 <p>Choose a Rehearsal Part</p>
             </div>
         </div>
+        <div class="row">
+            <div class="checkbox">
+                <p>Form to choose groups and rehearsal date</p>
+            </div>
+        </div>
         <hr />
         @*toggle the bottom two somehow based on rehearsal parts*@
         <div class="row">
@@ -29,9 +34,7 @@
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="selected users" value="@u.StrName"
-                                       @if (Model.UsersCurrentlyAtRehearsal.Contains(u)) { 
-                                           <text> already checked in </text>  
-                                       } /> @u.StrName
+                                       @if (Model.UsersCurrentlyAtRehearsal.Contains(u)) { <text> already checked in </text>  } /> @u.StrName
                                 </label>
                             </div>
                         }
@@ -52,9 +55,7 @@
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="selected users" value="@u.StrName"
-                                       @if (Model.UsersNotCurrentlyAtRehearsal.Contains(u)) { 
-                                           <text> not yet checked in </text>  
-                                       } /> @u.StrName
+                                       @if (Model.UsersNotCurrentlyAtRehearsal.Contains(u)) { <text> not yet checked in </text>  } /> @u.StrName
                                 </label>
                             </div>
                         }

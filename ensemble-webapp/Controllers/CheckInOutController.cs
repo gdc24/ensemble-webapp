@@ -37,8 +37,10 @@ namespace ensemble_webapp.Controllers
                     {
                         rp.LstMembers = get.GetUsersByRehearsalPart(rp);
                     }
+                    
                     e.MembersForToday = LstAllMembersForRehearsalParts(e, get);
                 }
+
                 get.CloseConnection();
 
                 return View("Index", model);
