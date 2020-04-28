@@ -41,7 +41,7 @@
             <p>Choose Members to Check In</p>
         </div>
         <div class="col-6">
-            @if (!Model.UsersCurrentAtRehearsal.Any())
+            @if (!Model.UsersCurrentlyAtRehearsal.Any())
             {
                 using (Html.BeginForm("CheckUserOut", "CheckInOut"))
                 {
