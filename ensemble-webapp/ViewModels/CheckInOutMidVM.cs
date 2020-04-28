@@ -10,6 +10,8 @@ namespace ensemble_webapp.ViewModels
     {
         public Event ChosenEvent { get; set; }
 
+        public List<RehearsalPart> LstRehearsalParts { get; set; }
+
         public RehearsalPart ChosenRehearsalPart { get; set; }
     }
 }

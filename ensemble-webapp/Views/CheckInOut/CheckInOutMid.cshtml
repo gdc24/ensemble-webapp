@@ -13,15 +13,15 @@
                 <p>@Model.ChosenEvent.StrName</p>
                 <br />
                 <p>Choose a Rehearsal Part</p>
-                @*
+                
                 @using (Html.BeginForm("ChooseRehearsalPart", "CheckInOut"))
                 {
                     <label for="Rehearasal Part">Rehearsal Part</label>
-                    @Html.DropDownListFor(m => m.ChosenEvent.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.ChosenRehearsalPart.IntRehearsalPartID, new SelectList(Model.LstRehearsalParts, "intRehearsalPartID", "dtmStartDateTime"), new { @class = "form-control" })
                     <br />
-                    <input type="submit" value="choose event" class="form-control btn-primary" />
+                    <input type="submit" value="choose rehearsal part" class="form-control btn-primary" />
                 }
-                    *@
+                    
             </div>
         </div>
     </div>
