@@ -23,6 +23,10 @@ namespace ensemble_webapp.ViewModels
         public List<AttendancePlanned> PlannedAttendance { get; set; }
 
         public List<AttendanceActual> ActualAttendance { get; set; }
+
+        public List<RehearsalPart> LstAllRehearsalParts { get; set; }
+
+        public RehearsalPart ChosenRehearsalPart { get; set; }
         
         public String Notes { get; set; }
     }

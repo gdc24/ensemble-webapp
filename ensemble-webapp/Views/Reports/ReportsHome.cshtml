@@ -9,16 +9,17 @@
                 <h2><strong>Reports</strong></h2>
             </div>
         </div>
-        <div id="select-rehearsal-part" class="row select-rehearsal-part" style="display: none;">
-            @using (Html.BeginForm("GenerateReport", "Reports", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <label>Choose Group</label>
-                @Html.DropDownListFor(m => m.GroupName, new SelectList(Model.GroupName, "strName"), new { @class = "form-control" })
-                <br />
-                <label>Choose Rehearsal Date</label>
-                @Html.DropDownListFor(m => m.RehearsalDate, new SelectList(Model.RehearsalDate), new { @class = "form-control" })
-                <br />
-                <input type="submit" value="generate report" class="form-control btn-primary" />
-            }
+        <div class="row">
+            <div class="col-12">
+                <div id="select-rehearsal-part" class="row select-rehearsal-part" style="display: none;">
+                    @using (Html.BeginForm("GenerateReport", "Reports", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <label for="ChosenRehearsalPart.IntRehearsalPartID">Choose Rehearsal Report</label>
+                        @Html.DropDownListFor(m => m.ChosenRehearsalPart.IntRehearsalPartID, new SelectList(Model.LstAllRehearsalParts, "intRehearsalPartID", "strDescription"), new { @class = "form-control" })
+                        <br />
+                        <input type="submit" value="generate report" class="form-control btn-primary" />
+                    }
+                </div>
+            </div>
         </div>
     </div>

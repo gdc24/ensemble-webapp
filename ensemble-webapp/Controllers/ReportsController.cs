@@ -16,6 +16,12 @@ namespace ensemble_webapp.Controllers
         public ActionResult Index()
         {
             ReportsHomeVM model = new ReportsHomeVM();
+            GetDAL get = new GetDAL();
+            get.OpenConnection();
+
+            model.LstAllRehearsalParts = get.GetAllRehearsalParts();
+
+            get.CloseConnection();
 
             return View("ReportsHome", model);
         }

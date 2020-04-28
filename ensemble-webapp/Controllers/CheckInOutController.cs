@@ -71,7 +71,7 @@ namespace ensemble_webapp.Controllers
                 ChosenEvent = c.ChosenEvent
             };
 
-            return RedirectToAction("CheckInOutMid", vm);
+            return View("CheckInOutMid", vm);
         }
 
         public ActionResult ChooseRehearsalPart(CheckInOutMidVM vm)
