@@ -199,6 +199,7 @@
     <Compile Include="SchedulingAlgorithm.cs" />
     <Compile Include="ViewModels\AdminHomeVM.cs" />
     <Compile Include="ViewModels\CallboardHomeVM.cs" />
+    <Compile Include="ViewModels\CheckInOutMidVM.cs" />
     <Compile Include="ViewModels\CheckInOutVM.cs" />
     <Compile Include="ViewModels\CheckInOutViewVM.cs" />
     <Compile Include="ViewModels\DashboardVM.cs" />
@@ -295,6 +296,7 @@
     <Content Include="Views\CheckInOut\Index.cshtml" />
     <Content Include="Views\Shared\_PartialLayout.cshtml" />
     <Content Include="Views\CheckInOut\CheckInOutView.cshtml" />
+    <Content Include="Views\CheckInOut\CheckInOutMid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

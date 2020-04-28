@@ -1,0 +1,27 @@
+﻿@using ensemble_webapp.Database
+
+@model ensemble_webapp.ViewModels.CheckInOutMidVM
+
+@{
+    ViewBag.Title = "CheckInOutMid";
+}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2><strong>Check-In/Out</strong></h2>
+                <p>@Model.ChosenEvent.StrName</p>
+                <br />
+                <p>Choose a Rehearsal Part</p>
+                @*
+                @using (Html.BeginForm("ChooseRehearsalPart", "CheckInOut"))
+                {
+                    <label for="Rehearasal Part">Rehearsal Part</label>
+                    @Html.DropDownListFor(m => m.ChosenEvent.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
+                    <br />
+                    <input type="submit" value="choose event" class="form-control btn-primary" />
+                }
+                    *@
+            </div>
+        </div>
+    </div>

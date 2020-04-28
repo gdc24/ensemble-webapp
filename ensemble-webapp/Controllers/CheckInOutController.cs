@@ -52,10 +52,18 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ChooseEvent(Event e)
+        public ActionResult ChooseEvent(CheckInOutVM e)
         {
-            CheckInOutViewVM vm = new CheckInOutViewVM();
-            vm.UsersNotCurrentlyAtRehearsal = e.MembersForToday;
+            CheckInOutMidVM vm = new CheckInOutMidVM();
+            vm.ChosenEvent = e.ChosenEvent;
+            return View("CheckInOutMid", vm);
+        }
+
+        public ActionResult ChooseRehearsalPart(CheckInOutMidVM vm)
+        {
+            CheckInOutViewVM v = new CheckInOutViewVM();
+            v.CurrentRehearsalPart = vm.ChosenRehearsalPart;
+            v.UsersNotCurrentlyAtRehearsal = vm.ChosenRehearsalPart.LstMembers;
             return View("CheckInOutView", vm);
         }
 
