@@ -39,6 +39,7 @@ namespace ensemble_webapp.Controllers
                     }
                     
                     e.MembersForToday = LstAllMembersForRehearsalParts(e, get);
+                    model.UsersNotCurrentlyAtRehearsal.Concat(e.MembersForToday);
                 }
 
                 get.CloseConnection();
