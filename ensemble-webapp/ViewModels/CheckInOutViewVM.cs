@@ -6,12 +6,11 @@ using System.Web;
 
 namespace ensemble_webapp.ViewModels
 {
-    public class CheckInOutVM
+    public class CheckInOutViewVM
     {
+        public List<Users> UsersNotCurrentlyAtRehearsal { get; set; }
 
-        public Event ChosenEvent { get; set; }
-
-        public List<Event> LstAdminEvents { get; set; }
+        public List<Users> UsersCurrentlyAtRehearsal { get; set; }
 
         public RehearsalPart CurrentRehearsalPart { get; set; }
     }

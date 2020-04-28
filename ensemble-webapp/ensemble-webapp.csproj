@@ -200,6 +200,7 @@
     <Compile Include="ViewModels\AdminHomeVM.cs" />
     <Compile Include="ViewModels\CallboardHomeVM.cs" />
     <Compile Include="ViewModels\CheckInOutVM.cs" />
+    <Compile Include="ViewModels\CheckInOutViewVM.cs" />
     <Compile Include="ViewModels\DashboardVM.cs" />
     <Compile Include="ViewModels\ConflictsHomeVM.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />

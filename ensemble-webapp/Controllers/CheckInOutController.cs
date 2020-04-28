@@ -39,7 +39,6 @@ namespace ensemble_webapp.Controllers
                     }
                     
                     e.MembersForToday = LstAllMembersForRehearsalParts(e, get);
-                    model.UsersNotCurrentlyAtRehearsal.Concat(e.MembersForToday);
                 }
 
                 get.CloseConnection();
@@ -53,7 +52,19 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult CheckUserIn(CheckInOutVM vm)
+        public ActionResult ChooseEvent(Event e)
+        {
+            CheckInOutViewVM vm = new CheckInOutViewVM();
+            vm.UsersNotCurrentlyAtRehearsal = e.MembersForToday;
+            return View("CheckInOutView", vm);
+        }
+
+        public ActionResult CheckInOutView()
+        {
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult CheckUserIn(CheckInOutViewVM vm)
         {
             GetDAL get = new GetDAL();
             get.OpenConnection();
@@ -73,7 +84,7 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index", vm);
         }
 
-        public ActionResult CheckUserOut(CheckInOutVM vm)
+        public ActionResult CheckUserOut(CheckInOutViewVM vm)
         {
             GetDAL get = new GetDAL();
             get.OpenConnection();
