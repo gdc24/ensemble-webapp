@@ -9,12 +9,15 @@
     <div class="row">
         <div class="col-12">
             <h2><strong>Check-In/Out</strong></h2>
-        </div>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-12">
+            <br />
             <p>Choose a Rehearsal Part</p>
+            @using (Html.BeginForm("ChooseEvent", "CheckInOut"))
+            {
+                <label for="Event">Event</label>
+                @Html.DropDownListFor(m => m.ChosenEvent.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
+                <br />
+                <input type="submit" value="choose event" class="form-control btn-primary" />
+            }
         </div>
     </div>
 </div>

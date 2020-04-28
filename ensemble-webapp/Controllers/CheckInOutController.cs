@@ -111,6 +111,7 @@ namespace ensemble_webapp.Controllers
             get.CloseConnection();
             return RedirectToAction("Index", vm);
         }
+        */
 
         public ActionResult FinishRehearsal(CheckInOutViewVM vm)
         {
@@ -120,15 +121,13 @@ namespace ensemble_webapp.Controllers
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
 
-            List<AttendancePlanned> ap = get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart);
-
             if (vm.UsersCurrentlyAtRehearsal.Any())
             {
-                foreach (Users u in vm.UsersCurrentlyAtRehearsal)
+
+                foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
                 {
-                    foreach (AttendancePlanned p in ap)
+                    foreach (AttendanceActual a in get.GetAttendanceActualByPlanned(p))
                     {
-                        AttendanceActual a = get.GetAttendanceActualByPlanned(p);
                         a.DtmOutTime = DateTime.Now;
                         insert.InsertAttendanceActual(a);
                     }
@@ -141,7 +140,7 @@ namespace ensemble_webapp.Controllers
 
             return RedirectToAction("Index");
         }
-        */
+        
 
         private List<Users> LstAllMembersForRehearsalParts(Event e, GetDAL connection)
         {
