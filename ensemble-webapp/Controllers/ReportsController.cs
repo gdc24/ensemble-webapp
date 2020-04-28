@@ -71,11 +71,12 @@ namespace ensemble_webapp.Controllers
         //}
         
         //turn GenerateReport.cshtml into pdf
-        public ActionResult GenerateReport(){
-            var Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHTMLFileAsPdf("ReportsHome.cshtml");
-            var OutputPath = "Report.pdf";
+        public ActionResult GenerateReport(ReportsHomeVM vm){
+            var Renderer = new HtmlToPdf();
+            var PDF = Renderer.RenderHTMLFileAsPdf("GenerateReport.cshtml");
+            var OutputPath = "~/Downloads/"+ vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf";
             PDF.SaveAs(OutputPath);
+            return RedirectToAction("Index", "Reports");
         }
     }
 }
