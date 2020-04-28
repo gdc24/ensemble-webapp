@@ -56,6 +56,14 @@ namespace ensemble_webapp.Controllers
         {
             return View("Index");
         }
+
+        [HttpPost]
+        public ActionResult CheckInOutMid()
+        {
+            return View("Index");
+        }
+
+        [HttpPost]
         public ActionResult ChooseEvent(CheckInOutVM c)
         {
             CheckInOutMidVM vm = new CheckInOutMidVM
