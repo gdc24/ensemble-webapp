@@ -10,7 +10,7 @@
         <div class="col-12">
             <h2><strong>Check-In/Out</strong></h2>
             <br />
-            @using (Html.BeginForm("ChooseRehearsalPart", "CheckInOut"))
+            @using (Html.BeginForm("ChooseEvent", "CheckInOut"))
             {
                 <label for="ChosenEvent.IntEventID">Choose Event</label>
                 @Html.DropDownListFor(m => m.ChosenEvent.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
