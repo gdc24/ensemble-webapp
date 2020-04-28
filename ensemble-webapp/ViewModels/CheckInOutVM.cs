@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ensemble_webapp.ViewModels
 {
-    public class CheckInMembersVM
+    public class CheckInOutVM
     {
 
         public Event ChosenEvent { get; set; }
@@ -17,8 +17,8 @@ namespace ensemble_webapp.ViewModels
 
         public List<Users> UsersFromForm { get; set; }
 
-        public List<Users> UsersNotCurrentlyAtRehearasl { get; set; }
+        public List<Users> UsersNotCurrentlyAtRehearsal { get; set; }
 
-        public List<Users> UsersCurrentlyAtRehearasl { get; set; }
+        public List<Users> UsersCurrentlyAtRehearsal { get; set; }
     }
 }

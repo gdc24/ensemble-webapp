@@ -199,7 +199,7 @@
     <Compile Include="SchedulingAlgorithm.cs" />
     <Compile Include="ViewModels\AdminHomeVM.cs" />
     <Compile Include="ViewModels\CallboardHomeVM.cs" />
-    <Compile Include="ViewModels\CheckInMembersVM.cs" />
+    <Compile Include="ViewModels\CheckInOutVM.cs" />
     <Compile Include="ViewModels\DashboardVM.cs" />
     <Compile Include="ViewModels\ConflictsHomeVM.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />

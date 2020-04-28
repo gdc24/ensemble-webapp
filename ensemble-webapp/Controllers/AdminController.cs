@@ -160,5 +160,10 @@ namespace ensemble_webapp.Controllers
             insert.CloseConnection();
             return RedirectToAction("Index");
         }
+
+        public ActionResult CheckInOut()
+        {
+            return RedirectToAction("Index", "CheckInOut");
+        }
     }
 }

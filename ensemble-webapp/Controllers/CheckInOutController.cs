@@ -24,7 +24,7 @@ namespace ensemble_webapp.Controllers
             }
             else
             {
-                CheckInMembersVM model = new CheckInMembersVM();
+                CheckInOutVM model = new CheckInOutVM();
 
                 GetDAL get = new GetDAL();
                 get.OpenConnection();
@@ -50,7 +50,7 @@ namespace ensemble_webapp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult CheckUserIn(CheckInMembersVM vm)
+        public ActionResult CheckUserIn(CheckInOutVM vm)
         {
             GetDAL get = new GetDAL();
             get.OpenConnection();
@@ -58,24 +58,19 @@ namespace ensemble_webapp.Controllers
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
 
-            foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
+            foreach (AttendancePlanned u in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
             {
-                if (p.User.Equals(vm.ChosenEvent.MembersForToday))
-                {
-                    insert.InsertAttendanceActual(new AttendanceActual(1, DateTime.Now, DateTime.Now, true, p));
-                    // when first inserting, they're only there for that millisecond 
-                    // also idk how to do incrementing attendanceActualID
-                }
+                vm.UsersCurrentlyAtRehearsal.Add(u.User);
+                vm.UsersNotCurrentlyAtRehearsal.Remove(u.User);
+                insert.InsertAttendanceActual(new AttendanceActual(1, DateTime.Now, DateTime.Now, true, u));
             }
-
-            //update users to check out to users checked in
 
             insert.CloseConnection();
             get.CloseConnection();
             return RedirectToAction("Index", vm);
         }
 
-        public ActionResult CheckUserOut(CheckInMembersVM vm)
+        public ActionResult CheckUserOut(CheckInOutVM vm)
         {
             GetDAL get = new GetDAL();
             get.OpenConnection();
@@ -85,15 +80,17 @@ namespace ensemble_webapp.Controllers
 
             foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
             {
-                //if (p.User.Equals(vm.UsersCurrentlyAtRehearsal))
-                //{
-                    //AttendanceActual a = get.GetAttendanceActualByRehearsalPartAndUser(p.User, vm.CurrentRehearsalPart); // need to implement this method
-                    //a.DtmOutTime = DateTime.Now;
-                    //insert.InsertAttendanceActual(a);
-                //}
+                foreach (AttendanceActual a in get.GetAttendanceActualByRehearsalPart(vm.CurrentRehearsalPart))
+                {
+                    if (a.AttendancePlanned.User.Equals(p.User) && vm.UsersCurrentlyAtRehearsal.Contains(p.User))
+                    {
+                        a.DtmOutTime = DateTime.Now;
+                        vm.UsersCurrentlyAtRehearsal.Remove(p.User);
+                        vm.UsersNotCurrentlyAtRehearsal.Add(p.User);
+                        insert.InsertAttendanceActual(a);
+                    }
+                }
             }
-            
-            //update users to check in to users checked out
 
             insert.CloseConnection();
             get.CloseConnection();
