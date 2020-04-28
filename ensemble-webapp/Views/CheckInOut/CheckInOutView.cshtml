@@ -11,55 +11,31 @@
             <h2><strong>Check-In/Out Members</strong></h2>
         </div>
     </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Member</th>
+                <th>Check In</th>
+            </tr>
+        </thead>
+        @foreach (var t in Model.UsersNotCurrentlyAtRehearsal)
+        {
+            <tr>
+                <td>@t.StrName</td>
+                <td><input type="button" value="Check In!" class="btn btn-success" onclick="location.href='@Url.Action("CheckUserIn", "CheckInOut")?intUserID=' + @t.IntUserID"/></td>
+            </tr>
+        }
+    </table>
     <div class="row">
         <div class="col-12">
-            <p>Choose Members to Check In</p>
-        </div>
-        <div class="col-6">
-            @if (!Model.UsersNotCurrentlyAtRehearsal.Any())
-            {
-                using (Html.BeginForm("CheckUserIn", "CheckInOut"))
+            <div class="text-center">
+                <input type="submit" value="Complete Rehearsal" class="form-control btn-success btn" />
+                @if (Model.UsersNotCurrentlyAtRehearsal.Any())
                 {
-                    foreach (var u in Model.UsersNotCurrentlyAtRehearsal)
-                    {
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="selected users" value="@u.StrName"
-                                       @if (Model.UsersCurrentlyAtRehearsal.Contains(u)) { <text> already checked in </text> } /> @u.StrName
-                                </label>
-                            </div>
-                        }
-                        <input type="submit" value="check users in" class="form-control btn-primary" />
-                    }
+                    <br /><br />
+                    <div class="text-small"><i>Any users not yet checked out will be checked out now.</i></div>
                 }
-            }
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <p>Choose Members to Check In</p>
-        </div>
-        <div class="col-6">
-            @if (!Model.UsersCurrentlyAtRehearsal.Any())
-            {
-                using (Html.BeginForm("CheckUserOut", "CheckInOut"))
-                {
-
-                    foreach (var u in Model.UsersCurrentlyAtRehearsal)
-                    {
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="selected users" value="@u.StrName"
-                                       @if (Model.UsersNotCurrentlyAtRehearsal.Contains(u)) { <text> not yet checked in </text> } /> @u.StrName
-                                </label>
-                            </div>
-                        }
-                        <input type="submit" value="check users out" class="form-control btn-primary" />
-                    }
-                }
-            }
-
+            </div>
         </div>
     </div>
 </div>
