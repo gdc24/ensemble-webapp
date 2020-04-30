@@ -11,7 +11,7 @@
             <h2><strong>Check-In/Out</strong></h2>
             <p>@Model.ChosenEvent.StrName</p>
             <br />
-            @foreach (ensemble_webapp.Models.RehearsalPart r in Model.ChosenEvent.LstRehearsalParts)
+            @foreach (ensemble_webapp.Models.RehearsalPart r in Model.LstRehearsalParts)
             {
                 <p>@r.DtmStartDateTime</p>
             }

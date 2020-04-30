@@ -76,11 +76,10 @@ namespace ensemble_webapp.Controllers
             get.OpenConnection();
             ChosenEvent = get.GetEventByID(c.ChosenEvent.IntEventID);
             LstRehearsalParts = get.GetRehearsalPartsByEvent(c.ChosenEvent);
-
             CheckInOutMidVM model = new CheckInOutMidVM
             {
-                ChosenEvent = get.GetEventByID(c.ChosenEvent.IntEventID),
-                LstRehearsalParts = get.GetRehearsalPartsByEvent(c.ChosenEvent)
+                ChosenEvent = ChosenEvent,
+                LstRehearsalParts = LstRehearsalParts
             };
 
             get.CloseConnection();
