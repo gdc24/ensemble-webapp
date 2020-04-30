@@ -57,30 +57,33 @@ namespace ensemble_webapp.Controllers
             return View("Index");
         }
 
-        [HttpPost]
         public ActionResult CheckInOutMid()
         {
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         public ActionResult ChooseEvent(CheckInOutVM c)
         {
-            CheckInOutMidVM vm = new CheckInOutMidVM
+            CheckInOutMidVM model = new CheckInOutMidVM
             {
-                ChosenEvent = c.ChosenEvent
+                ChosenEvent = c.ChosenEvent,
+                LstRehearsalParts = c.ChosenEvent.LstRehearsalParts
             };
 
-            return View("CheckInOutMid", vm);
+            return View("CheckInOutMid", model);
         }
 
         [HttpPost]
         public ActionResult ChooseRehearsalPart(CheckInOutMidVM vm)
         {
-            CheckInOutViewVM v = new CheckInOutViewVM();
-            v.CurrentRehearsalPart = vm.ChosenRehearsalPart;
-            v.UsersNotCurrentlyAtRehearsal = vm.ChosenRehearsalPart.LstMembers;
-            return View("CheckInOutView", vm);
+            CheckInOutViewVM model = new CheckInOutViewVM
+            {
+                CurrentRehearsalPart = vm.ChosenRehearsalPart,
+                UsersNotCurrentlyAtRehearsal = vm.ChosenRehearsalPart.LstMembers
+            };
+
+            return View("CheckInOutView", model);
         }
 
         public ActionResult CheckInOutView()

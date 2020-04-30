@@ -1,26 +1,24 @@
 ﻿@using ensemble_webapp.Database
 
 @model ensemble_webapp.ViewModels.CheckInOutMidVM
-
 @{
     ViewBag.Title = "CheckInOutMid";
 }
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h2><strong>Check-In/Out</strong></h2>
-                <p>@Model.ChosenEvent.StrName</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2><strong>Check-In/Out</strong></h2>
+            <p>@Model.ChosenEvent.StrName</p>
+            <br />
+            @*
+            @using (Html.BeginForm("ChooseRehearsalPart", "CheckInOut"))
+            {
+                <label for="ChosenRehearsalPart.IntRehearsalPartID"><strong>Choose a Rehearsal Part</strong></label>
+                @Html.DropDownListFor(m => m.ChosenRehearsalPart.IntRehearsalPartID, new SelectList(Model.ChosenEvent.LstRehearsalParts, "intRehearsalPartID", "dtmStartDateTime"), new { @class = "form-control" })
                 <br />
-                <p>Choose a Rehearsal Part</p>
-                
-                @using (Html.BeginForm("ChooseRehearsalPart", "CheckInOut"))
-                {
-                    <label for="ChosenRehearsalPart.IntRehearsalPartID">Rehearsal Part</label>
-                    @Html.DropDownListFor(m => m.ChosenRehearsalPart.IntRehearsalPartID, new SelectList(Model.LstRehearsalParts, "intRehearsalPartID", "dtmStartDateTime"), new { @class = "form-control" })
-                    <br />
-                    <input type="submit" value="choose rehearsal part" class="form-control btn-primary" />
-                }
-            </div>
+                <input type="submit" value="choose rehearsal part" class="form-control btn-primary" />
+            }*@
         </div>
     </div>
+</div>

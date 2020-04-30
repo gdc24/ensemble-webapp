@@ -13,7 +13,7 @@
             
             @using (Html.BeginForm("ChooseEvent", "CheckInOut"))
             {
-                <label for="ChosenEvent.IntEventID">Choose Event</label>
+                <label for="ChosenEvent.IntEventID"><strong>Choose Event</strong></label>
                 @Html.DropDownListFor(m => m.ChosenEvent.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
                 <br />
                 <input type="submit" value="choose event" class="form-control btn-primary" />
