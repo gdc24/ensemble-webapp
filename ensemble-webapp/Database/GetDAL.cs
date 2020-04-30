@@ -461,9 +461,11 @@ namespace ensemble_webapp.Database
             RehearsalPart retval = null;
 
             // define a query
-            string query = "SELECT rp.*, t.\"intTypeID\", t.\"strName\" as \"typeName\"" +
-                " FROM \"rehearsalParts\" rp, \"types\" t" +
+            string query = "SELECT rp.*, t.\"intTypeID\", t.\"strName\" as \"typeName\", g.\"intGroupID\", e.\"intEventID\"" +
+                " FROM \"rehearsalParts\" rp, \"types\" t, \"groups\" g, \"events\" e" +
                 " WHERE t.\"intTypeID\" = rp.\"intTypeID\"" +
+                " AND rp.\"intEventID\" = e.\"intEventID\"" + 
+                " AND g.\"intGroupID\" = e.\"intGroupID\"" +
                 " AND rp.\"intRehearsalPartID\" = " + intRehearsalPartID;
                 
 
