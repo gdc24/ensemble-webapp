@@ -703,7 +703,7 @@ namespace ensemble_webapp.Database
                 " AND u.\"intUserID\" = " + m.IntUserID +
                 " AND DATE(rp.\"dtmStartDateTime\") = '" + date.Date.ToString("yyyy-MM-dd") + "'" +
                 " AND ap.\"intUserID\" = u.\"intUserID\"" +
-                " AND ap.\"intRehearsalPartID\" = u.\"intRehearsalPartID\"";
+                " AND ap.\"intRehearsalPartID\" = rp.\"intRehearsalPartID\"";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
