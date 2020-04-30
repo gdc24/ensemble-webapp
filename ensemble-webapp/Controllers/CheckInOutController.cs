@@ -91,13 +91,17 @@ namespace ensemble_webapp.Controllers
         [HttpPost]
         public ActionResult ChooseRehearsalPart(CheckInOutMidVM vm)
         {
+            GetDAL get = new GetDAL();
+            get.OpenConnection();
+            ChosenRehearsalPart = get.GetRehearsalPartByID(vm.ChosenRehearsalPart.IntRehearsalPartID);
+
             CheckInOutViewVM model = new CheckInOutViewVM
             {
-                CurrentRehearsalPart = vm.ChosenRehearsalPart,
-                UsersNotCurrentlyAtRehearsal = vm.ChosenRehearsalPart.LstMembers
+                CurrentRehearsalPart = ChosenRehearsalPart,
+                UsersNotCurrentlyAtRehearsal = ChosenRehearsalPart.LstMembers
             };
 
-            ChosenRehearsalPart = vm.ChosenRehearsalPart;
+            get.CloseConnection();
 
             return View("CheckInOutView", model);
         }
