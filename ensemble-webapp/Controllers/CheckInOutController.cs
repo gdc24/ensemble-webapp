@@ -79,8 +79,8 @@ namespace ensemble_webapp.Controllers
 
             CheckInOutMidVM model = new CheckInOutMidVM
             {
-                ChosenEvent = get.GetEventByID(c.ChosenEvent.IntEventID),
-                LstRehearsalParts = get.GetRehearsalPartsByEvent(c.ChosenEvent)
+                CurrentEvent = get.GetEventByID(c.ChosenEvent.IntEventID),
+                Lst_RehearsalParts = get.GetRehearsalPartsByEvent(c.ChosenEvent)
             };
 
             get.CloseConnection();
@@ -93,7 +93,7 @@ namespace ensemble_webapp.Controllers
         {
             GetDAL get = new GetDAL();
             get.OpenConnection();
-            ChosenRehearsalPart = get.GetRehearsalPartByID(vm.ChosenRehearsalPart.IntRehearsalPartID);
+            ChosenRehearsalPart = get.GetRehearsalPartByID(vm.Chosen_RehearsalPart.IntRehearsalPartID);
 
             CheckInOutViewVM model = new CheckInOutViewVM
             {

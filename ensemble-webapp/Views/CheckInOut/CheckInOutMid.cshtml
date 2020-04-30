@@ -9,11 +9,11 @@
     <div class="row">
         <div class="col-12">
             <h2><strong>Check-In/Out</strong></h2>
-            <p>@Model.ChosenEvent.StrName</p>
+            <p>@Model.CurrentEvent.StrName</p>
             <br />
-            @foreach (ensemble_webapp.Models.RehearsalPart r in Model.ChosenEvent.LstRehearsalParts)
+            @foreach (ensemble_webapp.Models.RehearsalPart r in Model.CurrentEvent.LstRehearsalParts)
             {
-                <p>@r.DtmStartDateTime</p>
+                <p>@r.StrDescription</p>
             }
             @*
             @using (Html.BeginForm("ChooseRehearsalPart", "CheckInOut"))
