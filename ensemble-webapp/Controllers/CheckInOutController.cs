@@ -97,9 +97,10 @@ namespace ensemble_webapp.Controllers
 
             CheckInOutViewVM model = new CheckInOutViewVM
             {
-                CurrentRehearsalPart = ChosenRehearsalPart,
-                UsersNotCurrentlyAtRehearsal = ChosenRehearsalPart.LstMembers
+                CurrentRehearsalPart = ChosenRehearsalPart
             };
+
+            model.UsersNotCurrentlyAtRehearsal = ChosenRehearsalPart.LstMembers;
 
             get.CloseConnection();
 
