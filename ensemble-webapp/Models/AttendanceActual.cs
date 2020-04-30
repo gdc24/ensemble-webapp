@@ -17,6 +17,13 @@ namespace ensemble_webapp.Models
             AttendancePlanned = attendancePlanned;
         }
 
+        public AttendanceActual(DateTime dtmInTime, bool ysnDidShow, AttendancePlanned attendancePlanned)
+        {
+            DtmInTime = dtmInTime;
+            YsnDidShow = ysnDidShow;
+            AttendancePlanned = attendancePlanned;
+        }
+
         public int IntAttendanceActualID { get; set; }
 
         public DateTime DtmInTime { get; set; }

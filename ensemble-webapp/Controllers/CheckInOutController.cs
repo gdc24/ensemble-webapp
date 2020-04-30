@@ -19,6 +19,8 @@ namespace ensemble_webapp.Controllers
 
         public static List<Users> UsersNotCurrentlyAtRehearsal = new List<Users>();
 
+        public static List<AttendanceActual> AttendancesForRehearsal = new List<AttendanceActual>();
+
         // GET: CheckInOut
         public ActionResult Index()
         {
@@ -124,6 +126,10 @@ namespace ensemble_webapp.Controllers
 
             foreach (AttendancePlanned u in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
             {
+                if (u.User.Equals(vm.UserToCheckInOut))
+                {
+                    insert.InsertAttendanceActual(new AttendanceActual(DateTime.Now, true, u));
+                }
             }
 
             insert.CloseConnection();
@@ -168,16 +174,13 @@ namespace ensemble_webapp.Controllers
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
 
-            if (!vm.UsersNotCurrentlyAtRehearsal.Any())
-            {
 
-                foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
+            foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
+            {
+                foreach (AttendanceActual a in get.GetAttendanceActualByPlanned(p))
                 {
-                    foreach (AttendanceActual a in get.GetAttendanceActualByPlanned(p))
-                    {
-                        a.DtmOutTime = DateTime.Now;
-                        insert.InsertAttendanceActual(a);
-                    }
+                    a.DtmOutTime = DateTime.Now;
+                    insert.InsertAttendanceActual(a);
                 }
             }
 
