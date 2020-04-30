@@ -17,6 +17,8 @@ namespace ensemble_webapp.Controllers
 
         public static RehearsalPart ChosenRehearsalPart = new RehearsalPart();
 
+        public static List<Users> UsersNotCurrentlyAtRehearsal = new List<Users>();
+
         // GET: CheckInOut
         public ActionResult Index()
         {
@@ -94,13 +96,13 @@ namespace ensemble_webapp.Controllers
             GetDAL get = new GetDAL();
             get.OpenConnection();
             ChosenRehearsalPart = get.GetRehearsalPartByID(vm.ChosenRehearsalPart.IntRehearsalPartID);
+            UsersNotCurrentlyAtRehearsal = get.GetUsersByRehearsalPart(ChosenRehearsalPart);
 
             CheckInOutViewVM model = new CheckInOutViewVM
             {
-                CurrentRehearsalPart = ChosenRehearsalPart
+                CurrentRehearsalPart = ChosenRehearsalPart,
+                UsersNotCurrentlyAtRehearsal = UsersNotCurrentlyAtRehearsal
             };
-
-            model.UsersNotCurrentlyAtRehearsal = ChosenRehearsalPart.LstMembers;
 
             get.CloseConnection();
 
