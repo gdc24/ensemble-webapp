@@ -120,7 +120,11 @@ namespace ensemble_webapp.Controllers
             get.OpenConnection();
 
             Users u = get.GetUserByID(intUserID);
+            get.CloseConnection();
+            get.OpenConnection();
             List<AttendancePlanned> apList = get.GetAttendancePlannedByRehearsalPart(ChosenRehearsalPart);
+
+            get.CloseConnection();
 
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
@@ -129,10 +133,6 @@ namespace ensemble_webapp.Controllers
             {
                 if (u.Equals(ap.User))
                 {
-                    insert.CloseConnection();
-                    insert.OpenConnection();
-                    get.CloseConnection();
-                    get.OpenConnection();
                     insert.InsertAttendanceActual(new AttendanceActual(DateTime.Now, true, ap));
                     UsersNotCurrentlyAtRehearsal.Remove(u);
                 }
