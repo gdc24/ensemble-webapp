@@ -8,6 +8,14 @@ namespace ensemble_webapp.ViewModels
 {
     public class CheckInOutMidVM
     {
+
+        public CheckInOutMidVM()
+        {
+            ChosenEvent = new Event();
+            LstRehearsalParts = new List<RehearsalPart>();
+            ChosenRehearsalPart = new RehearsalPart();
+        }
+
         public Event ChosenEvent { get; set; }
 
         public List<RehearsalPart> LstRehearsalParts { get; set; }
