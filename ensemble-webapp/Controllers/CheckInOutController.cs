@@ -71,14 +71,19 @@ namespace ensemble_webapp.Controllers
         [HttpPost]
         public ActionResult ChooseEvent(CheckInOutVM c)
         {
+            GetDAL get = new GetDAL();
+
+            get.OpenConnection();
+            ChosenEvent = get.GetEventByID(c.ChosenEvent.IntEventID);
+            LstRehearsalParts = get.GetRehearsalPartsByEvent(c.ChosenEvent);
+
             CheckInOutMidVM model = new CheckInOutMidVM
             {
-                ChosenEvent = c.ChosenEvent,
-                LstRehearsalParts = c.ChosenEvent.LstRehearsalParts
+                ChosenEvent = ChosenEvent,
+                LstRehearsalParts = LstRehearsalParts
             };
 
-            ChosenEvent = c.ChosenEvent;
-            LstRehearsalParts = c.ChosenEvent.LstRehearsalParts;
+            get.CloseConnection();
 
             return View("CheckInOutMid", model);
         }
