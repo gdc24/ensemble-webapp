@@ -369,8 +369,6 @@ namespace ensemble_webapp.Database
         public Event GetEventByID(int intEventID)
         {
 
-            conn.TypeMapper.UseNodaTime();
-
             Event retval = null;
 
             // define a query

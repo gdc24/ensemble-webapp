@@ -10,19 +10,13 @@
         <div class="col-12">
             <h2><strong>Check-In/Out</strong></h2>
             <p>@Model.ChosenEvent.StrName</p>
-            <br />
-            @foreach (ensemble_webapp.Models.RehearsalPart r in Model.LstRehearsalParts)
-            {
-                <p>@r.DtmStartDateTime</p>
-            }
-            @*
             @using (Html.BeginForm("ChooseRehearsalPart", "CheckInOut"))
             {
                 <label for="ChosenRehearsalPart.IntRehearsalPartID"><strong>Choose a Rehearsal Part</strong></label>
-                @Html.DropDownListFor(m => m.ChosenRehearsalPart.IntRehearsalPartID, new SelectList(Model.ChosenEvent.LstRehearsalParts, "intRehearsalPartID", "dtmStartDateTime"), new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.ChosenRehearsalPart.IntRehearsalPartID, new SelectList(Model.LstRehearsalParts, "intRehearsalPartID", "dtmStartDateTime"), new { @class = "form-control" })
                 <br />
                 <input type="submit" value="choose rehearsal part" class="form-control btn-primary" />
-            }*@
+            }
         </div>
     </div>
 </div>
