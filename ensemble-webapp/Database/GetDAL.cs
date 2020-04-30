@@ -455,10 +455,18 @@ namespace ensemble_webapp.Database
 
         public RehearsalPart GetRehearsalPartByID(int intRehearsalPartID)
         {
+
+            conn.TypeMapper.UseNodaTime();
+
             RehearsalPart retval = null;
 
             // define a query
-            string query = "SELECT * FROM \"rehearsalParts\" WHERE \"intRehearsalPartID\" = " + intRehearsalPartID;
+            string query = "SELECT rp.*, t.\"intTypeID\", t.\"strName\" as \"typeName\"" +
+                " FROM \"rehearsalParts\" rp, \"types\" t" +
+                " WHERE t.\"intTypeID\" = rp.\"intTypeID\"" +
+                " AND rp.\"intRehearsalPartID\" = " + intRehearsalPartID;
+                
+
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
