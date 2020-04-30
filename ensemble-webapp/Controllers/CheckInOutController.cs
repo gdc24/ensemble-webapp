@@ -74,6 +74,7 @@ namespace ensemble_webapp.Controllers
             return View("CheckInOutMid", vm);
         }
 
+        [HttpPost]
         public ActionResult ChooseRehearsalPart(CheckInOutMidVM vm)
         {
             CheckInOutViewVM v = new CheckInOutViewVM();

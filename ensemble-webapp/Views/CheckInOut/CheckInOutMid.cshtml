@@ -16,7 +16,7 @@
                 
                 @using (Html.BeginForm("ChooseRehearsalPart", "CheckInOut"))
                 {
-                    <label for="Rehearasal Part">Rehearsal Part</label>
+                    <label for="ChosenRehearsalPart.IntRehearsalPartID">Rehearsal Part</label>
                     @Html.DropDownListFor(m => m.ChosenRehearsalPart.IntRehearsalPartID, new SelectList(Model.LstRehearsalParts, "intRehearsalPartID", "dtmStartDateTime"), new { @class = "form-control" })
                     <br />
                     <input type="submit" value="choose rehearsal part" class="form-control btn-primary" />
