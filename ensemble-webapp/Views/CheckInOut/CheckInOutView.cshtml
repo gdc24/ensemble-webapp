@@ -5,45 +5,47 @@
     ViewBag.Title = "CheckInOutView";
 }
 
-    <div class="container">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2><strong>Check-In/Out Members</strong></h2>
+            <p>Rehearsal Details:</p>
+            <p>Event: @Model.CurrentRehearsalPart.Event.StrName</p>
+            <p>Start: @Model.CurrentRehearsalPart.DtmStartDateTime</p>
+            <p>Length: @Model.CurrentRehearsalPart.DurLength</p>
+            <p>Description: @Model.CurrentRehearsalPart.StrDescription</p>
+        </div>
+    </div>
+    <hr />
+    @if (Model.UsersNotCurrentlyAtRehearsal.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Member</th>
+                    <th>Check In</th>
+                </tr>
+            </thead>
+            @foreach (var t in Model.UsersNotCurrentlyAtRehearsal)
+            {
+                <tr>
+                    <td>@t.StrName</td>
+                    <td><input type="button" value="Check In!" class="btn btn-success" onclick="location.href='@Url.Action("CheckUserIn", "CheckInOut")?intUserID=' + @t.IntUserID" /></td>
+                </tr>
+            }
+        </table>
+    }
+    <hr />
         <div class="row">
             <div class="col-12">
-                <h2><strong>Check-In/Out Members</strong></h2>
-                <p>@Model.CurrentRehearsalPart.Event.StrName</p>
-                <p>@Model.CurrentRehearsalPart.DtmStartDateTime</p>
-                <p>@Model.CurrentRehearsalPart.DurLength</p>
-                <p>@Model.CurrentRehearsalPart.StrDescription</p>
-            </div>
-        </div>
-        @if (Model.UsersNotCurrentlyAtRehearsal.Any())
-        {
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Member</th>
-                        <th>Check In</th>
-                    </tr>
-                </thead>
-                @foreach (var t in Model.UsersNotCurrentlyAtRehearsal)
-                {
-                    <tr>
-                        <td>@t.StrName</td>
-                        <td><input type="button" value="Check In!" class="btn btn-success" onclick="location.href='@Url.Action("CheckUserIn", "CheckInOut")?intUserID=' + @t.IntUserID" /></td>
-                    </tr>
-                }
-            </table>
-        }
-        <hr />
-            <div class="row">
-                <div class="col-12">
-                    <div class="text-center">
-                        <input type="submit" value="Complete Rehearsal" class="form-control btn-success btn" />
-                        @if (Model.UsersNotCurrentlyAtRehearsal.Any())
-                        {
-                            <br /><br />
-                            <div class="text-small"><i>Any users not yet checked out will be checked out now.</i></div>
-                        }
-                    </div>
+                <div class="text-center">
+                    <input type="submit" value="Complete Rehearsal" class="form-control btn-success btn" />
+                    @if (!Model.UsersNotCurrentlyAtRehearsal.Any())
+                    {
+                        <br /><br />
+                        <div class="text-small"><i>Any users not yet checked out will be checked out now.</i></div>
+                    }
                 </div>
             </div>
         </div>
+    </div>
