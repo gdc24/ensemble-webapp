@@ -122,7 +122,7 @@ namespace ensemble_webapp.Controllers
             Users u = get.GetUserByID(intUserID);
             get.CloseConnection();
             get.OpenConnection();
-            List<AttendancePlanned> apList = get.GetAttendancePlannedByRehearsalPart(ChosenRehearsalPart);
+            List<AttendancePlanned> apList = get.GetAttendancePlannedByRehearsalPart(ChosenRehearsalPart); // join query here
 
             get.CloseConnection();
 
