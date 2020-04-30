@@ -11,14 +11,13 @@ namespace ensemble_webapp.ViewModels
 
         public CheckInOutViewVM() 
         {
-            List<Users> UsersNotCurrentlyAtRehearsal = new List<Users>();
-            List<Users> UsersCurrentlyAtRehearsal = new List<Users>();
+            Users UserToCheckInOut = new Users();
             RehearsalPart CurrentRehearsalPart = new RehearsalPart();
         }
 
-        public List<Users> UsersNotCurrentlyAtRehearsal { get; set; }
+        public Users UserToCheckInOut { get; set; }
 
-        public List<Users> UsersCurrentlyAtRehearsal { get; set; }
+        public List<Users> UsersNotCurrentlyAtRehearsal { get; set; }
 
         public RehearsalPart CurrentRehearsalPart { get; set; }
     }

@@ -124,9 +124,6 @@ namespace ensemble_webapp.Controllers
 
             foreach (AttendancePlanned u in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
             {
-                vm.UsersCurrentlyAtRehearsal.Add(u.User);
-                vm.UsersNotCurrentlyAtRehearsal.Remove(u.User);
-                insert.InsertAttendanceActual(new AttendanceActual(1, DateTime.Now, DateTime.Now, true, u));
             }
 
             insert.CloseConnection();
@@ -171,7 +168,7 @@ namespace ensemble_webapp.Controllers
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
 
-            if (vm.UsersCurrentlyAtRehearsal.Any())
+            if (!vm.UsersNotCurrentlyAtRehearsal.Any())
             {
 
                 foreach (AttendancePlanned p in get.GetAttendancePlannedByRehearsalPart(vm.CurrentRehearsalPart))
