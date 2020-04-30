@@ -11,6 +11,12 @@ namespace ensemble_webapp.Controllers
 {
     public class CheckInOutController : Controller
     {
+        public static Event ChosenEvent = new Event();
+
+        public static List<RehearsalPart> LstRehearsalParts = new List<RehearsalPart>();
+
+        public static RehearsalPart ChosenRehearsalPart = new RehearsalPart();
+
         // GET: CheckInOut
         public ActionResult Index()
         {
@@ -71,6 +77,9 @@ namespace ensemble_webapp.Controllers
                 LstRehearsalParts = c.ChosenEvent.LstRehearsalParts
             };
 
+            ChosenEvent = c.ChosenEvent;
+            LstRehearsalParts = c.ChosenEvent.LstRehearsalParts;
+
             return View("CheckInOutMid", model);
         }
 
@@ -82,6 +91,8 @@ namespace ensemble_webapp.Controllers
                 CurrentRehearsalPart = vm.ChosenRehearsalPart,
                 UsersNotCurrentlyAtRehearsal = vm.ChosenRehearsalPart.LstMembers
             };
+
+            ChosenRehearsalPart = vm.ChosenRehearsalPart;
 
             return View("CheckInOutView", model);
         }
