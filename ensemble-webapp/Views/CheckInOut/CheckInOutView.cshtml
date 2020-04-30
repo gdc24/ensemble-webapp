@@ -17,7 +17,7 @@
         </div>
     </div>
     <hr />
-    @if (Model.UsersNotCurrentlyAtRehearsal.Any())
+    @if (Model.CurrentRehearsalPart.LstMembers.Any())
     {
         <table class="table table-bordered">
             <thead>
@@ -26,7 +26,7 @@
                     <th>Check In</th>
                 </tr>
             </thead>
-            @foreach (var t in Model.UsersNotCurrentlyAtRehearsal)
+            @foreach (var t in Model.CurrentRehearsalPart.LstMembers)
             {
                 <tr>
                     <td>@t.StrName</td>
@@ -35,12 +35,13 @@
             }
         </table>
     }
+    @*
     <hr />
         <div class="row">
             <div class="col-12">
                 <div class="text-center">
                     <input type="submit" value="Complete Rehearsal" class="form-control btn-success btn" />
-                    @if (!Model.UsersNotCurrentlyAtRehearsal.Any())
+                    @if (Model.UsersNotCurrentlyAtRehearsal.Any())
                     {
                         <br /><br />
                         <div class="text-small"><i>Any users not yet checked out will be checked out now.</i></div>
@@ -48,4 +49,5 @@
                 </div>
             </div>
         </div>
+        *@
     </div>
