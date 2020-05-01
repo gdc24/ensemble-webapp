@@ -15,30 +15,37 @@ namespace ensemble_webapp.Controllers
         // GET: Reports
         public ActionResult Index()
         {
-            ReportsHomeVM model = new ReportsHomeVM();
-            GetDAL get = new GetDAL();
-            get.OpenConnection();
-
-            model.LstAllRehearsalParts = get.GetAllRehearsalParts();
-
-            model.LstAllEvents = get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID);
-            model.LstAllRehearsals = new List<Rehearsal>();
-            foreach (Event e in model.LstAllEvents)
+            if (!Globals.LOGIN_STATUS)
             {
-                get.CloseConnection();
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                ReportsHomeVM model = new ReportsHomeVM();
+                GetDAL get = new GetDAL();
                 get.OpenConnection();
-                model.LstAllRehearsals.AddRange(get.GetRehearsalsByEvent(e));
+
+                model.LstAllRehearsalParts = get.GetAllRehearsalParts();
+
+                model.LstAllEvents = get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID);
+                model.LstAllRehearsals = new List<Rehearsal>();
+                foreach (Event e in model.LstAllEvents)
+                {
+                    get.CloseConnection();
+                    get.OpenConnection();
+                    model.LstAllRehearsals.AddRange(get.GetRehearsalsByEvent(e));
+                }
+
+                get.CloseConnection();
+
+                foreach (Rehearsal r in model.LstAllRehearsals)
+                {
+                    r.DateWithEvent = r.Event.StrName + " " + r.DtmStartDateTime;
+                }
+
+
+                return View("ReportsHome", model);
             }
-
-            get.CloseConnection();
-
-            foreach (Rehearsal r in model.LstAllRehearsals)
-            {
-                r.DateWithEvent = r.Event.StrName + " " + r.DtmStartDateTime;
-            }
-
-
-            return View("ReportsHome", model);
         }
 
         public ActionResult ReportsHome()
