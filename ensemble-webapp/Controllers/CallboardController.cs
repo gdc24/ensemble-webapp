@@ -60,6 +60,8 @@ namespace ensemble_webapp.Controllers
         {
             Callboard newCallboard = vm.NewAnnouncement;
 
+            newCallboard.PostedByUser = Globals.LOGGED_IN_USER;
+
             // insert announcement into database
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
@@ -90,7 +92,11 @@ namespace ensemble_webapp.Controllers
 
             mail.From = new MailAddress("ensemble395@gmail.com");
             mail.Subject = c.StrSubject;
-            mail.Body = "From: " + c.PostedByUser.StrName + " in " + c.Event.StrName+ "\n\n" + c.StrNote;
+            mail.Body = "From: " + c.PostedByUser.StrName + " in " + c.Event.StrName;
+            if (c.StrNote != null)
+            {
+                mail.Body += "\n\n" + c.StrNote;
+            }
 
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient();

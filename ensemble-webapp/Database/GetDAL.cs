@@ -203,7 +203,7 @@ namespace ensemble_webapp.Database
             }
             else
             {
-                rp = new RehearsalPart(intRehearsalPartID, dtmStartDateTime.GetValueOrDefault(), dtmEndDateTime.GetValueOrDefault(), strDescription, intPriority, GetRehearsalByID(intRehearsalID), type, @event);
+                rp = new RehearsalPart(intRehearsalPartID, dtmStartDateTime.GetValueOrDefault(), dtmEndDateTime.GetValueOrDefault(), strDescription, intPriority, new Rehearsal(intRehearsalID), type, @event);
             }
 
             return rp;

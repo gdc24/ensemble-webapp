@@ -97,6 +97,15 @@ namespace ensemble_webapp.Database
                 " VALUES(@strSubject, @strNote, @dtmDateTime, @intPostedByUserID, @intEventID);";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
+            if (callboard.StrNote == null)
+            {
+                cmd.Parameters.AddWithValue("strNote", DBNull.Value);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("strNote", callboard.StrNote);
+            }
+
             cmd.Parameters.AddWithValue("strSubject", callboard.StrSubject);
             cmd.Parameters.AddWithValue("strNote", callboard.StrNote);
             cmd.Parameters.AddWithValue("dtmDateTime", DateTime.Now);
