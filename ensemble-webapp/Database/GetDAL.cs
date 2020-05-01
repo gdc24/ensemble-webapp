@@ -233,10 +233,11 @@ namespace ensemble_webapp.Database
         private AttendancePlanned GetAttendancePlannedFromDR(NpgsqlDataReader dr)
         {
             int intAttendancePlannedID = Convert.ToInt32(dr["intAttendancePlannedID"]);
-            RehearsalPart rehearsalPart = GetRehearsalPartByID(Convert.ToInt32(dr["intRehearsalPartID"]));
+            /*GIULIANA THIS IS THE LINE I COMMENTED OUT*/
+            //RehearsalPart rehearsalPart = GetRehearsalPartByID(Convert.ToInt32(dr["intRehearsalPartID"]));
             Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
 
-            return new AttendancePlanned(intAttendancePlannedID, rehearsalPart, user);
+            return new AttendancePlanned(intAttendancePlannedID, null, user);
         }
 
         private AttendanceActual GetAttendanceActualFromDR(NpgsqlDataReader dr)
