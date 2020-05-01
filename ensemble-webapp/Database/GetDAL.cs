@@ -1549,7 +1549,8 @@ namespace ensemble_webapp.Database
                 " and ap.\"intRehearsalPartID\" = rp.\"intRehearsalPartID\"" +
                 " and rp.\"intTypeID\" = t.\"intTypeID\"" +
                 " and g.\"intGroupID\" = e.\"intGroupID\"" +
-                " and e.\"intEventID\" = rp.\"intEventID\"";
+                " and e.\"intEventID\" = rp.\"intEventID\"" +
+                " and ap.\"intAttendancePlannedID\" = " + attendancePlanned.IntAttendancePlannedID + ";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
