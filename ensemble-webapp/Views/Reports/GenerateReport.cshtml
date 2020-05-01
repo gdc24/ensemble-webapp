@@ -34,17 +34,23 @@
                     {
                         <li>
                             <p>Start: @rp.DtmStartDateTime; End: @rp.DtmEndDateTime</p>
-                            <p>Attendance Planned:</p>
+                            <p>Planned Attendance:</p>
                             @foreach (var ap in rp.AttendancePlanned)
                             {
-                                <p>@ap.User.StrName</p>
+                                <p>@ap.User.StrName at @ap.RehearsalPart.DtmStartDateTime</p>
+                            }
+                            <br />
+                            <p>Attendance:</p>
+                            @foreach (var aa in rp.AttendanceActual)
+                            {
+                                <p>@aa.AttendancePlanned.User.StrName arrived at @aa.DtmInTime.TimeOfDay</p>
                             }
                         </li>
                     }
                 </ul>
             </div>
         </div>
-        <div class="row">
+        @*<div class="row">
             <div class="col-12">
                 <ul>
                     @foreach (var rp in Model.LstAllRehearsalParts)
@@ -60,7 +66,7 @@
                     }
                 </ul>
             </div>
-        </div>
+        </div>*@
         <div class="row">
             <div class="col-12">
                 @using (Html.BeginForm("GeneratePDF", "Reports"))
