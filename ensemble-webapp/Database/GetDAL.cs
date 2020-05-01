@@ -1193,9 +1193,19 @@ namespace ensemble_webapp.Database
             List<Rehearsal> retval = new List<Rehearsal>();
 
             // define a query
-            string query = "SELECT r.*, e.\"strName\" as \"eventName\"" +
-                "FROM \"rehearsals\" r, \"events\" e" + 
-                " WHERE r.\"intEventID\" = " + paramEvent.IntEventID;
+            //string query = "SELECT r.*, e.\"strName\" as \"eventName\", e."" +
+            //    "FROM \"rehearsals\" r, \"events\" e" + 
+            //    " WHERE r.\"intEventID\" = " + paramEvent.IntEventID;
+            string query = "select distinct r.*," +
+                " e.\"strName\" as \"eventName\", e.\"dtmDate\", e.\"strLocation\" as \"eventLocation\", e.\"intGroupID\"," +
+                " g.\"strName\" as \"groupName\", t.\"strName\" as \"typeName\"" +
+                " from \"types\" t, \"rehearsals\" r, \"attendancePlanned\" ap, \"rehearsalParts\" rp, \"events\" e, \"groups\" g" +
+                " where ap.\"intRehearsalPartID\" = rp.\"intRehearsalPartID\"" +
+                " and r.\"intRehearsalID\" = rp.\"intRehearsalID\"" +
+                " and e.\"intGroupID\" = g.\"intGroupID\"" +
+                " and t.\"intTypeID\" = rp.\"intTypeID\"" +
+                " and r.\"intEventID\" = e.\"intEventID\"" +
+                " and r.\"intEventID\" = " + paramEvent.IntEventID + ";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
