@@ -43,10 +43,14 @@ namespace ensemble_webapp.Models
         public Types Type { get; set; }
 
         public Event Event { get; set; }
+        public List<AttendancePlanned> AttendancePlanned { get; internal set; }
+        public List<AttendanceActual> AttendanceActual { get; internal set; }
 
         public RehearsalPart() {
             StrDescription = "";
             LstMembers = new List<Users>();
+            AttendanceActual = new List<AttendanceActual>();
+
         }
 
         public RehearsalPart(int intRehearsalPartID, string strDescription, int intPriority, Types type, Event @event, Period durLength)

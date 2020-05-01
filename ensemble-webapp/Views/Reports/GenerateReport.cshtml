@@ -35,9 +35,9 @@
                         <li>
                             <p>Start: @rp.DtmStartDateTime; End: @rp.DtmEndDateTime</p>
                             <p>Attendance Planned:</p>
-                            @foreach (var u in Model.PlannedAttendance)
+                            @foreach (var ap in rp.AttendancePlanned)
                             {
-                                <p>@u.User.StrName</p>
+                                <p>@ap.User.StrName</p>
                             }
                         </li>
                     }
@@ -52,9 +52,9 @@
                         <li>
                             <p>Start: @rp.DtmStartDateTime; End: @rp.DtmEndDateTime</p>
                             <p>Attendance Actual:</p>
-                            @foreach (var u in Model.ActualAttendance)
+                            @foreach (var aa in rp.AttendanceActual)
                             {
-                                <p>@u.AttendancePlanned.User.StrName arrived at @u.DtmInTime.TimeOfDay</p>
+                                <p>@aa.AttendancePlanned.User.StrName arrived at @aa.DtmInTime.TimeOfDay</p>
                             }
                         </li>
                     }

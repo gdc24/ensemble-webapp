@@ -64,7 +64,7 @@ namespace ensemble_webapp.Controllers
 
             Rehearsal r = get.GetRehearsalByID(vm.ChosenRehearsal.IntRehearsalID);
             //Rehearsal r = vm.ChosenRehearsal;
-            List<RehearsalPart> pLst = get.GetRehearsalPartsByRehearsal(r);
+            List<RehearsalPart> rehearsalPartsForToday = get.GetRehearsalPartsByRehearsal(r);
 
             model.EventName = r.Event.StrName;;
             model.GroupName = r.Event.Group.StrName;
@@ -73,19 +73,22 @@ namespace ensemble_webapp.Controllers
             model.EndTime = r.DtmEndDateTime.ToString();
             model.RehearsalDate = r.DtmStartDateTime.Date.ToString();
 
-            foreach (RehearsalPart rp in pLst)
+            foreach (RehearsalPart rp in rehearsalPartsForToday)
             {
-                foreach (AttendancePlanned ap in get.GetAttendancePlannedByRehearsalPart(rp))
+                rp.AttendancePlanned = get.GetAttendancePlannedByRehearsalPart(rp);
+                rp.AttendanceActual = new List<AttendanceActual>();
+                foreach (AttendancePlanned ap in rp.AttendancePlanned)
                 {
-                    get.CloseConnection();
-                    get.OpenConnection();
-                    model.ActualAttendance = model.ActualAttendance.Concat(get.GetAttendanceActualByPlanned(ap)).ToList();
-                    model.PlannedAttendance.Add(ap);
+                    rp.AttendanceActual = rp.AttendanceActual.Concat(get.GetAttendanceActualByPlanned(ap)).ToList();
+                    //get.CloseConnection();
+                    //get.OpenConnection();
+                    //model.ActualAttendance = model.ActualAttendance.Concat(get.GetAttendanceActualByPlanned(ap)).ToList();
+                    //model.PlannedAttendance.Add(ap);
                 }
             }
 
             model.Notes = r.StrNotes;
-            model.LstAllRehearsalParts = pLst;
+            model.LstAllRehearsalParts = rehearsalPartsForToday;
 
             get.CloseConnection();
             
