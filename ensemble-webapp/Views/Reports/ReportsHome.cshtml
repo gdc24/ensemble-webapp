@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-12">
                 <div id="select-rehearsal-part" class="row select-rehearsal-part">
-                    @using (Html.BeginForm("GenerateReport", "Reports", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("MakeReport", "Reports", FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
                         <label for="ChosenRehearsal.IntRehearsalID">Choose Rehearsal Report</label>
                         @Html.DropDownListFor(m => m.ChosenRehearsal.IntRehearsalID, new SelectList(Model.LstAllRehearsals, "intRehearsalID", "dateWithEvent"), new { @class = "form-control" })
