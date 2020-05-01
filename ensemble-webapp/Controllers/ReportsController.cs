@@ -103,6 +103,11 @@ namespace ensemble_webapp.Controllers
         //turn GenerateReport.cshtml into pdf
         [HttpPost]
         public ActionResult GeneratePDF(ReportsHomeVM vm){
+            //var html = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestInvoice1.html"));
+            //var htmlToPdf = new HtmlToPdf();
+            //var pdf = htmlToPdf.RenderHtmlAsPdf(html);
+            //pdf.SaveAs(Path.Combine(Directory.GetCurrentDirectory(), "HtmlToPdfExample1.Pdf"));
+
             var Renderer = new HtmlToPdf();
             var PDF = Renderer.RenderHTMLFileAsPdf("~/Views/Reports/GenerateReport.cshtml");
             var OutputPath = "~/Downloads/"+ vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf";
