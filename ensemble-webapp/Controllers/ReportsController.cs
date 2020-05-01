@@ -13,7 +13,8 @@ namespace ensemble_webapp.Controllers
 {
     public class ReportsController : Controller
     {
-        public ReportsHomeVM PDF { get; private set; }
+
+        private static int rID { get; set; }
 
         // GET: Reports
         public ActionResult Index()
@@ -61,11 +62,15 @@ namespace ensemble_webapp.Controllers
         {
             
             ReportsHomeVM model = new ReportsHomeVM();
-            
+
+            if (vm.ChosenRehearsal == null)
+                vm.ChosenRehearsal = new Rehearsal(Globals.rID);
+
             GetDAL get = new GetDAL();
             get.OpenConnection();
 
             Rehearsal r = get.GetRehearsalByID(vm.ChosenRehearsal.IntRehearsalID);
+            Globals.rID = r.IntRehearsalID;
             //Rehearsal r = vm.ChosenRehearsal;
             List<RehearsalPart> rehearsalPartsForToday = get.GetRehearsalPartsByRehearsal(r);
 
@@ -91,7 +96,7 @@ namespace ensemble_webapp.Controllers
 
             get.CloseConnection();
 
-            this.PDF = model;
+            Globals.PDF = model;
             
             return View("GenerateReport", model);
         }
@@ -104,11 +109,12 @@ namespace ensemble_webapp.Controllers
         //turn GenerateReport.cshtml into pdf
         [HttpPost]
         public ActionResult GeneratePDF(){
-            return new ViewAsPdf(this.PDF);
-            //return new ActionAsPdf("MakeReport", vm) { 
-            //    //var OutputPath = "~/Downloads/"+ vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf";
-            //    FileName = vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf"
-            //};
+            //return new ViewAsPdf("", this.PDF);
+            return new ActionAsPdf("MakeReport", Globals.PDF)
+            {
+                //var OutputPath = "~/Downloads/"+ vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf";
+                FileName = Globals.PDF.GroupName + "_" + Globals.PDF.RehearsalDate + "_Report.pdf"
+            };
             //var html = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestInvoice1.html"));
             //var htmlToPdf = new HtmlToPdf();
             //var pdf = htmlToPdf.RenderHtmlAsPdf(html);

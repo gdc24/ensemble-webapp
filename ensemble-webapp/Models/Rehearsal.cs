@@ -11,6 +11,11 @@ namespace ensemble_webapp.Models
         {
         }
 
+        public Rehearsal(int rID)
+        {
+            IntRehearsalID = rID;
+        }
+
         public Rehearsal(int intRehearsalID, DateTime dtmStartDateTime, DateTime dtmEndDateTime, string strLocation, string strNotes, Event paramEvent)
         {
             IntRehearsalID = intRehearsalID;

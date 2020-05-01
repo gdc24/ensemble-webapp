@@ -1,4 +1,5 @@
 using ensemble_webapp.Models;
+using ensemble_webapp.ViewModels;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +12,10 @@ namespace ensemble_webapp.Database
         public static Users LOGGED_IN_USER { get; set; }
 
         public static bool IS_ADMIN = false;
+
+        public static ReportsHomeVM PDF { get; set; }
+
+        public static int rID { get; set; }
 
         private static Users[] admins =
         {
