@@ -97,22 +97,24 @@ namespace ensemble_webapp.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConfirmSchedule(ScheduleViewVM vm)
+        public ActionResult ConfirmSchedule()
         {
 
             // update rehearsal part times
-            vm.LstConfirmScheduledRehearsalParts = tmpRehearsalPartsSchedule.LstScheduledRehearsalParts;
+            //vm.LstConfirmScheduledRehearsalParts = tmpRehearsalPartsSchedule.LstScheduledRehearsalParts;
             // insert start and end dates for each rehearsal part into db
             InsertDAL insert = new InsertDAL();
             insert.OpenConnection();
-            foreach (var rp in vm.LstConfirmScheduledRehearsalParts)
+            foreach (var rp in tmpRehearsalPartsSchedule.LstScheduledRehearsalParts)
             {
                 insert.UpdateRPTimes(rp.IntRehearsalPartID, rp.DtmStartDateTime.GetValueOrDefault(), rp.DtmEndDateTime.GetValueOrDefault());
             }
 
             insert.CloseConnection();
 
-            return RedirectToAction("Index", "Schedule");
+            return Json(new { success = true, response = "confirmed!" }, JsonRequestBehavior.AllowGet);
+
+            //return RedirectToAction("Index", "Schedule");
         }
 
         [HttpPost]

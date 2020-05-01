@@ -150,6 +150,8 @@ namespace ensemble_webapp.Database
         /// <returns>True if at least one of the users has a conflict</returns>
         private bool HasConflicts(List<Users> LstMembers, DateTime start, DateTime end, GetDAL get)
         {
+            get.CloseConnection();
+            get.OpenConnection();
             foreach (Users m in LstMembers)
             {
                 List<Conflict> conflicts = get.GetConflictsByUserAndDay(m, new LocalDate(start.Year, start.Month, start.Day));

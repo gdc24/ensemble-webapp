@@ -47,6 +47,13 @@ function AjaxCall(url, data, type) {
     })
 }
 
+function confirmSchedule() {
+    AjaxCall('/Schedule/ConfirmSchedule', null, 'POST').done(function (response) {
+        $('.not-yet-confirmed').hide();
+        $('.confirmed').show();
+    });
+}
+
 //id is actually start datetime's date in MMddyyyy format
 function confirmSingleRehearsal(id) {
     var data = {
@@ -73,4 +80,5 @@ function showConfirmedRow(id, data) {
     $('#' + id + '_hiddenConfirmNotes').text(data.strNotes);
     $('#' + id + '_hiddenConfirmNotes').css('color', 'green');
     $('#' + id + '_strNotes').hide();
+    $('#' + id + '_confirmedButton').hide();
 }

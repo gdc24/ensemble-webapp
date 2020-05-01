@@ -314,8 +314,6 @@ namespace ensemble_webapp.Database
                 return true;
             else
                 return false;
-            //TODO
-            throw new NotImplementedException("todo");
         }
 
         public int InsertUser(Users user)

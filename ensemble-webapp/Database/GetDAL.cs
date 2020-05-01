@@ -212,8 +212,10 @@ namespace ensemble_webapp.Database
         private Conflict GetConflictFromDR(NpgsqlDataReader dr)
         {
             int intConflictID = Convert.ToInt32(dr["intConflictID"]);
-            DateTime dtmStartDateTime = SafeGetDateTime(dr, "dtmStartDateTime").GetValueOrDefault();
-            DateTime dtmEndDateTime = SafeGetDateTime(dr, "dtmEndDateTime").GetValueOrDefault();
+            //DateTime dtmStartDateTime = (DateTime)SafeGetDateTime(dr, "dtmStartDateTime");
+            //DateTime dtmEndDateTime = (DateTime)SafeGetDateTime(dr, "dtmEndDateTime");
+            DateTime dtmStartDateTime = Convert.ToDateTime(dr["dtmStartDateTime"]);
+            DateTime dtmEndDateTime = Convert.ToDateTime(dr["dtmEndDateTime"]);
 
             int intUserID = Convert.ToInt32(dr["intUserID"]);
             string strName = dr["strName"].ToString();
@@ -634,7 +636,8 @@ namespace ensemble_webapp.Database
             string query = "SELECT es.*, e.*, g.\"intGroupID\", g.\"strName\" as \"groupName\"" +
                 " FROM \"groups\" g, \"eventSchedule\" es" +
                 " INNER JOIN(SELECT MAX(\"intEventScheduleID\") as \"intEventScheduleID\"" +
-                " FROM \"eventSchedule\") s on es.\"intEventScheduleID\" = s.\"intEventScheduleID\", events e " +
+                " FROM \"eventSchedule\" WHERE \"intEventID\" = " + intEventID +
+                " ) s on es.\"intEventScheduleID\" = s.\"intEventScheduleID\", events e " +
                 " WHERE e.\"intEventID\" = " + intEventID + "" +
                 " AND g.\"intGroupID\" = e.\"intGroupID\";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
@@ -1481,7 +1484,7 @@ namespace ensemble_webapp.Database
 
         public List<Conflict> GetConflictsByUser(Users user)
         {
-            conn.TypeMapper.UseNodaTime();
+            //conn.TypeMapper.UseNodaTime();
             List<Conflict> retval = new List<Conflict>();
 
             // define a query
@@ -1508,7 +1511,7 @@ namespace ensemble_webapp.Database
 
         public List<Conflict> GetConflictsByUserAndDay(Users user, LocalDate date)
         {
-            conn.TypeMapper.UseNodaTime();
+            //conn.TypeMapper.UseNodaTime();
             List<Conflict> retval = new List<Conflict>();
             string strDateOnly = date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 

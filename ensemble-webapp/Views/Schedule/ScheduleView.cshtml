@@ -10,9 +10,27 @@
         </div>
     </div>
 
-    @using (Html.BeginForm("ConfirmSchedule", "Schedule", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        if (Model.LstTmpRehearsals.Any())
+    <hr />
+
+    @*@using (Html.BeginForm("ConfirmSchedule", "Schedule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {*@
+        
+        <div class="not-yet-confirmed text-center">
+            <button class="btn btn-success" onclick="confirmSchedule()">Confirm Rehearsal Parts</button>
+            @*<input type="submit" value="Confirm Schedule" class="form-control btn-success btn" />*@
+            <div class="text-small">This saves each individual rehearsal part. It does not save locations or notes; hit confirm on each row to enter those.</div>
+            @if (Model.Schedule.LstUnscheduledRehearsalParts.Any())
+            {
+                <br /><br />
+                <div class="text-small"><i>Any rehearsals parts listed as "unscheduled" will not be saved.</i></div>
+            }
+        </div>
+        <div class="confirmed" style="color: green; display: none;">
+            <h2>Rehearsal schedule confirmed!</h2>
+            <div class="text-small"><i>Any rehearsals parts listed as "unscheduled" were NOT saved.</i></div>
+        </div>
+        <br />
+        @if (Model.LstTmpRehearsals.Any())
         {
             <table class="table table-bordered">
                 <thead>
@@ -29,7 +47,14 @@
                     @foreach (var r in Model.LstTmpRehearsals)
                     {
                         <tr id="@(r.DtmStartDateTime.ToString("yyyyMMdd") + "_row")">
-                            <td>@String.Join(", ", r.LstRehearsalParts)</td>
+                            <td>
+                                <ul>
+                                    @foreach (var rp in r.LstRehearsalParts)
+                                    {
+                                        <li>@rp</li>
+                                    }
+                                </ul>
+                            </td>
                             <td id="@(r.DtmStartDateTime.ToString("yyyyMMdd") + "_hiddenDateStart")">@r.DtmStartDateTime</td>
                             <td id="@(r.DtmStartDateTime.ToString("yyyyMMdd") + "_hiddenDateEnd")">@r.DtmEndDateTime</td>
                             <td>
@@ -37,22 +62,26 @@
                                 <span id="@(r.DtmStartDateTime.ToString("yyyyMMdd") + "_hiddenConfirmLocation")"></span>
                             </td>
                             <td>
-                                @Html.EditorFor(m => m.SingleConfirmedRehearsal.StrNotes, new { htmlAttributes = new { @class = "form-control", @id = r.DtmStartDateTime.ToString("yyyyMMdd") + "_strNotes" } })
+                                @Html.TextAreaFor(m => m.SingleConfirmedRehearsal.StrNotes, new { @class = "form-control", @id = r.DtmStartDateTime.ToString("yyyyMMdd") + "_strNotes" } )
                                 <span id="@(r.DtmStartDateTime.ToString("yyyyMMdd") + "_hiddenConfirmNotes")"></span>
                             </td>
                             <td>
-                                <button onclick="confirmSingleRehearsal(@r.DtmStartDateTime.ToString("yyyyMMdd"))">Confirm</button>
+                                <button class="btn btn-success" id="@(r.DtmStartDateTime.ToString("yyyyMMdd") + "_confirmedButton")" onclick="confirmSingleRehearsal(@r.DtmStartDateTime.ToString("yyyyMMdd"))">Confirm <i class="fas fa-check"></i></button>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
         }
-        <ul>
-        </ul>
 
-        if (Model.Schedule.LstScheduledRehearsalParts.Any())
+        @if (Model.Schedule.LstScheduledRehearsalParts.Any())
         {
+            <hr/>
+            <div class="row">
+                <div class="col">
+                    <h2><i>The following rehearsal parts were scheduled:</i></h2>
+                </div>
+            </div>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -83,8 +112,9 @@
                 </tbody>
             </table>
         }
-        if (Model.Schedule.LstUnscheduledRehearsalParts.Any())
+        @if (Model.Schedule.LstUnscheduledRehearsalParts.Any())
         {
+            <hr/>
             <div class="row">
                 <div class="col">
                     <h2>The following rehearsals were unable to be scheduled</h2>
@@ -121,13 +151,5 @@
             </table>
         }
         <br />
-        <div class="text-center">
-            <input type="submit" value="Confirm Schedule" class="form-control btn-success btn" />
-            @if (Model.Schedule.LstUnscheduledRehearsalParts.Any())
-            {
-                <br /><br />
-                <div class="text-small"><i>Any rehearsals parts listed as "unscheduled" will not be saved.</i></div>
-            }
-        </div>
-    }
+    @*}  *@
 </div>
