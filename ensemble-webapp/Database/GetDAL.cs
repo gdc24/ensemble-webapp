@@ -244,9 +244,49 @@ namespace ensemble_webapp.Database
         private AttendancePlanned GetAttendancePlannedFromDR(NpgsqlDataReader dr)
         {
             int intAttendancePlannedID = Convert.ToInt32(dr["intAttendancePlannedID"]);
+
             /*GIULIANA THIS IS THE LINE I COMMENTED OUT*/
             //RehearsalPart rehearsalPart = GetRehearsalPartByID(Convert.ToInt32(dr["intRehearsalPartID"]));
-            Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
+            int intRehearsalPartID = Convert.ToInt32(dr["intRehearsalPartID"]);
+            DateTime? dtmStartDateTime = SafeGetDateTime(dr, "dtmStartDateTime");
+            DateTime? dtmEndDateTime = SafeGetDateTime(dr, "dtmEndDateTime");
+            string strDescription = dr["strDescription"].ToString();
+            int intPriority = Convert.ToInt32(dr["intPriority"]);
+            //Rehearsal rehearsal = GetRehearsalByID(Convert.ToInt32(dr["intRehearsalID"]));
+            //Types type = GetTypesByID(Convert.ToInt32(dr["intTypeID"]));
+
+            int ordinalLength = dr.GetOrdinal("durLength");
+            Period durLength = dr.GetFieldValue<Period>(ordinalLength);
+
+            Types type = new Types(
+                Convert.ToInt32(dr["intTypeID"]),
+                dr["typeName"].ToString()
+                );
+
+            Group group = new Group(
+                Convert.ToInt32(dr["intGroupID"]),
+                dr["groupName"].ToString());
+            int intEventID = Convert.ToInt32(dr["intEventID"]);
+            string strEventName = dr["eventName"].ToString();
+
+            //int ordinalDtmDate = dr.GetOrdinal("dtmDate");
+            //DateTime dtmDate = dr.GetFieldValue<DateTime>(ordinalDtmDate);
+            string strLocation = dr["eventLocation"].ToString();
+
+            Event @event = new Event(intEventID, strEventName, strLocation, group);
+
+            RehearsalPart rehearsalPart = new RehearsalPart(intRehearsalPartID, dtmStartDateTime.GetValueOrDefault(), dtmEndDateTime.GetValueOrDefault(), strDescription, intPriority, durLength, type, @event);
+
+            //Users user = GetUserByID(Convert.ToInt32(dr["intUserID"]));
+            int intUserID = Convert.ToInt32(dr["intUserID"]);
+            string strName = dr["strName"].ToString();
+            string strEmail = dr["strEmail"].ToString();
+            string strPhone = dr["strPhone"].ToString();
+            byte[] bytSalt = (byte[])dr["bytSalt"];
+            byte[] bytKey = (byte[])dr["bytKey"];
+            //List<Event> events = this.GetEventsByUser(intUserID);
+
+            Users user = new Users(intUserID, strName, bytSalt, bytKey, strEmail, strPhone);
 
             return new AttendancePlanned(intAttendancePlannedID, null, user);
         }
@@ -1362,7 +1402,20 @@ namespace ensemble_webapp.Database
             List<AttendancePlanned> retval = new List<AttendancePlanned>();
 
             // define a query
-            string query = "SELECT * FROM \"attendancePlanned\" WHERE \"intRehearsalPartID\" = " + rehearsalPart.IntRehearsalPartID;
+            string query = "select ap.*, rp.*, t.\"strName\" as \"typeName\", g.\"strName\" as \"groupName\", u.*," +
+                " e.\"dtmDate\" as \"eventDate\"," +
+                " e.\"strLocation\" as \"eventLocation\"," +
+                " e.\"intGroupID\"," +
+                " e.\"intEventID\"," +
+                " e.\"strName\" as \"eventName\"" +
+                " from \"attendancePlanned\" ap, \"rehearsalParts\" rp, \"types\" t, \"groups\" g, \"events\" e, \"users\" u, \"rehearsals\" r where r.\"intRehearsalID\" = rp.\"intRehearsalID\"" +
+                " and r.\"intEventID\" = e.\"intEventID\"" +
+                " and ap.\"intUserID\" = u.\"intUserID\"" +
+                " and ap.\"intRehearsalPartID\" = rp.\"intRehearsalPartID\"" +
+                " and rp.\"intTypeID\" = t.\"intTypeID\"" +
+                " and g.\"intGroupID\" = e.\"intGroupID\"" +
+                " and e.\"intEventID\" = rp.\"intEventID\"" +
+                " and rp.\"intRehearsalPartID\" = " + rehearsalPart.IntRehearsalPartID + ";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query
