@@ -54,14 +54,16 @@ namespace ensemble_webapp.Controllers
         }
         
         ////add text to GenerateReport.cshtml
-        public ActionResult MakeReport(int rehearsalID){
+        public ActionResult MakeReport(ReportsHomeVM vm)
+        {
             
             ReportsHomeVM model = new ReportsHomeVM();
             
             GetDAL get = new GetDAL();
             get.OpenConnection();
 
-            Rehearsal r = get.GetRehearsalByID(rehearsalID);
+            Rehearsal r = get.GetRehearsalByID(vm.ChosenRehearsal.IntRehearsalID);
+            //Rehearsal r = vm.ChosenRehearsal;
             List<RehearsalPart> pLst = get.GetRehearsalPartsByRehearsal(r);
 
             model.EventName = r.Event.StrName;;
@@ -77,16 +79,17 @@ namespace ensemble_webapp.Controllers
                 {
                     get.CloseConnection();
                     get.OpenConnection();
-                    model.ActualAttendance.AddRange(get.GetAttendanceActualByPlanned(ap));
+                    model.ActualAttendance = model.ActualAttendance.Concat(get.GetAttendanceActualByPlanned(ap)).ToList();
                     model.PlannedAttendance.Add(ap);
                 }
             }
 
             model.Notes = r.StrNotes;
+            model.LstAllRehearsalParts = pLst;
 
             get.CloseConnection();
             
-            return RedirectToAction("GenerateReport", model);
+            return View("GenerateReport", model);
         }
 
         public ActionResult GenerateReport()
@@ -98,7 +101,7 @@ namespace ensemble_webapp.Controllers
         [HttpPost]
         public ActionResult GeneratePDF(ReportsHomeVM vm){
             var Renderer = new HtmlToPdf();
-            var PDF = Renderer.RenderHTMLFileAsPdf("GenerateReport.cshtml");
+            var PDF = Renderer.RenderHTMLFileAsPdf("~/Views/Reports/GenerateReport.cshtml");
             var OutputPath = "~/Downloads/"+ vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf";
             PDF.SaveAs(OutputPath);
             return RedirectToAction("Index", "Reports");
