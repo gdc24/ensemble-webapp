@@ -7,11 +7,14 @@ using ensemble_webapp.Database;
 using ensemble_webapp.Models;
 using ensemble_webapp.ViewModels;
 using IronPdf;
+using Rotativa;
 
 namespace ensemble_webapp.Controllers
 {
     public class ReportsController : Controller
     {
+        public ReportsHomeVM PDF { get; private set; }
+
         // GET: Reports
         public ActionResult Index()
         {
@@ -80,10 +83,6 @@ namespace ensemble_webapp.Controllers
                 foreach (AttendancePlanned ap in rp.AttendancePlanned)
                 {
                     rp.AttendanceActual = rp.AttendanceActual.Concat(get.GetAttendanceActualByPlanned(ap)).ToList();
-                    //get.CloseConnection();
-                    //get.OpenConnection();
-                    //model.ActualAttendance = model.ActualAttendance.Concat(get.GetAttendanceActualByPlanned(ap)).ToList();
-                    //model.PlannedAttendance.Add(ap);
                 }
             }
 
@@ -91,6 +90,8 @@ namespace ensemble_webapp.Controllers
             model.LstAllRehearsalParts = rehearsalPartsForToday;
 
             get.CloseConnection();
+
+            this.PDF = model;
             
             return View("GenerateReport", model);
         }
@@ -102,17 +103,22 @@ namespace ensemble_webapp.Controllers
         
         //turn GenerateReport.cshtml into pdf
         [HttpPost]
-        public ActionResult GeneratePDF(ReportsHomeVM vm){
+        public ActionResult GeneratePDF(){
+            return new ViewAsPdf(this.PDF);
+            //return new ActionAsPdf("MakeReport", vm) { 
+            //    //var OutputPath = "~/Downloads/"+ vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf";
+            //    FileName = vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf"
+            //};
             //var html = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "TestInvoice1.html"));
             //var htmlToPdf = new HtmlToPdf();
             //var pdf = htmlToPdf.RenderHtmlAsPdf(html);
             //pdf.SaveAs(Path.Combine(Directory.GetCurrentDirectory(), "HtmlToPdfExample1.Pdf"));
 
-            var Renderer = new HtmlToPdf();
-            var PDF = Renderer.RenderHTMLFileAsPdf("~/Views/Reports/GenerateReport.cshtml");
-            var OutputPath = "~/Downloads/"+ vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf";
-            PDF.SaveAs(OutputPath);
-            return RedirectToAction("Index", "Reports");
+            //var Renderer = new HtmlToPdf();
+            //var PDF = Renderer.RenderHTMLFileAsPdf("~/Views/Reports/GenerateReport.cshtml");
+            //var OutputPath = "~/Downloads/"+ vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf";
+            //PDF.SaveAs(OutputPath);
+            //return RedirectToAction("Index", "Reports");
         }
     }
 }

@@ -33,6 +33,7 @@ namespace ensemble_webapp.ViewModels
         public Rehearsal ChosenRehearsal { get; set; }
         
         public String Notes { get; set; }
+
         public ReportsHomeVM()
         {
             ActualAttendance = new List<AttendanceActual>();
