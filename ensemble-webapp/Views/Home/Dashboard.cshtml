@@ -15,39 +15,77 @@
         </div>
         <div class="col-12">
 
-            @if (Model.LstUpcomingRehearsalParts.Any())
-            {
-                <h3>Your Upcoming Rehearsal Parts</h3>
-                <ul>
-                    @foreach (var r in Model.LstUpcomingRehearsalParts)
-                    {
-                        <li>@r.ToString()</li>
-                    }
-                </ul>
-            }
-            @*@if (Model.LstUpcomingRehearsals.Any())
+            @*@if (Model.LstUpcomingRehearsalParts.Any())
         {
-            <p><strong>Upcoming Rehearsals:</strong></p>
+            <h3>Your Upcoming Rehearsal Parts</h3>
             <ul>
-                @foreach (var r in Model.LstUpcomingRehearsals)
+                @foreach (var r in Model.LstUpcomingRehearsalParts)
                 {
-                    <li>
-                        <p>@r.DtmStartDateTime to @r.DtmEndDateTime</p>
-                        <br />
-                        <p>at @r.StrLocation</p>
-                        @if (!@r.StrNotes.IsEmpty())
-                        {
-                            <br />
-                            <p>Notes: @r.StrNotes</p>
-                        }
-                    </li>
+                    <li>@r.ToString()</li>
                 }
             </ul>
-        }
-        else
-        {
-            <p><i>You have no upcoming rehearsals</i></p>
         }*@
+            @if (Model.LstUpcomingRehearsals.Any())
+            {
+                <p><strong>Upcoming Rehearsals:</strong></p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Location</th>
+                            <th>Notes</th>
+                            <th>Your Rehearsal Parts</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Model.LstUpcomingRehearsals)
+                        {
+                            <tr>
+                                <td>@r.DtmStartDateTime</td>
+                                <td>@r.DtmEndDateTime</td>
+                                <td>@r.StrLocation</td>
+                                <td>@r.StrNotes</td>
+                                <td>
+                                    <ul>
+                                        @foreach (var rp in r.LstRehearsalParts)
+                                        {
+                                            <li>
+                                                @rp.ToString()
+                                            </li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                @*<ul>
+                    @foreach (var r in Model.LstUpcomingRehearsals)
+                    {
+                        <li>
+                            <p>@r.DtmStartDateTime to @r.DtmEndDateTime in @r.StrLocation</p>
+                            <ul>
+                                @foreach (var rp in r.LstRehearsalParts)
+                                {
+                                    <li>
+                                        @rp.ToString()
+                                    </li>
+                                }
+                            </ul>
+                            @if (!@r.StrNotes.IsEmpty())
+                            {
+                                <p>Notes: @r.StrNotes</p>
+                            }
+                        </li>
+                    }
+                </ul>*@
+            }
+            else
+            {
+                <p><i>You have no upcoming rehearsals</i></p>
+            }
         </div>
         <br />
         <div class="col-12">

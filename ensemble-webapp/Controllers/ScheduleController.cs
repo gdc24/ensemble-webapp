@@ -31,39 +31,53 @@ namespace ensemble_webapp.Controllers
                 GetDAL get = new GetDAL();
                 get.OpenConnection();
 
-                foreach (var e in get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID))
-                {
-                    get.CloseConnection();
-                    get.OpenConnection();
-                    model.LstUserRehearsalParts = model.LstUserRehearsalParts.Concat(get.GetRehearsalPartsByEvent(e)).ToList();
-                }
-                get.CloseConnection();
-                get.OpenConnection();
-                model.LstUpcomingRehearsalParts = get.GetUpcomingRehearsalPartsByUser(Globals.LOGGED_IN_USER);
-
-                model.LstUnscheduledRehearsalParts = model.LstUserRehearsalParts.Where(x => x.DtmStartDateTime.Equals(null)).ToList();
-
-                model.LstUpcomingRehearsalParts = model.LstUpcomingRehearsalParts.Except(model.LstUnscheduledRehearsalParts.ToList()).ToList();
-
                 model.LstUpcomingRehearsals = get.GetUpcomingRehearsalsByUser(Globals.LOGGED_IN_USER);
 
                 foreach (var r in model.LstUpcomingRehearsals)
                 {
                     r.LstRehearsalParts = get.GetRehearsalPartsByRehearsal(r);
+                    foreach (RehearsalPart rp in r.LstRehearsalParts)
+                    {
+                        rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                    }
                 }
 
-                get.CloseConnection();
-                get.OpenConnection();
+                model.LstUserRehearsalParts = get.GetUpcomingRehearsalPartsByUser(Globals.LOGGED_IN_USER);
+                model.LstUnscheduledRehearsalParts = model.LstUserRehearsalParts.Where(x => x.DtmStartDateTime.Equals(null)).ToList();
+
+                //foreach (var e in get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID))
+                //{
+                //    get.CloseConnection();
+                //    get.OpenConnection();
+                //    model.LstUserRehearsalParts = model.LstUserRehearsalParts.Concat(get.GetRehearsalPartsByEvent(e)).ToList();
+                //}
+                //get.CloseConnection();
+                //get.OpenConnection();
+                //model.LstUpcomingRehearsalParts = get.GetUpcomingRehearsalPartsByUser(Globals.LOGGED_IN_USER);
+
+                //model.LstUnscheduledRehearsalParts = model.LstUserRehearsalParts.Where(x => x.DtmStartDateTime.Equals(null)).ToList();
+
+                //model.LstUpcomingRehearsalParts = model.LstUpcomingRehearsalParts.Except(model.LstUnscheduledRehearsalParts.ToList()).ToList();
+
+                //model.LstUpcomingRehearsals = get.GetUpcomingRehearsalsByUser(Globals.LOGGED_IN_USER);
+
+                //foreach (var r in model.LstUpcomingRehearsals)
+                //{
+                //    r.LstRehearsalParts = get.GetRehearsalPartsByRehearsal(r);
+                //}
+
+                //get.CloseConnection();
+                //get.OpenConnection();
                 model.LstAdminEvents = get.GetAdminEventsByUser(Globals.LOGGED_IN_USER.IntUserID);
 
-                foreach (RehearsalPart rp in model.LstUserRehearsalParts)
-                {
-                    rp.LstMembers = get.GetUsersByRehearsalPart(rp);
-                }
-                foreach (RehearsalPart rp in model.LstUpcomingRehearsalParts)
-                {
-                    rp.LstMembers = get.GetUsersByRehearsalPart(rp);
-                }
+                //foreach (RehearsalPart rp in model.LstUserRehearsalParts)
+                //{
+                //    rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                //}
+                //foreach (RehearsalPart rp in model.LstUpcomingRehearsalParts)
+                //{
+                //    rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                //}
                 get.CloseConnection();
 
                 return View("ScheduleHome", model);

@@ -10,7 +10,7 @@
         <h2><strong>Schedule</strong></h2>
 
 
-        @if (Model.LstUpcomingRehearsalParts.Any())
+        @*@if (Model.LstUpcomingRehearsalParts.Any())
         {
             <h3>Your Upcoming Rehearsal Parts</h3>
             <ul>
@@ -19,7 +19,7 @@
                     <li>@r.ToString()</li>
                 }
             </ul>
-        }
+        }*@
 
 
         <hr />
@@ -33,7 +33,7 @@
                         <th>End</th>
                         <th>Notes</th>
                         <th>Location</th>
-                        <td>Your Rehearsal Parts</td>
+                        <th>Your Rehearsal Parts</th>
                         <th>Event</th>
                     </tr>
                 </thead>
@@ -109,10 +109,10 @@
                 <br />
                 <label for="SelectedEvent.IntEventID">Event</label>
                 @Html.DropDownListFor(m => m.SelectedEvent.IntEventID, new SelectList(Model.LstAdminEvents, "intEventID", "strName"), new { @class = "form-control" })
-                for (int i = 0; i < Model.LstUserRehearsalParts.Count; i++)
-                {
-                    Html.HiddenFor(model => Model.LstUserRehearsalParts[i]);
-                }
+                //for (int i = 0; i < Model.LstUserRehearsalParts.Count; i++)
+                //{
+                //    Html.HiddenFor(model => Model.LstUserRehearsalParts[i]);
+                //}
                 @*@Html.HiddenFor(m => m.LstAllRehearsalParts)*@
                 <br />
                 <input type="submit" value="generate new schedule" class="form-control btn-primary" />

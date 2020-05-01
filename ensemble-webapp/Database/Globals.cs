@@ -15,7 +15,8 @@ namespace ensemble_webapp.Database
         private static Users[] admins =
         {
             new Users(3, "Giuliana"),
-            new Users(5, "Ryan")
+            new Users(5, "Ryan"),
+            new Users(16, "Devin")
         };
 
         public static List<Users> ADMINS = new List<Users>(admins);

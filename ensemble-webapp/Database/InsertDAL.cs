@@ -1,4 +1,5 @@
 ﻿using ensemble_webapp.Models;
+using NodaTime;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ namespace ensemble_webapp.Database
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             cmd.Parameters.AddWithValue("strName", paramEvent.StrName);
-            cmd.Parameters.AddWithValue("dtmDate", paramEvent.DtmDate);
+            cmd.Parameters.AddWithValue("dtmDate", LocalDateTime.FromDateTime(paramEvent.DtmDate));
             cmd.Parameters.AddWithValue("strLocation", paramEvent.StrLocation);
             cmd.Parameters.AddWithValue("intGroupID", paramEvent.Group.IntGroupID);
 
@@ -108,7 +109,7 @@ namespace ensemble_webapp.Database
 
             cmd.Parameters.AddWithValue("strSubject", callboard.StrSubject);
             cmd.Parameters.AddWithValue("strNote", callboard.StrNote);
-            cmd.Parameters.AddWithValue("dtmDateTime", DateTime.Now);
+            cmd.Parameters.AddWithValue("dtmDateTime", LocalDateTime.FromDateTime(DateTime.Now));
             cmd.Parameters.AddWithValue("intPostedByUserID", Globals.LOGGED_IN_USER.IntUserID);
             cmd.Parameters.AddWithValue("intEventID", callboard.Event.IntEventID);
 
@@ -162,8 +163,8 @@ namespace ensemble_webapp.Database
                 " VALUES(@dtmStartDateTime, @dtmEndDateTime, @intUserID);";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-            cmd.Parameters.AddWithValue("dtmStartDateTime", conflict.DtmStartDateTime);
-            cmd.Parameters.AddWithValue("dtmEndDateTime", conflict.DtmEndDateTime);
+            cmd.Parameters.AddWithValue("dtmStartDateTime", LocalDateTime.FromDateTime(conflict.DtmStartDateTime));
+            cmd.Parameters.AddWithValue("dtmEndDateTime", LocalDateTime.FromDateTime(conflict.DtmEndDateTime));
             cmd.Parameters.AddWithValue("intUserID", conflict.User.IntUserID);
 
             int result = cmd.ExecuteNonQuery();
@@ -183,8 +184,8 @@ namespace ensemble_webapp.Database
                 " WHERE \"intRehearsalPartID\" = @intRehearsalPartID";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-            cmd.Parameters.AddWithValue("dtmStartDateTime", dtmStartDateTime);
-            cmd.Parameters.AddWithValue("dtmEndDateTime", dtmEndDateTime);
+            cmd.Parameters.AddWithValue("dtmStartDateTime", LocalDateTime.FromDateTime(dtmStartDateTime));
+            cmd.Parameters.AddWithValue("dtmEndDateTime", LocalDateTime.FromDateTime(dtmEndDateTime));
             cmd.Parameters.AddWithValue("intRehearsalPartID", intRehearsalPartID);
 
             int result = cmd.ExecuteNonQuery();
@@ -203,7 +204,7 @@ namespace ensemble_webapp.Database
                 " VALUES(@dtmDue, @strName, @strAttachment, @intAssignedToUserID, @intAssignedByUserID, @intEventID, false); ";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-            cmd.Parameters.AddWithValue("dtmDue", task.DtmDue);
+            cmd.Parameters.AddWithValue("dtmDue", LocalDateTime.FromDateTime(task.DtmDue));
             cmd.Parameters.AddWithValue("strName", task.StrName);
             cmd.Parameters.AddWithValue("strAttachment", task.StrAttachment);
             cmd.Parameters.AddWithValue("intAssignedToUserID", task.UserAssignedTo.IntUserID);
@@ -227,8 +228,8 @@ namespace ensemble_webapp.Database
                 " RETURNING \"intRehearsalID\";";
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
-            cmd.Parameters.AddWithValue("dtmStartDateTime", rehearsal.DtmStartDateTime);
-            cmd.Parameters.AddWithValue("dtmEndDateTime", rehearsal.DtmEndDateTime);
+            cmd.Parameters.AddWithValue("dtmStartDateTime", LocalDateTime.FromDateTime(rehearsal.DtmStartDateTime));
+            cmd.Parameters.AddWithValue("dtmEndDateTime", LocalDateTime.FromDateTime(rehearsal.DtmEndDateTime));
             cmd.Parameters.AddWithValue("strLocation", rehearsal.StrLocation);
             cmd.Parameters.AddWithValue("strNotes", rehearsal.StrNotes);
             cmd.Parameters.AddWithValue("intEventID", rehearsal.LstRehearsalParts.FirstOrDefault().Event.IntEventID);
@@ -314,7 +315,7 @@ namespace ensemble_webapp.Database
 
             cmd.Parameters.AddWithValue("ysnDidShow", attendanceActual.YsnDidShow);
             cmd.Parameters.AddWithValue("intAttendancePlannedID", attendanceActual.AttendancePlanned.IntAttendancePlannedID);
-            cmd.Parameters.AddWithValue("dtmInTime", attendanceActual.DtmInTime);
+            cmd.Parameters.AddWithValue("dtmInTime", LocalDateTime.FromDateTime(attendanceActual.DtmInTime));
             cmd.Parameters.AddWithValue("dtmOutTime", DBNull.Value);
 
             int result = cmd.ExecuteNonQuery();

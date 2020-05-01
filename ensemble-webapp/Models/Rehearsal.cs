@@ -11,10 +11,6 @@ namespace ensemble_webapp.Models
         {
         }
 
-        public Rehearsal(int? intRehearsalID)
-        {
-        }
-
         public Rehearsal(int intRehearsalID, DateTime dtmStartDateTime, DateTime dtmEndDateTime, string strLocation, string strNotes, Event paramEvent)
         {
             IntRehearsalID = intRehearsalID;

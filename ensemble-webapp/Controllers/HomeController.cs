@@ -102,34 +102,59 @@ namespace ensemble_webapp.Controllers
 
                 /****************************** upcoming rehearsals stuff start *********/
 
-                foreach (var e in get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID))
-                {
-                    get.CloseConnection();
-                    get.OpenConnection();
-                    model.LstUserRehearsalParts = model.LstUserRehearsalParts.Concat(get.GetRehearsalPartsByEvent(e)).ToList();
-                }
                 get.CloseConnection();
                 get.OpenConnection();
-                model.LstUpcomingRehearsalParts = get.GetUpcomingRehearsalPartsByUser(Globals.LOGGED_IN_USER);
 
-                model.LstUnscheduledRehearsalParts = model.LstUserRehearsalParts.Where(x => x.DtmStartDateTime.Equals(null)).ToList();
-
-                model.LstUpcomingRehearsalParts = model.LstUpcomingRehearsalParts.Except(model.LstUnscheduledRehearsalParts.ToList()).ToList();
+                // get LstUpcomingRehearsals
 
                 model.LstUpcomingRehearsals = get.GetUpcomingRehearsalsByUser(Globals.LOGGED_IN_USER);
 
                 foreach (var r in model.LstUpcomingRehearsals)
                 {
                     r.LstRehearsalParts = get.GetRehearsalPartsByRehearsal(r);
+                    foreach (RehearsalPart rp in r.LstRehearsalParts)
+                    {
+                        rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                    }
+                    r.LstRehearsalParts = r.LstRehearsalParts.Where(x => x.LstMembers.Contains(Globals.LOGGED_IN_USER)).ToList();
                 }
 
-                get.CloseConnection();
-                get.OpenConnection();
-                foreach (RehearsalPart rp in model.LstUpcomingRehearsalParts)
-                {
-                    rp.LstMembers = get.GetUsersByRehearsalPart(rp);
-                }
-                get.CloseConnection();
+                model.LstUpcomingRehearsals = model.LstUpcomingRehearsals.Where(x => x.DtmStartDateTime <= DateTime.Now.AddDays(7)).ToList();
+                //get.CloseConnection();
+                //get.OpenConnection();
+                //// get members in each rehearsal
+                //foreach (RehearsalPart rp in model.LstUpcomingRehearsalParts)
+                //{
+                //    rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                //}
+
+                //foreach (var e in get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID))
+                //{
+                //    get.CloseConnection();
+                //    get.OpenConnection();
+                //    model.LstUserRehearsalParts = model.LstUserRehearsalParts.Concat(get.GetRehearsalPartsByEvent(e)).ToList();
+                //}
+                //get.CloseConnection();
+                //get.OpenConnection();
+                //model.LstUpcomingRehearsalParts = get.GetUpcomingRehearsalPartsByUser(Globals.LOGGED_IN_USER);
+
+                //model.LstUnscheduledRehearsalParts = model.LstUserRehearsalParts.Where(x => x.DtmStartDateTime.Equals(null)).ToList();
+
+                //model.LstUpcomingRehearsalParts = model.LstUpcomingRehearsalParts.Except(model.LstUnscheduledRehearsalParts.ToList()).ToList();
+
+
+                //foreach (var r in model.LstUpcomingRehearsals)
+                //{
+                //    r.LstRehearsalParts = get.GetRehearsalPartsByRehearsal(r);
+                //}
+
+                //get.CloseConnection();
+                //get.OpenConnection();
+                //foreach (RehearsalPart rp in model.LstUpcomingRehearsalParts)
+                //{
+                //    rp.LstMembers = get.GetUsersByRehearsalPart(rp);
+                //}
+                //get.CloseConnection();
                 /****************************** upcoming rehearsals stuff end *********/
 
                 //foreach (Event e in model.LstEvents)
