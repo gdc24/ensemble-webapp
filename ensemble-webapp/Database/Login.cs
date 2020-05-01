@@ -34,37 +34,57 @@ namespace ensemble_webapp.Database
             return true;
         }
 
-        // returns true for successful login
+        /* Takes the entered user and verifies if that is a
+         * valid user in the database by checking its entered
+         * username and password against the username and hashed
+         * key store in the database. If the username and hashed
+         * password match what is stored in the databse, then 
+         * a boolean value of true is returned; otherwise, 
+         * this function returns false.
+         * 
+         * @param users     user to be checked
+         * 
+         * @return          true if the user is verified to be
+         *                  a valid user, false otherwise.
+         */
         public static bool VerifyUser(Users users)
         {
+            // open a database connection
             GetDAL getDAL = new GetDAL();
             getDAL.OpenConnection();
 
-            // find enteredUser in database
+            // find entered username in the databased
             Users usr = getDAL.GetUserByName(users.StrName);
 
+            // close the database connection
             getDAL.CloseConnection();
 
             // if username is found
             if (usr != null)
             {
+                // get the stored key and salt for the user
                 byte[] userSalt = usr.BytSalt;
                 byte[] userKey = usr.BytKey;
                 byte[] actual;
                 try
                 {
+                    /* compute a hashed key with the user's stored 
+                    salt and entered password */
                     actual = ComputeSHA256Hash(users.StrPassword, userSalt);
                 } catch (ArgumentNullException)
                 {
+                    /* catch an ArgumentNullException triggered by 
+                    blank password */
                     return false;
                 }
 
+                /* if the computed hashed key matches what is stored 
+                   in the database then return login status */
                 if (StructuralComparisons.StructuralEqualityComparer.Equals(userKey, actual))
                 {
                     return LoginUser(usr);
                 }
             }
-
 
             // did not find username
             return false;
