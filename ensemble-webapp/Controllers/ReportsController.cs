@@ -47,52 +47,49 @@ namespace ensemble_webapp.Controllers
         }
         
         ////add text to GenerateReport.cshtml
-        //public ActionResult MakeReport(int rehearsalID){
+        public ActionResult MakeReport(int rehearsalID){
             
-        //    ReportsHomeVM model = new ReportsHomeVM();
-        //    model.CurrentUser = Globals.LOGGED_IN_USER;
+            ReportsHomeVM model = new ReportsHomeVM();
             
-        //    GetDAL get = new GetDAL();
-        //    get.OpenConnection();
+            GetDAL get = new GetDAL();
+            get.OpenConnection();
 
-        //    Rehearsal r = get.GetRehearsalbyID(rehearsalID);
-        //    List<RehearsalPart> pLst = GetRehearsalPartsByRehearsal(r);
+            Rehearsal r = get.GetRehearsalByID(rehearsalID);
+            List<RehearsalPart> pLst = get.GetRehearsalPartsByRehearsal(r);
 
-        //    model.EventName = pLst.item[0].@event.strEventName;
+            model.EventName = r.Event.StrName;;
+            model.GroupName = r.Event.Group.StrName;
+            model.Location = r.StrLocation;
+            model.StartTime = r.DtmStartDateTime.ToString();
+            model.EndTime = r.DtmEndDateTime.ToString();
+            model.RehearsalDate = r.DtmStartDateTime.Date.ToString();
 
-        //    model.RehearsalDate = get.GetRehearsalByID(rehearsalID).dtmStartDateTime.Date.toString();
+            foreach (RehearsalPart rp in pLst)
+            {
+                foreach (AttendancePlanned ap in get.GetAttendancePlannedByRehearsalPart(rp))
+                {
+                    get.CloseConnection();
+                    get.OpenConnection();
+                    model.ActualAttendance.AddRange(get.GetAttendanceActualByPlanned(ap));
+                    model.PlannedAttendance.Add(ap);
+                }
+            }
 
-        //    model.GroupName = pLst.item[0].@event.group;
+            model.Notes = r.StrNotes;
 
-        //    model.Location = get.GetRehearsalByID(rehearsalID).strLocation;
-
-        //    model.StartTime = get.GetRehearsalByID(rehearsalID).dtmStartDateTime.TimeOfDay.toString();
-
-        //    model.EndTime = get.GetRehearsalByID(rehearsalID).dtmStartDateTime.TimeOfDay.toString();
-
-        //    for(int i = 0; pLst.item[i] != null; i++){
-
-        //        model.PlannedAttendance = model.PlannedAttendance.AddRage(get.GetAttendancePlannedByRehearsalPart(pLst.item[i]));
+            get.CloseConnection();
             
-        //    }
+            return RedirectToAction("GenerateReport", model);
+        }
 
-        //    for(int j = 0; pLst.item[j] != null; j++){
-
-        //        model.ActualAttendance = model.ActualAttendance.AddRage(get.GetAttendanceActualByRehearsalPart(pLst.item[j]));
-            
-        //    }
-            
-        //    model.Notes = get.GetRehearsalByID(rehearsalID).strNotes;
-
-        //    get.CloseConnection();
-            
-        //    return RedirectToAction("Index");
-
-            
-        //}
+        public ActionResult GenerateReport()
+        {
+            return RedirectToAction("Index");
+        }
         
         //turn GenerateReport.cshtml into pdf
-        public ActionResult GenerateReport(ReportsHomeVM vm){
+        [HttpPost]
+        public ActionResult GeneratePDF(ReportsHomeVM vm){
             var Renderer = new HtmlToPdf();
             var PDF = Renderer.RenderHTMLFileAsPdf("GenerateReport.cshtml");
             var OutputPath = "~/Downloads/"+ vm.GroupName + "_" + vm.RehearsalDate + "_Report.pdf";

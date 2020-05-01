@@ -1,4 +1,4 @@
-﻿
+﻿@model ensemble_webapp.ViewModels.ReportsHomeVM
 @{
     ViewBag.Title = "GenerateReport";
 }
@@ -19,12 +19,54 @@
         </div>
         <div class="row">
             <div class="col-12">
-                @*rehearsal details (location, dtm, duration, lstmembers, group, event)*@
+                <p><strong>@Model.GroupName</strong></p>
+                <p>@Model.EventName</p>
+                <hr />
+                <p>Start: @Model.StartTime</p>
+                <p>End: @Model.EndTime</p>
+                <p>Location: @Model.Location</p>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                @*list attendance actual here*@
+                <ul>
+                    @foreach (var rp in Model.LstAllRehearsalParts)
+                    {
+                        <li>
+                            <p>Start: @rp.DtmStartDateTime; End: @rp.DtmEndDateTime</p>
+                            <p>Attendance Planned:</p>
+                            @foreach (var u in Model.PlannedAttendance)
+                            {
+                                <p>@u.User.StrName</p>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ul>
+                    @foreach (var rp in Model.LstAllRehearsalParts)
+                    {
+                        <li>
+                            <p>Start: @rp.DtmStartDateTime; End: @rp.DtmEndDateTime</p>
+                            <p>Attendance Actual:</p>
+                            @foreach (var u in Model.ActualAttendance)
+                            {
+                                <p>@u.AttendancePlanned.User.StrName arrived at @u.DtmInTime.TimeOfDay</p>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                @using (Html.BeginForm("GeneratePDF", "Reports"))
+                {
+                    <input type="submit" class="btn btn-success" value="Generate PDF" />
+                }
             </div>
         </div>
     </div>
