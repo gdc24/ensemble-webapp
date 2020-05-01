@@ -26,7 +26,11 @@ namespace ensemble_webapp.ViewModels
 
         public List<RehearsalPart> LstAllRehearsalParts { get; set; }
 
-        public RehearsalPart ChosenRehearsalPart { get; set; }
+        public List<Rehearsal> LstAllRehearsals { get; set; }
+
+        public List<Event> LstAllEvents { get; set; }
+
+        public Rehearsal ChosenRehearsal { get; set; }
         
         public String Notes { get; set; }
     }

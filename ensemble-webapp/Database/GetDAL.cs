@@ -1193,7 +1193,9 @@ namespace ensemble_webapp.Database
             List<Rehearsal> retval = new List<Rehearsal>();
 
             // define a query
-            string query = "SELECT * FROM \"rehearsals\" WHERE \"intEventID\" = " + paramEvent.IntEventID;
+            string query = "SELECT r.*, e.\"strName\" as \"eventName\"" +
+                "FROM \"rehearsals\" r, \"events\" e" + 
+                " WHERE r.\"intEventID\" = " + paramEvent.IntEventID;
             NpgsqlCommand cmd = new NpgsqlCommand(query, conn);
 
             // execute query

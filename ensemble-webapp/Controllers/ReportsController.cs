@@ -21,7 +21,22 @@ namespace ensemble_webapp.Controllers
 
             model.LstAllRehearsalParts = get.GetAllRehearsalParts();
 
+            model.LstAllEvents = get.GetEventsByUser(Globals.LOGGED_IN_USER.IntUserID);
+            model.LstAllRehearsals = new List<Rehearsal>();
+            foreach (Event e in model.LstAllEvents)
+            {
+                get.CloseConnection();
+                get.OpenConnection();
+                model.LstAllRehearsals.AddRange(get.GetRehearsalsByEvent(e));
+            }
+
             get.CloseConnection();
+
+            foreach (Rehearsal r in model.LstAllRehearsals)
+            {
+                r.DateWithEvent = r.Event.StrName + " " + r.DtmStartDateTime;
+            }
+
 
             return View("ReportsHome", model);
         }

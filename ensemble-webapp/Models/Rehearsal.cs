@@ -21,6 +21,8 @@ namespace ensemble_webapp.Models
             Event = paramEvent;
         }
 
+        public string DateWithEvent { get; set; }
+
         public int IntRehearsalID { get; set; }
 
         public DateTime DtmStartDateTime { get; set; }
